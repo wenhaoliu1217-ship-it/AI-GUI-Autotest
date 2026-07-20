@@ -6,7 +6,7 @@ AI GUI 自动化测试框架的版本仓库。当前 Web 权威版本为 `AI-GUI
 
 ```text
 1.20.00/
-├─ 1.20.00/                  Original V2 baseline
+├─ AI-GUI 1.20.00/          Original V2 baseline
 └─ 1.20.00功能说明.md
 
 1.25.00/
