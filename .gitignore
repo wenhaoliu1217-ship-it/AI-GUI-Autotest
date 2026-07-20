@@ -1,0 +1,39 @@
+# Dependencies and private runtimes
+**/node_modules/
+**/.venv/
+**/.venv-*/
+**/site-packages/
+
+# Generated builds and caches
+**/dist/
+**/构建成品/
+**/coverage/
+**/.runtime/
+**/.pytest_cache/
+**/.pytest-tmp*/
+**/__pycache__/
+**/*.py[cod]
+**/*.egg-info/
+**/*.tsbuildinfo
+
+# Runtime data and evidence
+**/artifacts/
+**/data/
+**/命令验证输出/
+**/GUI真实联调截图/
+**/真实浏览器步骤截图/
+**/playwright-report/
+**/test-results/
+**/*.log
+**/*.zip
+
+# Secrets, sessions, and machine-specific metadata
+**/.env
+**/.env.*
+!**/.env.example
+**/*.dpapi
+**/storage-state*.json
+**/.openai/
+
+# Nested repository metadata is backed up outside this repository
+**/.git/
