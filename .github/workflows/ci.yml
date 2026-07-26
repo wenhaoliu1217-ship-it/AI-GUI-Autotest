@@ -41,7 +41,7 @@ jobs:
         run: npm test -- --run
 
       - name: Build frontend
-        run: npm run build
+        run: npm run lint && npx vite build
 
   backend:
     name: Backend unit tests

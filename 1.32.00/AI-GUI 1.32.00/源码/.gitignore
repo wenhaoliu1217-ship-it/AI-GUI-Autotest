@@ -19,6 +19,9 @@ backend/.pytest_cache/
 backend/.pytest-tmp*/
 
 artifacts/
+!backend/src/gui_agent/artifacts/
+!backend/src/gui_agent/artifacts/**
+backend/src/gui_agent/artifacts/**/__pycache__/
 data/
 backend/artifacts/
 backend/data/

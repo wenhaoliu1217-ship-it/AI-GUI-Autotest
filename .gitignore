@@ -27,6 +27,9 @@
 
 # Runtime data and evidence
 **/artifacts/
+!**/backend/src/gui_agent/artifacts/
+!**/backend/src/gui_agent/artifacts/**
+**/backend/src/gui_agent/artifacts/**/__pycache__/
 **/data/
 **/命令验证输出/
 **/GUI真实联调截图/
