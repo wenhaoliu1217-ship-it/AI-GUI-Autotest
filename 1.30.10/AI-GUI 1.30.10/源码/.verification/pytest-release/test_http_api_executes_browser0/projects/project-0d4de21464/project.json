@@ -1,0 +1,46 @@
+{
+  "id": "project-0d4de21464",
+  "name": "受控本地 E2E",
+  "baseUrl": "http://127.0.0.1:50353",
+  "allowedHosts": [
+    "127.0.0.1"
+  ],
+  "forbiddenActions": [],
+  "allowPrivateNetwork": true,
+  "businessContext": {
+    "description": "",
+    "terminology": {},
+    "objectTypes": [],
+    "stateModels": {},
+    "exampleGoals": [],
+    "operatingBoundaries": [],
+    "allowedActions": [],
+    "bridgeCapabilities": [],
+    "bridgeSemanticTargets": {},
+    "facts": [],
+    "objectRelations": [],
+    "missingFacts": [],
+    "sourceRevision": ""
+  },
+  "asyncStateMachines": [],
+  "sideEffectPolicies": [],
+  "componentAdapters": [],
+  "accountProfiles": [
+    {
+      "id": "default",
+      "name": "默认测试账号",
+      "role": "tester",
+      "loginMethod": "interactive",
+      "credentialRefs": {},
+      "permissions": []
+    }
+  ],
+  "onboardingLevel": "L0",
+  "limits": {
+    "maxSteps": 50,
+    "timeoutSeconds": 600,
+    "maxModelCalls": 20
+  },
+  "createdAt": "2026-07-21T20:30:26.605412+00:00",
+  "updatedAt": "2026-07-21T20:30:26.605412+00:00"
+}

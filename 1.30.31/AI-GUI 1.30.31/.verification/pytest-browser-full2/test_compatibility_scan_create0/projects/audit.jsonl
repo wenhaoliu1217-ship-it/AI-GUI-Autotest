@@ -1,0 +1,3 @@
+{"timestamp": "2026-07-23T03:45:11.261435+00:00", "action": "create", "objectType": "project", "objectId": "project-f95ea93621", "projectId": "project-f95ea93621", "changedFields": ["all"]}
+{"timestamp": "2026-07-23T03:45:11.298851+00:00", "action": "create", "objectType": "scenario", "objectId": "scenario-44958d3b7f", "projectId": "project-f95ea93621", "changedFields": ["all", "generatedByCompatibilityScan"]}
+{"timestamp": "2026-07-23T03:45:11.307470+00:00", "action": "scan", "objectType": "compatibility", "objectId": "project-f95ea93621", "projectId": "project-f95ea93621", "changedFields": ["report", "recommendedConfig", "sampleScenario"]}

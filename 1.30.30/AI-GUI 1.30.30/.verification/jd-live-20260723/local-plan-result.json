@@ -1,0 +1,52 @@
+{
+  "plan": {
+    "name": "京东首页公开信息只读检查",
+    "base_url": "https://www.jd.com/",
+    "role": "未登录访客",
+    "preconditions": [
+      {
+        "description": "仅访问京东公开正式站；禁止登录、购物车、收藏、下单、支付、售后及个人资料操作。"
+      }
+    ],
+    "steps": [
+      {
+        "action": "navigate",
+        "target": "/",
+        "description": "打开目标网站",
+        "execution_mode": "locator",
+        "stability_level": "A",
+        "stability_reason": "确定性 Playwright 动作",
+        "computer_use_triggered": false,
+        "scroll_delta_y": 600,
+        "browser_target": {
+          "page": "current",
+          "wait_timeout_ms": 10000
+        }
+      },
+      {
+        "action": "screenshot",
+        "description": "截图",
+        "execution_mode": "locator",
+        "stability_level": "A",
+        "stability_reason": "确定性 Playwright 动作",
+        "computer_use_triggered": false,
+        "scroll_delta_y": 600,
+        "browser_target": {
+          "page": "current",
+          "wait_timeout_ms": 10000
+        }
+      }
+    ],
+    "assertions": [
+      {
+        "type": "visible",
+        "locator": {
+          "text": "京东"
+        },
+        "description": "确认看到“京东”"
+      }
+    ]
+  },
+  "warnings": [],
+  "planner": "deterministic-rules"
+}

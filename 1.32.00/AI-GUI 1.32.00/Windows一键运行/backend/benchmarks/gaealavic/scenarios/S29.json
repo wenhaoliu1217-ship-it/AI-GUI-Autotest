@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1",
+  "id": "S29",
+  "name": "强化学习配置与训练生命周期",
+  "category": "强化学习",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "管理员",
+  "prerequisites": [
+    {
+      "id": "S29-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "强化学习必填字段"
+    },
+    {
+      "id": "S29-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "固定想定模板"
+    },
+    {
+      "id": "S29-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "启动停止书面授权"
+    },
+    {
+      "id": "S29-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "训练状态机"
+    },
+    {
+      "id": "S29-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "结果下载格式"
+    },
+    {
+      "id": "S29-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "创建查询与清理接口"
+    }
+  ],
+  "goal": "强化学习配置与训练生命周期",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "创建 E2E_ 强化学习配置并关联固定想定",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "启动训练并等待训练中",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "停止训练或等待完成",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-4",
+      "businessAction": "查看并下载训练结果",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-5",
+      "businessAction": "删除 E2E_ 配置并验证清理",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "配置、想定和训练 ID 可追溯",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "训练状态时间线完整",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-3",
+      "businessFact": "结果文件哈希与格式正确",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-4",
+      "businessFact": "对象可逆序清理",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": true,
+    "order": "reverse_dependency",
+    "verification": "business_object_not_queryable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "cleanup"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "强化学习必填字段",
+    "固定想定模板",
+    "启动停止书面授权",
+    "训练状态机",
+    "结果下载格式",
+    "创建查询与清理接口"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

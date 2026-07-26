@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1",
+  "id": "S18",
+  "name": "GIS 导入入口与错误处理",
+  "category": "文件/地图",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "管理员",
+  "prerequisites": [
+    {
+      "id": "S18-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "合法与非法 GIS 样例"
+    },
+    {
+      "id": "S18-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "GIS schema"
+    },
+    {
+      "id": "S18-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "导入状态与清理接口"
+    }
+  ],
+  "goal": "GIS 导入入口与错误处理",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "导入登记 GIS 样例",
+      "stability": "C",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "导入非法 GIS 样例",
+      "stability": "C",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "合法样例产生可追溯对象",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "非法样例无残留",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": true,
+    "order": "reverse_dependency",
+    "verification": "business_object_not_queryable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "file_transfer",
+    "cleanup"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "合法与非法 GIS 样例",
+    "GIS schema",
+    "导入状态与清理接口"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

@@ -1,0 +1,17 @@
+{"timestamp": "2026-07-21T10:34:48.255754+00:00", "type": "run_started", "run_id": "20260721-183446-e2727205", "plan_name": "real adaptive container verification", "role": null, "mode": "agent"}
+{"timestamp": "2026-07-21T10:34:49.605871+00:00", "type": "trace_pixel_privacy_enabled", "screenshots_embedded": false}
+{"timestamp": "2026-07-21T10:34:49.835372+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/agent-observation-0.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T10:34:49.911431+00:00", "type": "model_decision", "index": 1, "model": "adaptive-replay-controller", "input_tokens": 0, "output_tokens": 0, "estimated_cost": 0.0, "decision": "action", "reason": "按审核后的固定计划执行非视觉步骤"}
+{"timestamp": "2026-07-21T10:34:49.914927+00:00", "type": "step_started", "index": 1, "action": "navigate", "target": "navigate -> /"}
+{"timestamp": "2026-07-21T10:34:50.049161+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-1-before.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T10:34:50.254389+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-1-after.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T10:34:50.308760+00:00", "type": "step_passed", "index": 1, "progress": "progress", "no_progress_count": 0}
+{"timestamp": "2026-07-21T10:34:50.311661+00:00", "type": "model_decision", "index": 2, "model": "adaptive-replay-controller", "input_tokens": 0, "output_tokens": 0, "estimated_cost": 0.0, "decision": "visual", "reason": "按审核计划重新定位视觉语义目标"}
+{"timestamp": "2026-07-21T10:34:50.420637+00:00", "type": "visual_fallback_suggested", "trigger_reason": "显式 adaptive 回放要求按当前截图重新定位", "screenshot": "screenshots/step-1-after.png", "model": "verification-vision", "target": "Canvas center", "x_ratio": 0.5, "y_ratio": 0.5, "confidence": 0.99, "action": "click", "expected_change": "Selected becomes visible"}
+{"timestamp": "2026-07-21T10:34:50.424142+00:00", "type": "step_started", "index": 2, "action": "visual_click", "target": "视觉定位并执行 click：Canvas center @ css=#map"}
+{"timestamp": "2026-07-21T10:34:50.571637+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-2-before.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T10:34:50.789513+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-2-after.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T10:34:50.835779+00:00", "type": "visual_action_verified", "index": 2, "expected_change": "Selected becomes visible", "verified": true, "before_screenshot": "screenshots/step-2-before.png", "after_screenshot": "screenshots/step-2-after.png"}
+{"timestamp": "2026-07-21T10:34:50.838743+00:00", "type": "step_passed", "index": 2, "progress": "progress", "no_progress_count": 0}
+{"timestamp": "2026-07-21T10:34:50.855746+00:00", "type": "model_decision", "index": 4, "model": "adaptive-replay-controller", "input_tokens": 0, "output_tokens": 0, "estimated_cost": 0.0, "decision": "complete", "reason": "已执行全部审核步骤，进入收尾断言"}
+{"timestamp": "2026-07-21T10:34:51.026811+00:00", "type": "run_finished", "status": "passed", "completion_reason": "agent_goal_completed", "duration_ms": 2775}

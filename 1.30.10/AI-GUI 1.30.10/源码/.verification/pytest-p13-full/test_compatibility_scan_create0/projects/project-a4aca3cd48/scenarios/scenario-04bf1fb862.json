@@ -1,0 +1,23 @@
+{
+  "id": "scenario-04bf1fb862",
+  "projectId": "project-a4aca3cd48",
+  "name": "历史应用 扫描示例",
+  "preconditions": [
+    "目标测试环境可访问",
+    "仅执行只读或低风险验证"
+  ],
+  "goal": "确认看到“历史应用”",
+  "testData": {},
+  "expectedResults": [
+    "确认看到“历史应用”"
+  ],
+  "forbiddenActions": [
+    "支付",
+    "删除数据",
+    "发布内容",
+    "发送邀请"
+  ],
+  "businessObjects": [],
+  "createdAt": "2026-07-21T20:11:08.416226+00:00",
+  "updatedAt": "2026-07-21T20:11:08.416226+00:00"
+}

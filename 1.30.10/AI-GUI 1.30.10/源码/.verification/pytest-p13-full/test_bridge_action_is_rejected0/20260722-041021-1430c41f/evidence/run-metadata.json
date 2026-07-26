@@ -1,0 +1,16 @@
+{
+  "runId": "20260722-041021-1430c41f",
+  "data": {
+    "runId": "20260722-041021-1430c41f",
+    "planName": "Bridge semantic click",
+    "status": "error",
+    "startedAt": "2026-07-22T04:10:21.087331+08:00",
+    "endedAt": "2026-07-22T04:10:23.149513+08:00",
+    "projectId": null,
+    "environmentId": null,
+    "accountId": null,
+    "accountRole": null,
+    "scenarioId": null,
+    "goalStatus": "incomplete"
+  }
+}

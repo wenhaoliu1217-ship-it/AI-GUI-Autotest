@@ -1,0 +1,16 @@
+{
+  "runId": "20260722-041100-787e4781",
+  "data": {
+    "runId": "20260722-041100-787e4781",
+    "planName": "Scoped",
+    "status": "passed",
+    "startedAt": "2026-07-22T04:11:00.639312+08:00",
+    "endedAt": "2026-07-22T04:11:02.835830+08:00",
+    "projectId": null,
+    "environmentId": null,
+    "accountId": null,
+    "accountRole": null,
+    "scenarioId": null,
+    "goalStatus": "achieved"
+  }
+}

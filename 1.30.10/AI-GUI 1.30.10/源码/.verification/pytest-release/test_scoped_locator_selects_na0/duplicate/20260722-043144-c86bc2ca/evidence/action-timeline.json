@@ -1,0 +1,160 @@
+{
+  "runId": "20260722-043144-c86bc2ca",
+  "data": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": null,
+      "target_summary": "navigate -> /",
+      "status": "passed",
+      "started_at": "2026-07-22T04:31:46.259457+08:00",
+      "ended_at": "2026-07-22T04:31:47.181758+08:00",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-1-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": false,
+        "passed": true,
+        "mode": "not_applicable"
+      },
+      "canvas_evidence": null,
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:31:46.680695+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64413/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [
+          "div | role=row | data-object-id=agent-1 | text=E2E_Alpha Delete",
+          "button | text=Delete",
+          "div | role=row | data-object-id=agent-2 | text=E2E_Beta Delete",
+          "button | text=Delete"
+        ],
+        "accessibility_summary": "- row \"E2E_Alpha Delete\":\n  - text: E2E_Alpha\n  - button \"Delete\"\n- row \"E2E_Beta Delete\":\n  - text: E2E_Beta\n  - button \"Delete\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 29,
+          "visible_element_count": 4,
+          "interactive_count": 2,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:31:47.181758+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    },
+    {
+      "index": 2,
+      "action": "click",
+      "description": null,
+      "target_summary": "click @ role=button[name=Delete]",
+      "status": "error",
+      "started_at": "2026-07-22T04:31:47.181758+08:00",
+      "ended_at": "2026-07-22T04:31:47.918320+08:00",
+      "error_message": "动作目标必须唯一，实际匹配 2 个：role=button[name=Delete]",
+      "failure_category": "unknown",
+      "screenshot": "screenshots/step-2-after-failure.png",
+      "execution_mode": "locator",
+      "locator_basis": "role=button[name=Delete]",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": true,
+        "passed": false,
+        "error": "动作目标必须唯一，实际匹配 2 个：role=button[name=Delete]"
+      },
+      "canvas_evidence": null,
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "http://127.0.0.1:64413/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [
+          "div | role=row | data-object-id=agent-1 | text=E2E_Alpha Delete",
+          "button | text=Delete",
+          "div | role=row | data-object-id=agent-2 | text=E2E_Beta Delete",
+          "button | text=Delete"
+        ],
+        "accessibility_summary": "- row \"E2E_Alpha Delete\":\n  - text: E2E_Alpha\n  - button \"Delete\"\n- row \"E2E_Beta Delete\":\n  - text: E2E_Beta\n  - button \"Delete\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 29,
+          "visible_element_count": 4,
+          "interactive_count": 2,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:31:47.536324+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64413/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after-failure.png",
+        "dom_summary": [
+          "div | role=row | data-object-id=agent-1 | text=E2E_Alpha Delete",
+          "button | text=Delete",
+          "div | role=row | data-object-id=agent-2 | text=E2E_Beta Delete",
+          "button | text=Delete"
+        ],
+        "accessibility_summary": "- row \"E2E_Alpha Delete\":\n  - text: E2E_Alpha\n  - button \"Delete\"\n- row \"E2E_Beta Delete\":\n  - text: E2E_Beta\n  - button \"Delete\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 29,
+          "visible_element_count": 4,
+          "interactive_count": 2,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:31:47.918320+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    }
+  ]
+}

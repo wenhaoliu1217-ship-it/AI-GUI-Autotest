@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "1",
+  "id": "S30",
+  "name": "三类帮助文档与工作流图片巡检",
+  "category": "文档",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "只读",
+  "prerequisites": [
+    {
+      "id": "S30-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "帮助模块页面地图"
+    },
+    {
+      "id": "S30-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "三个手册内容与选中态事实"
+    },
+    {
+      "id": "S30-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "文档版本事实"
+    },
+    {
+      "id": "S30-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "图片预览与局部滚动组件映射"
+    }
+  ],
+  "goal": "三类帮助文档与工作流图片巡检",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "进入帮助 /#/helpPage",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "切换使用手册并验证选中状态",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "切换产品手册并验证选中状态",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-4",
+      "businessAction": "切换技术手册并验证选中状态",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-5",
+      "businessAction": "比较三类手册内容差异",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-6",
+      "businessAction": "在文档局部容器滚动到底部",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-7",
+      "businessAction": "验证单个想定运行与大样本实验设计工作流图片",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "三类手册选中状态唯一且内容不同",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "帮助核心标题和版本可见",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-3",
+      "businessFact": "长文档局部滚动不带动固定区域",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-4",
+      "businessFact": "所有图片加载成功且无运行时错误",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": false,
+    "order": "reverse_dependency",
+    "verification": "not_applicable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "帮助模块页面地图",
+    "三个手册内容与选中态事实",
+    "文档版本事实",
+    "图片预览与局部滚动组件映射"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

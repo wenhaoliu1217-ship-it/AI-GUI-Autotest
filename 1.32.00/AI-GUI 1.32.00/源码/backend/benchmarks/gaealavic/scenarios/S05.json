@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "1",
+  "id": "S05",
+  "name": "账号菜单与系统能力巡检",
+  "category": "会话",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "普通测试",
+  "prerequisites": [
+    {
+      "id": "S05-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "账号菜单无文本按钮稳定定位"
+    },
+    {
+      "id": "S05-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "模式与图层状态可观察事实"
+    },
+    {
+      "id": "S05-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "退出确认规则"
+    }
+  ],
+  "goal": "账号菜单与系统能力巡检",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "打开账号菜单",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "切换标准模式并验证状态",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "切换开发者模式或验证权限提示",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-4",
+      "businessAction": "切换地图图层",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-5",
+      "businessAction": "切换卫星图层",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-6",
+      "businessAction": "查看运行或系统状态",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-7",
+      "businessAction": "读取脱敏版本信息",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-8",
+      "businessAction": "触发退出登录并取消确认",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "账号菜单项目与版本可见",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "模式和图层状态可识别",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-3",
+      "businessFact": "退出确认可见且取消后会话有效",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": false,
+    "order": "reverse_dependency",
+    "verification": "not_applicable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "账号菜单无文本按钮稳定定位",
+    "模式与图层状态可观察事实",
+    "退出确认规则"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

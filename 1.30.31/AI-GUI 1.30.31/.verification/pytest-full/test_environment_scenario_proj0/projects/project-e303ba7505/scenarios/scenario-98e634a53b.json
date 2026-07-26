@@ -1,0 +1,22 @@
+{
+  "id": "scenario-98e634a53b",
+  "projectId": "project-e303ba7505",
+  "name": "搜索商品",
+  "preconditions": [
+    "已登录测试环境"
+  ],
+  "goal": "搜索商品 A 并确认价格与库存",
+  "testData": {
+    "keyword": "A"
+  },
+  "expectedResults": [
+    "显示商品 A",
+    "价格与库存可见"
+  ],
+  "forbiddenActions": [
+    "支付"
+  ],
+  "commerceSteps": [],
+  "createdAt": "2026-07-23T03:32:20.605135+00:00",
+  "updatedAt": "2026-07-23T03:32:20.661670+00:00"
+}

@@ -1,0 +1,132 @@
+{
+  "runId": "20260722-043056-7becf36d",
+  "data": [
+    {
+      "stepId": "step-1",
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:30:58.088264+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:58393/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [
+          "button | text=Run"
+        ],
+        "accessibility_summary": "- button \"Run\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [
+          {
+            "kind": "element_obscured",
+            "severity": "High",
+            "confidence": "high",
+            "message": "交互控件中心点被其他元素遮挡，可能无法点击",
+            "target": "button | text=Run",
+            "details": {
+              "coveringElement": "div",
+              "x": 28,
+              "y": 21
+            }
+          }
+        ],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 3,
+          "visible_element_count": 2,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:30:58.366145+08:00"
+      }
+    },
+    {
+      "stepId": "step-2",
+      "before": {
+        "url": "http://127.0.0.1:58393/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [
+          "button | text=Run"
+        ],
+        "accessibility_summary": "- button \"Run\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [
+          {
+            "kind": "element_obscured",
+            "severity": "High",
+            "confidence": "high",
+            "message": "交互控件中心点被其他元素遮挡，可能无法点击",
+            "target": "button | text=Run",
+            "details": {
+              "coveringElement": "div",
+              "x": 28,
+              "y": 21
+            }
+          }
+        ],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 3,
+          "visible_element_count": 2,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:30:58.588966+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:58393/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after-failure.png",
+        "dom_summary": [
+          "button | text=Run"
+        ],
+        "accessibility_summary": "- button \"Run\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [
+          {
+            "kind": "element_obscured",
+            "severity": "High",
+            "confidence": "high",
+            "message": "交互控件中心点被其他元素遮挡，可能无法点击",
+            "target": "button | text=Run",
+            "details": {
+              "coveringElement": "div",
+              "x": 28,
+              "y": 21
+            }
+          }
+        ],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 3,
+          "visible_element_count": 2,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:30:58.943999+08:00"
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "version": "1",
+  "projectId": "project-f7350821bc",
+  "generatedAt": "2026-07-22T00:00:00Z",
+  "scanMode": "low_risk",
+  "pages": [
+    {
+      "id": "page-1",
+      "url": "https://example.com",
+      "title": "历史应用",
+      "probes": []
+    }
+  ]
+}

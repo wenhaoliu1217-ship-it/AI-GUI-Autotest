@@ -1,0 +1,8 @@
+{
+  "run_id": "run-abandoned",
+  "status": "system_error",
+  "started_at": "2026-07-23T11:45:14.654985+08:00",
+  "ended_at": "2026-07-23T11:45:14.682107+08:00",
+  "completion_reason": "runner_process_interrupted",
+  "system_error": "执行服务重启或后台运行线程异常退出"
+}

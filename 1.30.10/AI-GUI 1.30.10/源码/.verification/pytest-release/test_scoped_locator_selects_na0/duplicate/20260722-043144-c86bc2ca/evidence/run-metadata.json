@@ -1,0 +1,16 @@
+{
+  "runId": "20260722-043144-c86bc2ca",
+  "data": {
+    "runId": "20260722-043144-c86bc2ca",
+    "planName": "Duplicate",
+    "status": "error",
+    "startedAt": "2026-07-22T04:31:44.795479+08:00",
+    "endedAt": "2026-07-22T04:31:48.374436+08:00",
+    "projectId": null,
+    "environmentId": null,
+    "accountId": null,
+    "accountRole": null,
+    "scenarioId": null,
+    "goalStatus": "incomplete"
+  }
+}

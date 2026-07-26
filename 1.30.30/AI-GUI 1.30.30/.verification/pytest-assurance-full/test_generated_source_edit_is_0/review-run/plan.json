@@ -1,0 +1,1 @@
+{"name": "审核回归路径", "base_url": "https://example.com", "steps": [{"action": "navigate", "target": "/", "description": "打开首页"}, {"action": "click", "locator": {"role": "button", "name": "登录"}, "description": "点击登录"}], "assertions": [{"type": "url_contains", "expected": "/", "description": "保持在站点内"}]}

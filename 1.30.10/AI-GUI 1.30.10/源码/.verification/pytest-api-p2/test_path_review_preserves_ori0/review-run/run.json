@@ -1,0 +1,117 @@
+{
+  "run_id": "review-run",
+  "plan_name": "审核回归路径",
+  "base_url_summary": "https://example.com",
+  "status": "passed",
+  "started_at": "2026-07-20T00:00:00+00:00",
+  "ended_at": "2026-07-20T00:00:01+00:00",
+  "steps": [],
+  "assertions": [],
+  "reproduction_steps": [],
+  "cause_hints": [],
+  "findings": [
+    {
+      "id": "finding-1",
+      "title": "原问题",
+      "category": "expectation_failed",
+      "severity": "Medium",
+      "confidence": "medium",
+      "actual_result": "实际",
+      "expected_result": "原预期",
+      "facts": [
+        "事实"
+      ],
+      "inference": "推断",
+      "evidence": [],
+      "reproduction_steps": [],
+      "review_status": "pending_review",
+      "review_history": []
+    }
+  ],
+  "generated_test": {
+    "language": "typescript",
+    "framework_version": "playwright",
+    "source_path": "generated-test.spec.ts",
+    "stability_level": "A",
+    "supported_replay_modes": [
+      "stable"
+    ],
+    "ci_eligible": true,
+    "ci_recommendation": "可作为 CI 候选",
+    "source": "import { test, expect } from '@playwright/test';\n\ntest(\"审核回归路径\", async ({ page }, testInfo) => {\n  await test.step(\"打开审核后的首页\", async () => {\n    await page.goto(\"https://example.com/\");\n  });\n  await expect(page).toHaveURL(new RegExp(\"/\"));\n});\n",
+    "manual_steps": [],
+    "source_revision": 1,
+    "source_review_history": []
+  },
+  "stability_level": "A",
+  "path_review_history": [
+    {
+      "timestamp": "2026-07-21T20:21:02.764423+00:00",
+      "actor": "local-user",
+      "changes": [
+        {
+          "sourceIndex": 1,
+          "action": "edited",
+          "before": {
+            "action": "navigate",
+            "target": "/",
+            "description": "打开首页",
+            "execution_mode": "locator",
+            "stability_level": "A",
+            "stability_reason": "确定性 Playwright 动作",
+            "visual_points": [],
+            "zoom_delta": -600,
+            "gesture_finish": "double_click",
+            "computer_use_triggered": false,
+            "scroll_delta_y": 600,
+            "expected_file_validity": "valid",
+            "expected_residual_count": 0,
+            "cleanup_required": false
+          },
+          "after": {
+            "action": "navigate",
+            "target": "/",
+            "description": "打开审核后的首页",
+            "execution_mode": "locator",
+            "stability_level": "A",
+            "stability_reason": "确定性 Playwright 动作",
+            "visual_points": [],
+            "zoom_delta": -600,
+            "gesture_finish": "double_click",
+            "computer_use_triggered": false,
+            "scroll_delta_y": 600,
+            "expected_file_validity": "valid",
+            "expected_residual_count": 0,
+            "cleanup_required": false
+          }
+        },
+        {
+          "sourceIndex": 2,
+          "action": "removed",
+          "before": {
+            "action": "click",
+            "locator": {
+              "role": "button",
+              "name": "登录"
+            },
+            "description": "点击登录",
+            "execution_mode": "locator",
+            "stability_level": "A",
+            "stability_reason": "确定性 Playwright 动作",
+            "visual_points": [],
+            "zoom_delta": -600,
+            "gesture_finish": "double_click",
+            "computer_use_triggered": false,
+            "scroll_delta_y": 600,
+            "expected_file_validity": "valid",
+            "expected_residual_count": 0,
+            "cleanup_required": false
+          }
+        }
+      ],
+      "retainedSourceIndexes": [
+        1
+      ]
+    }
+  ]
+}

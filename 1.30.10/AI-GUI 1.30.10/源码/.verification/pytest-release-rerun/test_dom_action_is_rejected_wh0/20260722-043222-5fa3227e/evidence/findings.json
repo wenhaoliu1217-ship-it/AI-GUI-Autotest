@@ -1,0 +1,91 @@
+{
+  "runId": "20260722-043222-5fa3227e",
+  "data": [
+    {
+      "id": "finding-355a46c00e",
+      "title": "步骤 1 检测到交互控件中心点被其他元素遮挡，可能无法点击",
+      "category": "element_obscured",
+      "severity": "High",
+      "confidence": "high",
+      "actual_result": "交互控件中心点被其他元素遮挡，可能无法点击",
+      "expected_result": "页面关键内容和交互控件完整可见且可操作",
+      "facts": [
+        "交互控件中心点被其他元素遮挡，可能无法点击",
+        "目标：button | text=Run"
+      ],
+      "inference": "该结论来自浏览器布局与命中测试信号，仍需结合业务状态人工确认。",
+      "evidence": [
+        "screenshots/step-1-before.png",
+        "screenshots/step-1-after.png"
+      ],
+      "evidence_timeline": [
+        {
+          "phase": "before_action",
+          "timestamp": "2026-07-22T04:32:23.803112+08:00",
+          "screenshot": "screenshots/step-1-before.png",
+          "facts": [
+            "页面：无标题 · about:blank"
+          ]
+        },
+        {
+          "phase": "after_action",
+          "timestamp": "2026-07-22T04:32:24.090295+08:00",
+          "screenshot": "screenshots/step-1-after.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:52753/",
+            "交互控件中心点被其他元素遮挡，可能无法点击",
+            "目标：button | text=Run"
+          ]
+        }
+      ],
+      "reproduction_steps": [
+        "navigate -> /"
+      ],
+      "review_status": "pending_review",
+      "review_history": []
+    },
+    {
+      "id": "finding-14db2d0af4",
+      "title": "步骤 2 未完成：click",
+      "category": "locator",
+      "severity": "Medium",
+      "confidence": "medium",
+      "actual_result": "动作前稳定性检查失败：unoccluded",
+      "expected_result": "动作成功并进入可验证的下一状态",
+      "facts": [
+        "步骤 2 状态为 error",
+        "动作前稳定性检查失败：unoccluded"
+      ],
+      "inference": "可能是产品、环境、测试数据、定位或时序问题，需结合证据人工确认。",
+      "evidence": [
+        "screenshots/step-2-before.png",
+        "screenshots/step-2-after-failure.png"
+      ],
+      "evidence_timeline": [
+        {
+          "phase": "before_action",
+          "timestamp": "2026-07-22T04:32:24.297933+08:00",
+          "screenshot": "screenshots/step-2-before.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:52753/"
+          ]
+        },
+        {
+          "phase": "after_action",
+          "timestamp": "2026-07-22T04:32:24.610497+08:00",
+          "screenshot": "screenshots/step-2-after-failure.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:52753/",
+            "动作前稳定性检查失败：unoccluded"
+          ]
+        }
+      ],
+      "reproduction_steps": [
+        "navigate -> /",
+        "click @ css=#target"
+      ],
+      "review_status": "pending_review",
+      "review_history": []
+    }
+  ]
+}

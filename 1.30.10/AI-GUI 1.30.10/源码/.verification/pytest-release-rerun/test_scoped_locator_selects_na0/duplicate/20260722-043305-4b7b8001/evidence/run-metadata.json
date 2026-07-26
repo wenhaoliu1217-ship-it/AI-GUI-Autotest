@@ -1,0 +1,16 @@
+{
+  "runId": "20260722-043305-4b7b8001",
+  "data": {
+    "runId": "20260722-043305-4b7b8001",
+    "planName": "Duplicate",
+    "status": "error",
+    "startedAt": "2026-07-22T04:33:05.329926+08:00",
+    "endedAt": "2026-07-22T04:33:07.647988+08:00",
+    "projectId": null,
+    "environmentId": null,
+    "accountId": null,
+    "accountRole": null,
+    "scenarioId": null,
+    "goalStatus": "incomplete"
+  }
+}

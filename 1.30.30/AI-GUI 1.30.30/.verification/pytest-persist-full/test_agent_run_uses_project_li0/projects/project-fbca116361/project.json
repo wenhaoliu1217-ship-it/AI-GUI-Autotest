@@ -1,0 +1,44 @@
+{
+  "id": "project-fbca116361",
+  "name": "Agent 项目",
+  "baseUrl": "https://example.com",
+  "allowedHosts": [
+    "example.com"
+  ],
+  "forbiddenActions": [
+    "发布内容"
+  ],
+  "allowPrivateNetwork": false,
+  "businessContext": {
+    "description": "",
+    "terminology": {
+      "发布单": "待发布的内容对象"
+    },
+    "objectTypes": [],
+    "stateModels": {},
+    "exampleGoals": [],
+    "operatingBoundaries": [
+      "信息不足时先澄清"
+    ],
+    "allowedActions": [],
+    "bridgeCapabilities": [],
+    "bridgeSemanticTargets": {}
+  },
+  "commerceProfile": {
+    "enabled": false,
+    "environment": "production_readonly",
+    "accountRef": null,
+    "productionReversibleWriteAuthorized": false,
+    "sandboxDriver": false,
+    "e2eResourcePrefix": "E2E_",
+    "piiMaskSelectors": []
+  },
+  "onboardingLevel": "L0",
+  "limits": {
+    "maxSteps": 7,
+    "timeoutSeconds": 90,
+    "maxModelCalls": 4
+  },
+  "createdAt": "2026-07-23T04:05:41.601540+00:00",
+  "updatedAt": "2026-07-23T04:05:41.601540+00:00"
+}

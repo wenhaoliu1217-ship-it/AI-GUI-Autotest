@@ -1,0 +1,496 @@
+{
+  "run_id": "20260722-043224-604db301",
+  "plan_name": "Bridge semantic click",
+  "role": null,
+  "base_url_summary": "http://127.0.0.1:52757",
+  "status": "error",
+  "started_at": "2026-07-22T04:32:24.871788+08:00",
+  "ended_at": "2026-07-22T04:32:27.378516+08:00",
+  "steps": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": null,
+      "target_summary": "navigate -> /",
+      "status": "passed",
+      "started_at": "2026-07-22T04:32:25.946931+08:00",
+      "ended_at": "2026-07-22T04:32:26.732913+08:00",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-1-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": false,
+        "passed": true,
+        "mode": "not_applicable"
+      },
+      "canvas_evidence": null,
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:32:26.347562+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:52757/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:32:26.732913+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    },
+    {
+      "index": 2,
+      "action": "bridge_click",
+      "description": "Select entity Alpha",
+      "target_summary": "Select entity Alpha @ ",
+      "status": "error",
+      "started_at": "2026-07-22T04:32:26.733912+08:00",
+      "ended_at": "2026-07-22T04:32:27.187226+08:00",
+      "error_message": "Page.evaluate: Error: Bridge 缺少最小契约方法：waitForSceneReady\n    at eval (eval at evaluate (:234:30), <anonymous>:5:41)\n    at UtilityScript.evaluate (<anonymous>:241:19)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+      "failure_category": "locator",
+      "screenshot": "screenshots/step-2-after-failure.png",
+      "execution_mode": "app_bridge",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": true,
+        "passed": false,
+        "error": "Page.evaluate: Error: Bridge 缺少最小契约方法：waitForSceneReady\n    at eval (eval at evaluate (:234:30), <anonymous>:5:41)\n    at UtilityScript.evaluate (<anonymous>:241:19)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+      },
+      "canvas_evidence": {
+        "mode": "app_bridge",
+        "action": "bridge_click",
+        "semanticTarget": "entity.alpha",
+        "beforeScreenshot": "screenshots/step-2-before.png",
+        "afterScreenshot": "screenshots/step-2-after-failure.png",
+        "traceArtifact": "trace.zip",
+        "collectionStatus": "failed",
+        "failurePhase": "stability",
+        "error": "Page.evaluate: Error: Bridge 缺少最小契约方法：waitForSceneReady\n    at eval (eval at evaluate (:234:30), <anonymous>:5:41)\n    at UtilityScript.evaluate (<anonymous>:241:19)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+      },
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "http://127.0.0.1:52757/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:32:26.952512+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:52757/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after-failure.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:32:27.186230+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    }
+  ],
+  "assertions": [],
+  "failed_step_index": 2,
+  "reproduction_steps": [
+    "navigate -> /",
+    "Select entity Alpha @ "
+  ],
+  "cause_hints": [
+    {
+      "heuristic": true,
+      "category": "locator",
+      "message": "页面元素可能不存在、尚未加载或定位信息已变化，请检查页面和稳定定位属性。",
+      "evidence": [
+        "步骤/断言 2",
+        "Page.evaluate: Error: Bridge 缺少最小契约方法：waitForSceneReady\n    at eval (eval at evaluate (:234:30), <anonymous>:5:41)\n    at UtilityScript.evaluate (<anonymous>:241:19)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "findings": [
+    {
+      "id": "finding-342fb69d9e",
+      "title": "步骤 2 Bridge 契约不可用",
+      "category": "bridge_contract_error",
+      "severity": "High",
+      "confidence": "high",
+      "actual_result": "Page.evaluate: Error: Bridge 缺少最小契约方法：waitForSceneReady\n    at eval (eval at evaluate (:234:30), <anonymous>:5:41)\n    at UtilityScript.evaluate (<anonymous>:241:19)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+      "expected_result": "Bridge v1 五项最小契约可用并返回有效结构",
+      "facts": [
+        "collectionStatus=\"failed\"",
+        "failurePhase=\"stability\"",
+        "semanticTarget=\"entity.alpha\"",
+        "error=\"Page.evaluate: Error: Bridge 缺少最小契约方法：waitForSceneReady\\n    at eval (eval at evaluate (:234:30), <anonymous>:5:41)\\n    at UtilityScript.evaluate (<anonymous>:241:19)\\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\""
+      ],
+      "inference": "需由接入方核对 Bridge 是否注入、版本及五项最小契约实现。",
+      "evidence": [
+        "screenshots/step-2-before.png",
+        "screenshots/step-2-after-failure.png"
+      ],
+      "evidence_timeline": [
+        {
+          "phase": "before_action",
+          "timestamp": "2026-07-22T04:32:26.952512+08:00",
+          "screenshot": "screenshots/step-2-before.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:52757/"
+          ]
+        },
+        {
+          "phase": "after_action",
+          "timestamp": "2026-07-22T04:32:27.186230+08:00",
+          "screenshot": "screenshots/step-2-after-failure.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:52757/",
+            "collectionStatus=\"failed\"",
+            "failurePhase=\"stability\"",
+            "error=\"Page.evaluate: Error: Bridge 缺少最小契约方法：waitForSceneReady\\n    at eval (eval at evaluate (:234:30), <anonymous>:5:41)\\n    at UtilityScript.evaluate (<anonymous>:241:19)\\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\""
+          ]
+        }
+      ],
+      "reproduction_steps": [
+        "navigate -> /",
+        "Select entity Alpha @ "
+      ],
+      "review_status": "pending_review",
+      "review_history": []
+    }
+  ],
+  "generated_test": {
+    "language": "typescript",
+    "framework_version": "playwright",
+    "source_path": "generated-test.spec.ts",
+    "stability_level": "A",
+    "supported_replay_modes": [
+      "stable"
+    ],
+    "ci_eligible": true,
+    "ci_recommendation": "可作为 CI 候选",
+    "source": "import { test, expect } from '@playwright/test';\n\ntest(\"Bridge semantic click\", async ({ page }, testInfo) => {\n  await test.step(\"步骤 1\", async () => {\n    await page.goto(\"http://127.0.0.1:52757/\");\n  });\n  await test.step(\"Select entity Alpha\", async () => {\n    const bridgeGlobalName = process.env.APP_BRIDGE_GLOBAL || '__WEB_AI_TEST__';\n    const bridgeResult = await page.evaluate(async (args) => {\n      const { id, globalName } = args;\n      const bridge = (window as any)[globalName];\n      const required = ['getSceneState', 'listVisibleTargets', 'getTargetScreenPosition', 'getSelectedTargetId', 'waitForSceneReady'];\n      if (!bridge || String(bridge.version || '') !== '1' || required.some((name) => typeof bridge[name] !== 'function')) throw new Error('Canvas App Bridge v1 contract is unavailable');\n      await bridge.waitForSceneReady();\n      const before = await bridge.getSceneState();\n      const targets = await bridge.listVisibleTargets();\n      if (!targets.some((target) => (target.id || target.targetId) === id)) throw new Error(`Bridge target is not visible: ${id}`);\n      const position = await bridge.getTargetScreenPosition(id);\n      return { position, before };\n    }, { id: \"entity.alpha\", globalName: bridgeGlobalName });\n    const bridgePosition = bridgeResult.position;\n    await page.mouse.click(bridgePosition.x, bridgePosition.y);\n    const bridgeVerification = await page.evaluate(async (args) => {\n      const bridge = (window as any)[args.globalName];\n      await bridge.waitForSceneReady();\n      return { selectedTargetId: await bridge.getSelectedTargetId(), after: await bridge.getSceneState() };\n    }, { id: \"entity.alpha\", globalName: bridgeGlobalName });\n    if (bridgeVerification.selectedTargetId !== \"entity.alpha\") throw new Error('Bridge semantic selection verification failed');\n  });\n});\n",
+    "manual_steps": [],
+    "source_revision": 1,
+    "source_review_history": []
+  },
+  "replay_mode": "exploration",
+  "onboarding_level": null,
+  "stability_level": "A",
+  "completion_reason": "execution_failed",
+  "project_id": null,
+  "account_id": null,
+  "account_role": null,
+  "environment_id": null,
+  "environment_updated_at": null,
+  "artifact_retention_days": 30,
+  "scenario_id": null,
+  "scenario_updated_at": null,
+  "scenario_goal": "Bridge semantic click",
+  "goal_status": "incomplete",
+  "goal_summary": "场景未完整执行；无收尾断言；结束原因 execution_failed",
+  "model_calls": 0,
+  "estimated_cost": null,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "model_call_records": [],
+  "confirmation_history": [],
+  "runner_isolation": null,
+  "websocket_timeline": [],
+  "cleanup_report": null,
+  "business_context_snapshot": null,
+  "project_snapshot": null,
+  "environment_snapshot": null,
+  "app_map_snapshot": null,
+  "evidence_manifest": {
+    "schemaVersion": "1",
+    "runId": "20260722-043224-604db301",
+    "items": [
+      {
+        "id": "run_metadata",
+        "label": "运行元数据",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/run-metadata.json"
+        ],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "plan",
+        "label": "受约束执行计划",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "plan.json"
+        ],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "project_environment",
+        "label": "脱敏项目／环境与业务上下文",
+        "status": "not_applicable",
+        "reason": "未关联项目",
+        "artifacts": [
+          "evidence/project-environment.json"
+        ],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "app_map",
+        "label": "兼容性扫描与页面地图",
+        "status": "not_applicable",
+        "reason": "未关联项目",
+        "artifacts": [],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "actions",
+        "label": "动作时间线",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/action-timeline.json"
+        ],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "observations",
+        "label": "DOM／ARIA／console／network 观察",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/browser-observations.json"
+        ],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "screenshots",
+        "label": "步骤截图",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "screenshots/step-1-after.png",
+          "screenshots/step-2-after-failure.png"
+        ],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "trace",
+        "label": "Playwright Trace",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "trace.zip"
+        ],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "websocket",
+        "label": "WebSocket 时间线",
+        "status": "not_applicable",
+        "reason": "运行未建立 WebSocket",
+        "artifacts": [],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "model_calls",
+        "label": "模型调用记录",
+        "status": "not_applicable",
+        "reason": "固定计划未调用模型",
+        "artifacts": [],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "file_transfer",
+        "label": "上传／下载证据",
+        "status": "not_applicable",
+        "reason": "计划无上传／下载",
+        "artifacts": [],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "canvas",
+        "label": "Canvas／Bridge 语义证据",
+        "status": "present",
+        "reason": "",
+        "artifacts": [],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "findings",
+        "label": "Finding 与证据时间线",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/findings.json"
+        ],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "generated_test",
+        "label": "生成的 Playwright 测试",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "generated-test.spec.ts"
+        ],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "confirmations",
+        "label": "危险动作确认历史",
+        "status": "not_applicable",
+        "reason": "运行无确认动作",
+        "artifacts": [],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "cleanup",
+        "label": "业务对象清理报告",
+        "status": "not_applicable",
+        "reason": "场景未声明业务对象清理",
+        "artifacts": [],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "review_history",
+        "label": "Finding／路径审核历史",
+        "status": "not_applicable",
+        "reason": "运行结束后人工审核阶段生成",
+        "artifacts": [],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "acceptance_summary",
+        "label": "批次验收摘要",
+        "status": "not_applicable",
+        "reason": "仅批量验收任务适用",
+        "artifacts": [],
+        "runId": "20260722-043224-604db301",
+        "stepIds": [],
+        "businessIds": []
+      }
+    ],
+    "applicableCount": 9,
+    "presentCount": 9,
+    "missingCount": 0,
+    "completeness": 1.0
+  },
+  "evidence_completeness": 1.0,
+  "evidence_manifest_path": "evidence/evidence-manifest.json"
+}

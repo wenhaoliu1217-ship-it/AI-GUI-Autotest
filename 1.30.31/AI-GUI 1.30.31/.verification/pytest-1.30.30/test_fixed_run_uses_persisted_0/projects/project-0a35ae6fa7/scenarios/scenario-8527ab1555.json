@@ -1,0 +1,20 @@
+{
+  "id": "scenario-8527ab1555",
+  "projectId": "project-0a35ae6fa7",
+  "name": "商品检索",
+  "preconditions": [
+    "已登录"
+  ],
+  "goal": "查找商品 A",
+  "testData": {
+    "keyword": "A"
+  },
+  "expectedResults": [
+    "商品 A 可见"
+  ],
+  "forbiddenActions": [
+    "支付"
+  ],
+  "createdAt": "2026-07-23T02:50:28.368619+00:00",
+  "updatedAt": "2026-07-23T02:50:28.368619+00:00"
+}

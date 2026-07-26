@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1",
+  "id": "S02",
+  "name": "登录失败校验",
+  "category": "登录负向",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "普通测试",
+  "prerequisites": [
+    {
+      "id": "S02-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "目标地址连通性与验收网络窗口"
+    },
+    {
+      "id": "S02-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "租户号与负向账号数据"
+    },
+    {
+      "id": "S02-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "登录失败提示结构"
+    }
+  ],
+  "goal": "登录失败校验",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "使用固定错误凭据提交登录",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "显示脱敏错误提示",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "不创建有效会话",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": false,
+    "order": "reverse_dependency",
+    "verification": "not_applicable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "目标地址连通性与验收网络窗口",
+    "租户号与负向账号数据",
+    "登录失败提示结构"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

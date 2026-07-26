@@ -1,0 +1,69 @@
+{
+  "sourceIndexes": [
+    1
+  ],
+  "history": [
+    {
+      "timestamp": "2026-07-23T03:45:11.714896+00:00",
+      "actor": "local-user",
+      "changes": [
+        {
+          "sourceIndex": 1,
+          "action": "edited",
+          "before": {
+            "action": "navigate",
+            "target": "/",
+            "description": "打开首页",
+            "execution_mode": "locator",
+            "stability_level": "A",
+            "stability_reason": "确定性 Playwright 动作",
+            "computer_use_triggered": false,
+            "scroll_delta_y": 600,
+            "browser_target": {
+              "page": "current",
+              "wait_timeout_ms": 10000
+            }
+          },
+          "after": {
+            "action": "navigate",
+            "target": "/",
+            "description": "打开审核后的首页",
+            "execution_mode": "locator",
+            "stability_level": "A",
+            "stability_reason": "确定性 Playwright 动作",
+            "computer_use_triggered": false,
+            "scroll_delta_y": 600,
+            "browser_target": {
+              "page": "current",
+              "wait_timeout_ms": 10000
+            }
+          }
+        },
+        {
+          "sourceIndex": 2,
+          "action": "removed",
+          "before": {
+            "action": "click",
+            "locator": {
+              "role": "button",
+              "name": "登录"
+            },
+            "description": "点击登录",
+            "execution_mode": "locator",
+            "stability_level": "A",
+            "stability_reason": "确定性 Playwright 动作",
+            "computer_use_triggered": false,
+            "scroll_delta_y": 600,
+            "browser_target": {
+              "page": "current",
+              "wait_timeout_ms": 10000
+            }
+          }
+        }
+      ],
+      "retainedSourceIndexes": [
+        1
+      ]
+    }
+  ]
+}

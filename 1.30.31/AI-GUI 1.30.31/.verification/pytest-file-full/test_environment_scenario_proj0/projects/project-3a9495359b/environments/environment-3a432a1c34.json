@@ -1,0 +1,32 @@
+{
+  "id": "environment-3a432a1c34",
+  "projectId": "project-3a9495359b",
+  "name": "预发布 V2",
+  "variables": {
+    "TENANT": "qa",
+    "TEST_BASE_URL": "https://example.com"
+  },
+  "secretRefs": {
+    "PASSWORD": "QA_PASSWORD"
+  },
+  "ignoreRules": [
+    "**/analytics/**"
+  ],
+  "screenshotMaskSelectors": [
+    ".customer-name",
+    "[data-private=true]"
+  ],
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "deviceScaleFactor": 1.25,
+  "appBridge": {
+    "enabled": true,
+    "globalName": "__WEB_AI_TEST__",
+    "adapter": "cesium"
+  },
+  "artifactRetentionDays": 14,
+  "createdAt": "2026-07-23T04:24:55.594604+00:00",
+  "updatedAt": "2026-07-23T04:24:55.629758+00:00"
+}

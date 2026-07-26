@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>测试报告 - Duplicate</title>
+<style>
+  body { font-family: "Segoe UI", system-ui, sans-serif; margin: 2rem; color: #1f2328; }
+  h1 { font-size: 1.4rem; }
+  .summary { background: #f6f8fa; padding: 1rem; border-radius: 8px; }
+  .summary .status { font-weight: 700; }
+  .status.passed { color: #1a7f37; }
+  .status.failed, .status.error { color: #cf222e; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #d0d7de; padding: .4rem .6rem; text-align: left; font-size: .9rem; }
+  th { background: #f6f8fa; }
+  tr.failed, tr.error { background: #fff0f0; }
+  tr.passed { background: #f0fff4; }
+  tr.skipped { color: #999; }
+  .hints li { margin-bottom: .6rem; }
+  .hints .cat { font-weight: 700; color: #9a6700; }
+  .hints .conf, .hints .evidence { font-size: .8rem; color: #57606a; }
+  .finding { border: 1px solid #d0d7de; padding: .8rem 1rem; margin: .8rem 0; border-radius: 6px; }
+  .finding h3 { margin-top: 0; }
+  small { color: #57606a; font-weight: 400; }
+</style></head>
+<body>
+  <h1>测试运行报告：Duplicate</h1>
+  <div class="summary">
+    <div>运行 ID：<code>20260722-043144-c86bc2ca</code></div>
+    <div>总体状态：<span class="status error">错误</span></div>
+    <div>基础地址：http://127.0.0.1:64413</div>
+    <div>耗时：3578 ms ｜ 退出码：1</div>
+    
+  </div>
+  <h2>证据完整度</h2><p><strong>100.0%</strong> · <a href='evidence/evidence-manifest.json'>查看机器可读清单</a></p><ul><li>无</li></ul>
+  <h2>步骤</h2>
+  <table><thead><tr><th>#</th><th>动作</th><th>目标</th><th>状态</th>
+  <th>耗时(ms)</th><th>说明</th><th>截图</th></tr></thead>
+  <tbody><tr class='passed'><td>1</td><td>navigate</td><td>navigate -&gt; /</td><td>通过</td><td>922</td><td></td><td><a href='screenshots/step-1-after.png'>截图</a></td></tr>
+<tr class='error'><td>2</td><td>click</td><td>click @ role=button[name=Delete]</td><td>错误</td><td>736</td><td>动作目标必须唯一，实际匹配 2 个：role=button[name=Delete]</td><td><a href='screenshots/step-2-after-failure.png'>截图</a></td></tr></tbody></table>
+  
+  
+  
+  
+  
+  
+  
+  <h2>失败信息</h2><p>失败步骤：第 2 步</p><p>复现步骤：</p><ol><li>navigate -&gt; /</li><li>click @ role=button[name=Delete]</li></ol>
+  <h2>可能原因 <small>（启发式提示，非确定性诊断）</small></h2><ul class='hints'><li><span class='cat'>[unknown]</span> 发生未分类异常，请结合错误消息、截图和 trace 人工复核。<div class='conf'>置信度：low（启发式）</div><div class='evidence'>证据：步骤/断言 2；动作目标必须唯一，实际匹配 2 个：role=button[name=Delete]</div></li></ul>
+  <h2>结构化问题 <small>（待人工审核）</small></h2><article class='finding'><h3>步骤 2 未完成：click</h3><p>unknown · Medium · 置信度 medium</p><p><strong>实际：</strong>动作目标必须唯一，实际匹配 2 个：role=button[name=Delete]</p><p><strong>预期：</strong>动作成功并进入可验证的下一状态</p><ul><li>步骤 2 状态为 error</li><li>动作目标必须唯一，实际匹配 2 个：role=button[name=Delete]</li></ul><h4>证据时间线</h4><ol><li><strong>before_action</strong> · 2026-07-22T04:31:47.536324+08:00 <a href='screenshots/step-2-before.png'>截图</a><ul><li>页面：无标题 · http://127.0.0.1:64413/</li></ul></li><li><strong>after_action</strong> · 2026-07-22T04:31:47.918320+08:00 <a href='screenshots/step-2-after-failure.png'>截图</a><ul><li>页面：无标题 · http://127.0.0.1:64413/</li><li>动作目标必须唯一，实际匹配 2 个：role=button[name=Delete]</li></ul></li></ol></article>
+  
+</body></html>

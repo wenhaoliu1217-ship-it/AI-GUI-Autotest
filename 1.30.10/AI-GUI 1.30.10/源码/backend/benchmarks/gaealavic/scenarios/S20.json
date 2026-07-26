@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "1",
+  "id": "S20",
+  "name": "高程数据上传合法 3601 HGT",
+  "category": "HGT",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "管理员",
+  "prerequisites": [
+    {
+      "id": "S20-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "合法 3601 HGT 样例"
+    },
+    {
+      "id": "S20-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "标准经纬度命名与精确字节规则"
+    },
+    {
+      "id": "S20-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "Cesium Viewer hooks"
+    },
+    {
+      "id": "S20-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "状态与清理接口"
+    }
+  ],
+  "goal": "高程数据上传合法 3601 HGT",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "上传登记的 3601x3601 HGT",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "验证 Cesium 区域预览",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "等待处理终态",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "采样规格、文件名和哈希正确",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "Cesium 覆盖区域与瓦片加载可观察",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-3",
+      "businessFact": "高程对象可查询",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": true,
+    "order": "reverse_dependency",
+    "verification": "business_object_not_queryable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "file_transfer",
+    "cleanup"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "合法 3601 HGT 样例",
+    "标准经纬度命名与精确字节规则",
+    "Cesium Viewer hooks",
+    "状态与清理接口"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

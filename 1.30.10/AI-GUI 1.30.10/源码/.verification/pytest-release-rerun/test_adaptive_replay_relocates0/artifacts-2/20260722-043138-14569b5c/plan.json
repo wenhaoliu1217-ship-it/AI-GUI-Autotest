@@ -1,0 +1,53 @@
+{
+  "name": "Canvas 自适应回放",
+  "base_url": "http://127.0.0.1:64387",
+  "preconditions": [],
+  "steps": [
+    {
+      "action": "navigate",
+      "target": "/",
+      "execution_mode": "locator",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "visual_points": [],
+      "zoom_delta": -600,
+      "gesture_finish": "double_click",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600,
+      "expected_file_validity": "valid",
+      "expected_residual_count": 0,
+      "cleanup_required": false
+    },
+    {
+      "action": "visual_click",
+      "locator": {
+        "css": "#map"
+      },
+      "execution_mode": "visual",
+      "stability_level": "C",
+      "stability_reason": "确定性 Playwright 动作",
+      "visual_target": "Canvas 目标",
+      "relative_position": {
+        "x_ratio": 0.1,
+        "y_ratio": 0.5
+      },
+      "visual_points": [],
+      "zoom_delta": -600,
+      "gesture_finish": "double_click",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600,
+      "expected_file_validity": "valid",
+      "expected_residual_count": 0,
+      "cleanup_required": false
+    }
+  ],
+  "assertions": [
+    {
+      "type": "visible",
+      "locator": {
+        "text": "Target selected"
+      },
+      "tolerance": 0.0001
+    }
+  ]
+}

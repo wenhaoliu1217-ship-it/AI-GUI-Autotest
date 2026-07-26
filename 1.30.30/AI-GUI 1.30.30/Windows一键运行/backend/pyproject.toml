@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gui-agent"
+version = "0.1.0"
+description = "MATC-8.17 可接入项目的 AI GUI 自动化测试框架（企业 MVP）"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic==2.9.2",
+    "PyYAML==6.0.2",
+    "playwright==1.49.1",
+    "fastapi==0.115.6",
+    "uvicorn==0.34.0",
+    "httpx==0.28.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==8.3.3"]
+
+[project.scripts]
+gui-agent = "gui_agent.cli.main:main"
+gui-agent-api = "gui_agent.api.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+gui_agent = ["demo/site/*.html", "bridge/*.js"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = [
+    "e2e: 需要浏览器与本地演示应用的端到端用例",
+]
+addopts = "-ra"

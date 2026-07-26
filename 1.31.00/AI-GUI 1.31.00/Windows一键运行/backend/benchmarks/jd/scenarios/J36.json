@@ -1,0 +1,53 @@
+{
+  "id": "J36",
+  "priority": "P0",
+  "title": "支付成功",
+  "role": "dedicated_buyer_or_required_authorized_role",
+  "repeatCount": 5,
+  "allowedEnvironments": [
+    "isolated_transaction"
+  ],
+  "riskLevel": "high_risk_write",
+  "formalSitePolicy": "forbidden",
+  "preconditions": [
+    "使用专用测试账号或游客会话，不记录真实个人信息",
+    "固定数据、角色、环境和动作授权均已登记",
+    "写场景只使用 E2E 资源并预先登记清理动作"
+  ],
+  "requiredBusinessIds": [
+    "skuId",
+    "cartLineId",
+    "orderId",
+    "paymentId",
+    "refundId"
+  ],
+  "acceptanceAssertions": [
+    "支付/订单/账务一致",
+    "页面事实与脱敏网络／后台状态证据一致"
+  ],
+  "evidenceRequirements": [
+    "runId/caseId/stepId/role/environment",
+    "脱敏路由、定位器、前后截图、Console/Network",
+    "业务 ID 仅保存 SHA-256 和脱敏后缀",
+    "写场景保存状态时间线、幂等键结果和资源台账"
+  ],
+  "cleanup": "逆序清理全部 E2E 资源并验证后台不可查询或恢复基线",
+  "requiredCapabilities": [
+    "jd_page_adapter",
+    "pii_redaction",
+    "network_evidence",
+    "decimal_money_evidence",
+    "e2e_resource_ledger",
+    "side_effect_confirmation",
+    "cleanup_verification",
+    "idempotency_key",
+    "isolated_transaction_sandbox"
+  ],
+  "blockedDependencies": [
+    "京东目标环境与账号授权",
+    "稳定页面 Adapter／业务 ID 属性",
+    "隔离交易环境、固定数据和清理接口"
+  ],
+  "bindingStatus": "blocked",
+  "verificationStatus": "unverified"
+}

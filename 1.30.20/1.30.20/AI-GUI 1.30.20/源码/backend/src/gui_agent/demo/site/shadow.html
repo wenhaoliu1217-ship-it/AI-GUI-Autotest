@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Shadow DOM 扫描夹具</title>
+  <style>body{font:14px sans-serif}.hidden-host{display:none}</style>
+</head>
+<body>
+  <h1>Shadow DOM 扫描夹具</h1>
+  <ion-shell id="ion-shell">
+    <button slot="actions" data-testid="slotted-action">插槽操作</button>
+  </ion-shell>
+  <template id="inactive-template"><button>模板按钮</button></template>
+  <img alt="" src="/missing.png?access_token=super-sensitive-value">
+  <script>
+    class IonPanel extends HTMLElement {
+      connectedCallback() {
+        if (this.shadowRoot) return;
+        const root = this.attachShadow({ mode: 'open' });
+        root.innerHTML = `
+          <section aria-label="资产工具">
+            <label for="asset-search">搜索资产</label>
+            <input id="asset-search" name="assetSearch" placeholder="Search assets">
+            <button data-qa="create-story">Create story</button>
+            <div style="display:none"><button>隐藏操作</button></div>
+            <slot name="actions"></slot>
+          </section>`;
+      }
+    }
+    class IonShell extends HTMLElement {
+      connectedCallback() {
+        if (this.shadowRoot) return;
+        const root = this.attachShadow({ mode: 'open' });
+        root.innerHTML = `
+          <header><nav aria-label="主导航"><a href="#assets">My Assets</a></nav></header>
+          <main><ion-panel data-test="panel"></ion-panel><slot name="actions"></slot></main>`;
+      }
+    }
+    customElements.define('ion-panel', IonPanel);
+    customElements.define('ion-shell', IonShell);
+  </script>
+</body>
+</html>

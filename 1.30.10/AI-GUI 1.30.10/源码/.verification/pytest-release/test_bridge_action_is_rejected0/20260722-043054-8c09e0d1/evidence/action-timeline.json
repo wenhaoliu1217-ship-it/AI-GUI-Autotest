@@ -1,0 +1,155 @@
+{
+  "runId": "20260722-043054-8c09e0d1",
+  "data": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": null,
+      "target_summary": "navigate -> /",
+      "status": "passed",
+      "started_at": "2026-07-22T04:30:55.480564+08:00",
+      "ended_at": "2026-07-22T04:30:56.002892+08:00",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-1-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": false,
+        "passed": true,
+        "mode": "not_applicable"
+      },
+      "canvas_evidence": null,
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:30:55.726026+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:58389/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:30:56.002892+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    },
+    {
+      "index": 2,
+      "action": "bridge_click",
+      "description": "Select entity Alpha",
+      "target_summary": "Select entity Alpha @ ",
+      "status": "error",
+      "started_at": "2026-07-22T04:30:56.004717+08:00",
+      "ended_at": "2026-07-22T04:30:56.425712+08:00",
+      "error_message": "当前环境未启用 App Bridge，拒绝执行 app_bridge 动作",
+      "failure_category": "locator",
+      "screenshot": "screenshots/step-2-after-failure.png",
+      "execution_mode": "app_bridge",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": true,
+        "passed": false,
+        "error": "当前环境未启用 App Bridge，拒绝执行 app_bridge 动作"
+      },
+      "canvas_evidence": {
+        "mode": "app_bridge",
+        "action": "bridge_click",
+        "semanticTarget": "entity.alpha",
+        "beforeScreenshot": "screenshots/step-2-before.png",
+        "afterScreenshot": "screenshots/step-2-after-failure.png",
+        "traceArtifact": "trace.zip",
+        "collectionStatus": "failed",
+        "failurePhase": "stability",
+        "error": "当前环境未启用 App Bridge，拒绝执行 app_bridge 动作"
+      },
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "http://127.0.0.1:58389/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:30:56.195919+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:58389/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after-failure.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:30:56.425712+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    }
+  ]
+}

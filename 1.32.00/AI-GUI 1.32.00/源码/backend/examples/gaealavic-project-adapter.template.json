@@ -1,0 +1,82 @@
+{
+  "businessContext": {
+    "description": "GAEALaViC 将仿真对象建模并组合为想定，启动运行后提供仿真数据、评估数据和辅助决策结果。",
+    "terminology": {
+      "装备智能体": "飞机、舰艇、导弹、无人机、车辆等可移动实体模型",
+      "环境资产": "建筑地、植被、道具及其地图范围",
+      "高程数据": "标准 SRTM HGT 地形资产",
+      "想定": "由智能体实例、路径、参数和场景目标组成的可运行仿真场景",
+      "DoE": "大样本实验设计"
+    },
+    "objectTypes": ["装备智能体", "环境资产", "高程数据", "想定", "运行", "强化学习配置"],
+    "stateModels": {
+      "想定": ["未启动", "启动中", "运行中", "停止中", "已暂停"],
+      "运行": ["未启动", "启动中", "运行中", "关闭中", "已完成"],
+      "强化学习": ["待启动", "训练中", "已完成"]
+    },
+    "exampleGoals": ["创建 E2E_ 想定并关联固定智能体实例", "筛选固定运行并下载仿真数据和评估数据"],
+    "operatingBoundaries": ["仅修改 E2E_ 前缀对象", "删除、启动、停止和批量操作必须按项目策略确认", "容器重启和运维操作禁止自动执行"],
+    "allowedActions": ["只读导航", "筛选搜索", "专用测试租户内创建 E2E_ 对象", "登记文件上传", "授权后的启动停止与逆序清理"],
+    "bridgeCapabilities": ["getSceneState", "getCamera", "getLayers", "getEntities", "getSelected", "getLoadingState"],
+    "bridgeSemanticTargets": {"HGT区域预览": "Cesium 覆盖区域与瓦片加载状态", "环境资产范围": "绘制对象与点数"},
+    "facts": [
+      {"id":"route.main","category":"constraint","statement":"主模块固定路由已由组员实测指导书确认","source":"接入测试指导书第 4 节","status":"confirmed"},
+      {"id":"hgt.dimensions","category":"constraint","statement":"HGT 仅支持 1201x1201 或 3601x3601 采样","source":"接入测试指导书第 5.3 节","status":"confirmed"},
+      {"id":"help.manuals","category":"object","statement":"帮助模块包含使用手册、产品手册和技术手册","source":"接入测试指导书第 9 节","status":"confirmed"}
+    ],
+    "objectRelations": [
+      {"sourceObject": "想定", "relation": "包含", "targetObject": "装备智能体实例", "source": "接入测试指导书第 6 节", "status": "confirmed"},
+      {"sourceObject": "运行", "relation": "关联", "targetObject": "想定或 DoE", "source": "接入测试指导书第 7 节", "status": "confirmed"}
+    ],
+    "missingFacts": ["无文本账号菜单按钮的稳定属性", "环境资产上传与 GIS 导入的隐藏 input 定位", "企业账号权限矩阵与对象清理接口"],
+    "sourceRevision": "GAEALaViC 智能联合仿真平台接入测试指导书，2026-07"
+  },
+  "knownRoutes": {
+    "agent": "/#/mineModelList",
+    "scenario": "/#/scenarioTable",
+    "run": "/#/DoEDetails",
+    "reinforcementLearning": "/#/learnTable",
+    "help": "/#/helpPage",
+    "environmentAssetDetail": "/#/environmentAssetDetail"
+  },
+  "hgtValidation": {"extension": ".hgt", "sampleDimensions": [1201, 3601], "filenameExample": "N39E075.hgt", "preview": "Cesium region"},
+  "forbiddenOperations": ["容器重启", "非 E2E_ 对象删除", "未确认的批量删除", "未授权运维操作"],
+  "componentAdapters": [
+    {"id":"navigation.agent","module":"navigation","page":"全局导航","action":{"kind":"tab","semanticTarget":"建模模块","locators":[{"text":"建模"}],"values":[]},"status":"configured","source":"指导书第 4 节：建模 -> /#/mineModelList","blockedReason":""},
+    {"id":"navigation.scenario","module":"navigation","page":"全局导航","action":{"kind":"tab","semanticTarget":"想定模块","locators":[{"text":"想定"}],"values":[]},"status":"configured","source":"指导书第 4 节：想定 -> /#/scenarioTable","blockedReason":""},
+    {"id":"navigation.run","module":"navigation","page":"全局导航","action":{"kind":"tab","semanticTarget":"运行模块","locators":[{"text":"运行"}],"values":[]},"status":"configured","source":"指导书第 4 节：运行 -> /#/DoEDetails","blockedReason":""},
+    {"id":"navigation.rl","module":"navigation","page":"全局导航","action":{"kind":"tab","semanticTarget":"强化学习模块","locators":[{"text":"强化学习"}],"values":[]},"status":"configured","source":"指导书第 4 节：强化学习 -> /#/learnTable","blockedReason":""},
+    {"id":"navigation.help","module":"navigation","page":"全局导航","action":{"kind":"tab","semanticTarget":"帮助模块","locators":[{"text":"帮助"}],"values":[]},"status":"configured","source":"指导书第 4 节：帮助 -> /#/helpPage","blockedReason":""},
+    {"id":"account.menu","module":"navigation","page":"账号区域","action":{"kind":"tab","semanticTarget":"打开账号系统菜单","locators":[{"css":"[data-gae-account-menu]"}],"values":[]},"status":"blocked","source":"指导书确认账号旁存在无文本按钮","blockedReason":"无文本按钮尚无稳定 data 属性、aria-label 或 app-map hook"},
+    {"id":"account.standard_mode","module":"navigation","page":"账号系统菜单","action":{"kind":"tab","semanticTarget":"标准模式","locators":[{"text":"标准模式"}],"values":[]},"status":"configured","source":"指导书第 4 节账号菜单实测文本","blockedReason":""},
+    {"id":"account.developer_mode","module":"navigation","page":"账号系统菜单","action":{"kind":"tab","semanticTarget":"开发者模式","locators":[{"text":"开发者模式"}],"values":[]},"status":"configured","source":"指导书第 4 节账号菜单实测文本","blockedReason":""},
+    {"id":"account.layer_switch","module":"navigation","page":"账号系统菜单","action":{"kind":"tab","semanticTarget":"图层切换","locators":[{"text":"图层切换"}],"values":[]},"status":"configured","source":"指导书第 4 节账号菜单实测文本","blockedReason":""},
+    {"id":"account.satellite_layer","module":"navigation","page":"账号系统菜单","action":{"kind":"tab","semanticTarget":"卫星图层","locators":[{"text":"卫星图层"}],"values":[]},"status":"configured","source":"指导书第 4 节账号菜单实测文本","blockedReason":""},
+    {"id":"account.runtime_status","module":"navigation","page":"账号系统菜单","action":{"kind":"tab","semanticTarget":"运行状态或系统状态","locators":[{"text":"运行中"}],"values":[]},"status":"configured","source":"指导书第 4 节运行中/系统状态入口","blockedReason":""},
+    {"id":"account.version","module":"navigation","page":"账号系统菜单","action":{"kind":"statistics_card","semanticTarget":"平台版本号","locators":[{"text":"版本"}],"values":[],"expectedText":"版本"},"status":"configured","source":"指导书确认账号菜单可见版本信息","blockedReason":""},
+    {"id":"agent.search","module":"agent","page":"装备智能体列表","action":{"kind":"searchable_select","semanticTarget":"筛选并搜索装备智能体","locators":[{"text":"创建人"},{"placeholder":"搜索我的模型..."},{"text":"全部"}],"values":["全部"]},"status":"configured","source":"指导书第 5.1 节实测控件","blockedReason":""},
+    {"id":"agent.batch","module":"agent","page":"装备智能体列表","action":{"kind":"tab","semanticTarget":"批量操作模式","locators":[{"text":"批量操作"}],"values":[]},"status":"configured","source":"指导书第 5.1 节实测按钮","blockedReason":""},
+    {"id":"agent.export","module":"agent","page":"装备智能体列表","action":{"kind":"tab","semanticTarget":"导出所选智能体","locators":[{"text":"导出"}],"values":[]},"status":"configured","source":"指导书第 5.1 节实测按钮；未选择时禁用","blockedReason":""},
+    {"id":"agent.modify","module":"agent","page":"装备智能体卡片","action":{"kind":"tab","semanticTarget":"修改固定智能体","locators":[{"css":"[data-object-id] button:nth-of-type(1)"}],"values":[]},"status":"blocked","source":"指导书确认行内第 1 个无文本图标","blockedReason":"需在目标站补 data-object-id 或 app-map 卡片作用域"},
+    {"id":"agent.preview","module":"agent","page":"装备智能体卡片","action":{"kind":"tab","semanticTarget":"预览固定智能体","locators":[{"css":"[data-object-id] button:nth-of-type(2)"}],"values":[]},"status":"blocked","source":"指导书确认行内第 2 个无文本图标","blockedReason":"需在目标站补 data-object-id 或 app-map 卡片作用域"},
+    {"id":"agent.upload","module":"agent","page":"装备智能体列表","action":{"kind":"upload_dialog","semanticTarget":"上传智能体配置","locators":[{"text":"上传"},{"css":"input[type=file]"}],"values":[],"fileId":"file-agent-json-placeholder"},"status":"blocked","source":"指导书第 5.1 节确认 JSON 上传弹窗","blockedReason":"运行前必须绑定项目文件仓库中的合法或非法 JSON"},
+    {"id":"environment.upload","module":"environment_asset","page":"环境资产列表","action":{"kind":"upload_dialog","semanticTarget":"上传环境资产","locators":[{"text":"上传"},{"css":"input[type=file]"}],"values":[],"fileId":"file-environment-placeholder"},"status":"blocked","source":"指导书第 5.2 节仅确认入口存在","blockedReason":"点击后行为和隐藏 input 尚未确认"},
+    {"id":"environment.gis_import","module":"environment_asset","page":"环境资产列表","action":{"kind":"upload_dialog","semanticTarget":"GIS 导入","locators":[{"text":"GIS导入"},{"css":"input[type=file]"}],"values":[],"fileId":"file-gis-placeholder"},"status":"blocked","source":"指导书第 5.2 节仅确认入口存在","blockedReason":"GIS 文件格式与隐藏 input 尚未确认"},
+    {"id":"environment.thumbnail","module":"environment_asset","page":"新增环境资产","action":{"kind":"image_preview","semanticTarget":"缩略图上传预览","locators":[{"text":"缩略图"},{"role":"img","name":"缩略图"}],"values":[],"expectedText":"缩略图"},"status":"configured","source":"指导书第 5.2 节确认缩略图字段和 Remove file","blockedReason":""},
+    {"id":"environment.thumbnail_remove","module":"environment_asset","page":"新增环境资产","action":{"kind":"tab","semanticTarget":"移除缩略图","locators":[{"text":"Remove file"}],"values":[]},"status":"configured","source":"指导书第 5.2 节实测文本","blockedReason":""},
+    {"id":"elevation.upload","module":"elevation","page":"高程数据","action":{"kind":"upload_dialog","semanticTarget":"上传 HGT 文件","locators":[{"text":"上传 HGT 文件"},{"css":"input[type=file][accept*=hgt]"}],"values":[],"fileId":"file-hgt-placeholder"},"status":"blocked","source":"指导书第 5.3 节确认弹窗、.hgt 与 1201/3601 规则","blockedReason":"运行前必须绑定项目 HGT 样例；accept 属性需 app-map 复核"},
+    {"id":"elevation.preview","module":"elevation","page":"HGT 上传弹窗","action":{"kind":"image_preview","semanticTarget":"Cesium HGT 区域预览","locators":[{"text":"区域预览"},{"css":"canvas"}],"values":[],"expectedText":"区域预览"},"status":"configured","source":"指导书第 5.3 节确认选择文件后显示 Cesium 覆盖区域","blockedReason":""},
+    {"id":"run.filter","module":"run","page":"运行记录","action":{"kind":"cascade_select","semanticTarget":"想定、DoE 与状态筛选","locators":[{"text":"想定筛选"},{"text":"DoE筛选"},{"text":"状态筛选"}],"values":["全部","全部","全部状态"]},"status":"configured","source":"指导书第 7 节实测筛选器","blockedReason":""},
+    {"id":"run.time_range","module":"run","page":"运行记录","action":{"kind":"date_time_range","semanticTarget":"运行开始结束时间","locators":[{"text":"开始时间"},{"text":"结束时间"}],"values":["${RUN_START_TIME}","${RUN_END_TIME}"]},"status":"configured","source":"指导书第 7 节实测时间输入","blockedReason":""},
+    {"id":"run.batch_delete","module":"run","page":"运行记录","action":{"kind":"tab","semanticTarget":"批量删除运行记录","locators":[{"text":"批量删除"}],"values":[]},"status":"configured","source":"指导书第 7 节确认默认禁用且启用后二次确认","blockedReason":""},
+    {"id":"run.export","module":"run","page":"运行记录","action":{"kind":"tab","semanticTarget":"导出运行数据","locators":[{"text":"导出数据"}],"values":[]},"status":"configured","source":"指导书第 7 节实测按钮","blockedReason":""},
+    {"id":"rl.start","module":"reinforcement_learning","page":"强化学习","action":{"kind":"tab","semanticTarget":"启动训练","locators":[{"text":"启动"}],"values":[]},"status":"blocked","source":"开发指导书确认后续可能启动训练","blockedReason":"当前账号列表为空，启动控件及授权边界未实测"},
+    {"id":"rl.stop","module":"reinforcement_learning","page":"强化学习","action":{"kind":"tab","semanticTarget":"停止训练","locators":[{"text":"停止"}],"values":[]},"status":"blocked","source":"开发指导书要求覆盖训练生命周期","blockedReason":"当前账号列表为空，停止控件及状态机未实测"},
+    {"id":"rl.result","module":"reinforcement_learning","page":"强化学习","action":{"kind":"tab","semanticTarget":"查看训练结果","locators":[{"text":"结果"}],"values":[]},"status":"blocked","source":"开发指导书要求查看训练结果","blockedReason":"结果入口、下载格式和稳定文本未实测"},
+    {"id":"rl.delete","module":"reinforcement_learning","page":"强化学习","action":{"kind":"tab","semanticTarget":"删除 E2E_ 训练配置","locators":[{"text":"删除"}],"values":[]},"status":"blocked","source":"开发指导书要求清理训练配置","blockedReason":"删除入口与确认流程未实测，只允许 E2E_ 对象"},
+    {"id":"help.manuals","module":"help","page":"帮助","action":{"kind":"tab","semanticTarget":"三类帮助手册","locators":[{"text":"使用手册"},{"text":"产品手册"},{"text":"技术手册"}],"values":[]},"status":"configured","source":"指导书第 9 节确认三个文档按钮","blockedReason":""},
+    {"id":"help.scroll","module":"help","page":"帮助","action":{"kind":"local_scroll","semanticTarget":"帮助长文档局部滚动","locators":[{"text":"帮助手册"}],"values":[],"scrollDeltaY":600},"status":"configured","source":"指导书第 9 节确认帮助长文档与核心标题","blockedReason":""},
+    {"id":"help.workflow_image","module":"help","page":"帮助","action":{"kind":"image_preview","semanticTarget":"工作流图片加载","locators":[{"text":"流程1：单个想定运行"},{"css":"img"}],"values":[],"expectedText":"流程1：单个想定运行"},"status":"configured","source":"指导书第 9 节确认工作流图片和核心标题","blockedReason":""}
+  ],
+  "agentDetailTabs": ["子级实体", "形式化模型", "动力学", "感知范围", "通信协议栈", "任务路径", "兴趣点（POI）", "时空标注", "约束围栏", "参数", "定义", "动作/指令", "感知行为（OODA）", "行为树", "条令", "认知模型", "评估指标"]
+}

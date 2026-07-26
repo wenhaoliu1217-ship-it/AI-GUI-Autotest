@@ -1,0 +1,67 @@
+{
+  "startedAt": "2026-07-23T09:38:24.596Z",
+  "guiUrl": "http://127.0.0.1:8080",
+  "checks": [
+    {
+      "name": "AI 模型连接",
+      "status": "passed",
+      "detail": "attempts=2; model=gpt-5.6-terra; protocol=responses; elapsedMs=6546",
+      "evidence": "01-ai-connected.png"
+    },
+    {
+      "name": "正式站只读项目配置",
+      "status": "passed",
+      "detail": "projectId=project-7175e33b11; allowedHosts=6",
+      "evidence": null
+    },
+    {
+      "name": "京东首页真实兼容扫描",
+      "status": "passed",
+      "detail": "status=attention; title=京东(JD.COM)-正品低价、品质保障、配送及时、轻松购物！; pages=5; finalUrl=https://www.jd.com/",
+      "evidence": "02-jd-compatibility-scan.png"
+    },
+    {
+      "name": "AI 只读计划生成",
+      "status": "failed",
+      "detail": "attempts=3; http=422; steps=0; assertions=0; unsafe=none",
+      "evidence": "03-ai-plan.png"
+    },
+    {
+      "name": "本地规则原始目标解析",
+      "status": "failed",
+      "detail": "http=200; warnings=3; unsafeActions=fill,click",
+      "evidence": "03b-local-plan.png"
+    },
+    {
+      "name": "本地规则最小只读降级计划",
+      "status": "passed",
+      "detail": "http=200; warnings=0; steps=2; assertions=1; unsafeActions=none",
+      "evidence": "03c-local-minimal-plan.png"
+    },
+    {
+      "name": "计划人工审核门禁",
+      "status": "passed",
+      "detail": "valid=true",
+      "evidence": null
+    },
+    {
+      "name": "真实浏览器只读执行",
+      "status": "failed",
+      "detail": "runId=20260723-173950-93ce9101; status=failed; completion=assertion_failed",
+      "evidence": "04-run-result.png"
+    }
+  ],
+  "defects": [
+    {
+      "stage": "local-planner-negation",
+      "message": "否定句被误解析或未识别：unsafeActions=fill,click; warnings=3"
+    }
+  ],
+  "blockers": [
+    {
+      "stage": "ai-plan",
+      "reason": "AI plan generation failed after 3 attempts: HTTP 422; 模型服务返回错误（HTTP 502）"
+    }
+  ],
+  "endedAt": "2026-07-23T09:40:17.110Z"
+}

@@ -1,0 +1,206 @@
+{
+  "schemaVersion": "1",
+  "id": "S11",
+  "name": "智能体修改预览与十七个详情页签巡检",
+  "category": "详情",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "普通测试",
+  "prerequisites": [
+    {
+      "id": "S11-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "固定智能体对象"
+    },
+    {
+      "id": "S11-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "无文本行内图标的卡片作用域稳定定位"
+    },
+    {
+      "id": "S11-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "十七个详情页签页面地图"
+    },
+    {
+      "id": "S11-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "字段可见性矩阵"
+    }
+  ],
+  "goal": "智能体修改预览与十七个详情页签巡检",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "打开固定智能体修改入口并验证 status=update",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "打开固定智能体预览且不修改数据",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "打开固定智能体详情并验证 status=detail",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-4",
+      "businessAction": "切换子级实体",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-5",
+      "businessAction": "切换形式化模型",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-6",
+      "businessAction": "切换动力学",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-7",
+      "businessAction": "切换感知范围",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-8",
+      "businessAction": "切换通信协议栈",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-9",
+      "businessAction": "切换任务路径",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-10",
+      "businessAction": "切换兴趣点（POI）",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-11",
+      "businessAction": "切换时空标注",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-12",
+      "businessAction": "切换约束围栏",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-13",
+      "businessAction": "切换参数",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-14",
+      "businessAction": "切换定义",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-15",
+      "businessAction": "切换动作/指令",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-16",
+      "businessAction": "切换感知行为（OODA）",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-17",
+      "businessAction": "切换行为树",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-18",
+      "businessAction": "切换条令",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-19",
+      "businessAction": "切换认知模型",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-20",
+      "businessAction": "切换评估指标",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "修改、预览、详情模式边界正确",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "十七个页签选中状态和内容与 app-map 匹配",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-3",
+      "businessFact": "地图或 3D 区无运行时错误",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": false,
+    "order": "reverse_dependency",
+    "verification": "not_applicable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "固定智能体对象",
+    "无文本行内图标的卡片作用域稳定定位",
+    "十七个详情页签页面地图",
+    "字段可见性矩阵"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

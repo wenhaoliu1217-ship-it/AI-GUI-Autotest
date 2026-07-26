@@ -1,0 +1,34 @@
+{
+  "version": "1.30.31",
+  "scope": "JD authenticated read-only acceptance",
+  "startedAt": "2026-07-23T11:41:18.295Z",
+  "checks": [
+    {
+      "name": "GUI project safety boundary",
+      "status": "passed",
+      "detail": "projectId=project-414dfa1c34; environmentId=environment-0710b546af; screenshotMask=full-page"
+    },
+    {
+      "name": "JD login",
+      "status": "passed",
+      "detail": "Authenticated browser state established; no credential values were persisted"
+    },
+    {
+      "name": "GUI encrypted session import",
+      "status": "passed",
+      "detail": "cookies=29; encryption=Windows DPAPI / CurrentUser"
+    },
+    {
+      "name": "GUI authenticated compatibility scan",
+      "status": "passed",
+      "detail": "status=compatible; finalLocation=https://home.jd.com/"
+    },
+    {
+      "name": "GUI isolated Runner account-home check",
+      "status": "passed",
+      "detail": "runId=20260723-194232-eac7e9f9; status=passed; completion=plan_completed"
+    }
+  ],
+  "blockers": [],
+  "endedAt": "2026-07-23T11:42:53.565Z"
+}

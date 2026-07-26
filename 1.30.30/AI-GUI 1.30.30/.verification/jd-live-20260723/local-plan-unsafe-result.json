@@ -1,0 +1,82 @@
+{
+  "plan": {
+    "name": "京东首页公开信息只读检查",
+    "base_url": "https://www.jd.com/",
+    "role": "未登录访客",
+    "preconditions": [
+      {
+        "description": "仅访问京东公开正式站；禁止登录、购物车、收藏、下单、支付、售后及个人资料操作。"
+      }
+    ],
+    "steps": [
+      {
+        "action": "navigate",
+        "target": "/",
+        "description": "打开目标网站",
+        "execution_mode": "locator",
+        "stability_level": "A",
+        "stability_reason": "确定性 Playwright 动作",
+        "computer_use_triggered": false,
+        "scroll_delta_y": 600,
+        "browser_target": {
+          "page": "current",
+          "wait_timeout_ms": 10000
+        }
+      },
+      {
+        "action": "fill",
+        "locator": {
+          "label": "确认搜索"
+        },
+        "value": "框可见",
+        "description": "确认搜索输入框可见",
+        "execution_mode": "locator",
+        "stability_level": "A",
+        "stability_reason": "确定性 Playwright 动作",
+        "computer_use_triggered": false,
+        "scroll_delta_y": 600,
+        "browser_target": {
+          "page": "current",
+          "wait_timeout_ms": 10000
+        }
+      },
+      {
+        "action": "click",
+        "locator": {
+          "role": "button",
+          "name": "任何会产生账户或交易副作用的控件"
+        },
+        "description": "不登录、不填写、不点击任何会产生账户或交易副作用的控件",
+        "execution_mode": "locator",
+        "stability_level": "A",
+        "stability_reason": "确定性 Playwright 动作",
+        "computer_use_triggered": false,
+        "scroll_delta_y": 600,
+        "browser_target": {
+          "page": "current",
+          "wait_timeout_ms": 10000
+        }
+      },
+      {
+        "action": "screenshot",
+        "description": "保存截图",
+        "execution_mode": "locator",
+        "stability_level": "A",
+        "stability_reason": "确定性 Playwright 动作",
+        "computer_use_triggered": false,
+        "scroll_delta_y": 600,
+        "browser_target": {
+          "page": "current",
+          "wait_timeout_ms": 10000
+        }
+      }
+    ],
+    "assertions": []
+  },
+  "warnings": [
+    "无法确定执行方式：只读打开京东首页",
+    "无法确定执行方式：确认页面标题包含“京东”",
+    "期望结果需要补充为可验证文本、URL 或元素：京东首页成功加载，标题和搜索输入框可见，执行过程中没有账户或交易写操作。"
+  ],
+  "planner": "deterministic-rules"
+}

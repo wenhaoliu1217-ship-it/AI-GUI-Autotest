@@ -9,8 +9,17 @@
 **/构建成品/
 **/coverage/
 **/.runtime/
+**/Windows一键运行/runtime/
+**/runtime/images/
+**/runtime/ms-playwright/
+**/runtime/python/
+**/.release-*/
+**/.verification-finalzip*/
+**/.verification/clean-release-*/
 **/.pytest_cache/
 **/.pytest-tmp*/
+**/.pytest-*/
+**/.test-temp*/
 **/__pycache__/
 **/*.py[cod]
 **/*.egg-info/
@@ -25,6 +34,7 @@
 **/playwright-report/
 **/test-results/
 **/*.log
+**/*.pid
 **/*.zip
 
 # Secrets, sessions, and machine-specific metadata

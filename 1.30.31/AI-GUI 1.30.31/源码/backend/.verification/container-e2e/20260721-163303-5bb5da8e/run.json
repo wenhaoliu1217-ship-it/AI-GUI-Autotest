@@ -1,0 +1,288 @@
+{
+  "run_id": "20260721-163303-5bb5da8e",
+  "plan_name": "FR-11 container browser smoke",
+  "role": null,
+  "base_url_summary": "http://example.com",
+  "status": "error",
+  "started_at": "2026-07-21T08:33:04.875179Z",
+  "ended_at": "2026-07-21T08:33:11.781957Z",
+  "steps": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": "open public target",
+      "target_summary": "open public target -> /",
+      "status": "error",
+      "started_at": "2026-07-21T08:33:05.450890Z",
+      "ended_at": "2026-07-21T08:33:11.639684Z",
+      "error_message": "页面返回 HTTP 502：http://example.com/",
+      "failure_category": "locator",
+      "screenshot": "screenshots/step-1-after-failure.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-21T08:33:05.667677Z"
+      },
+      "after": {
+        "url": "http://example.com/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after-failure.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [
+          "Failed to load resource: the server responded with a status of 502 (Bad Gateway)"
+        ],
+        "page_errors": [],
+        "failed_requests": [
+          "HTTP 502 GET http://example.com/"
+        ],
+        "page_issues": [
+          {
+            "kind": "blank_page",
+            "severity": "High",
+            "confidence": "high",
+            "message": "页面加载完成但没有可见文本、元素或图形内容",
+            "target": "document",
+            "details": {
+              "ready_state": "complete",
+              "visible_text_length": 0,
+              "visible_element_count": 0,
+              "interactive_count": 0,
+              "visual_surface_count": 0
+            }
+          }
+        ],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-21T08:33:11.639616Z"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    }
+  ],
+  "assertions": [],
+  "failed_step_index": 1,
+  "reproduction_steps": [
+    "open public target -> /"
+  ],
+  "cause_hints": [
+    {
+      "heuristic": true,
+      "category": "locator",
+      "message": "页面元素可能不存在、尚未加载或定位信息已变化，请检查页面和稳定定位属性。",
+      "evidence": [
+        "步骤/断言 1",
+        "页面返回 HTTP 502：http://example.com/"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "findings": [
+    {
+      "id": "finding-312c865e54",
+      "title": "步骤 1 未完成：open public target",
+      "category": "locator",
+      "severity": "Medium",
+      "confidence": "medium",
+      "actual_result": "页面返回 HTTP 502：http://example.com/",
+      "expected_result": "动作成功并进入可验证的下一状态",
+      "facts": [
+        "步骤 1 状态为 error",
+        "页面返回 HTTP 502：http://example.com/"
+      ],
+      "inference": "可能是产品、环境、测试数据、定位或时序问题，需结合证据人工确认。",
+      "evidence": [
+        "screenshots/step-1-before.png",
+        "screenshots/step-1-after-failure.png"
+      ],
+      "evidence_timeline": [
+        {
+          "phase": "before_action",
+          "timestamp": "2026-07-21T08:33:05.667677Z",
+          "screenshot": "screenshots/step-1-before.png",
+          "facts": [
+            "页面：无标题 · about:blank"
+          ]
+        },
+        {
+          "phase": "after_action",
+          "timestamp": "2026-07-21T08:33:11.639616Z",
+          "screenshot": "screenshots/step-1-after-failure.png",
+          "facts": [
+            "页面：无标题 · http://example.com/",
+            "页面返回 HTTP 502：http://example.com/"
+          ]
+        }
+      ],
+      "reproduction_steps": [
+        "open public target -> /"
+      ],
+      "review_status": "pending_review",
+      "review_history": []
+    },
+    {
+      "id": "finding-6e4540f208",
+      "title": "步骤 1 观察到运行时异常",
+      "category": "runtime",
+      "severity": "Medium",
+      "confidence": "high",
+      "actual_result": "采集到 2 条控制台、页面或网络异常",
+      "expected_result": "关键页面操作期间不出现未忽略的运行时异常",
+      "facts": [
+        "Failed to load resource: the server responded with a status of 502 (Bad Gateway)",
+        "服务端请求失败：HTTP 502 GET http://example.com/"
+      ],
+      "inference": "异常是否影响业务目标尚未确定。",
+      "evidence": [
+        "screenshots/step-1-before.png",
+        "screenshots/step-1-after-failure.png"
+      ],
+      "evidence_timeline": [
+        {
+          "phase": "before_action",
+          "timestamp": "2026-07-21T08:33:05.667677Z",
+          "screenshot": "screenshots/step-1-before.png",
+          "facts": [
+            "页面：无标题 · about:blank"
+          ]
+        },
+        {
+          "phase": "after_action",
+          "timestamp": "2026-07-21T08:33:11.639616Z",
+          "screenshot": "screenshots/step-1-after-failure.png",
+          "facts": [
+            "页面：无标题 · http://example.com/",
+            "Failed to load resource: the server responded with a status of 502 (Bad Gateway)",
+            "服务端请求失败：HTTP 502 GET http://example.com/"
+          ]
+        }
+      ],
+      "reproduction_steps": [
+        "open public target -> /"
+      ],
+      "review_status": "pending_review",
+      "review_history": []
+    },
+    {
+      "id": "finding-32e3950189",
+      "title": "步骤 1 检测到页面加载完成但没有可见文本、元素或图形内容",
+      "category": "blank_page",
+      "severity": "High",
+      "confidence": "high",
+      "actual_result": "页面加载完成但没有可见文本、元素或图形内容",
+      "expected_result": "页面关键内容和交互控件完整可见且可操作",
+      "facts": [
+        "页面加载完成但没有可见文本、元素或图形内容",
+        "目标：document"
+      ],
+      "inference": "该结论来自浏览器布局与命中测试信号，仍需结合业务状态人工确认。",
+      "evidence": [
+        "screenshots/step-1-before.png",
+        "screenshots/step-1-after-failure.png"
+      ],
+      "evidence_timeline": [
+        {
+          "phase": "before_action",
+          "timestamp": "2026-07-21T08:33:05.667677Z",
+          "screenshot": "screenshots/step-1-before.png",
+          "facts": [
+            "页面：无标题 · about:blank"
+          ]
+        },
+        {
+          "phase": "after_action",
+          "timestamp": "2026-07-21T08:33:11.639616Z",
+          "screenshot": "screenshots/step-1-after-failure.png",
+          "facts": [
+            "页面：无标题 · http://example.com/",
+            "页面加载完成但没有可见文本、元素或图形内容",
+            "目标：document"
+          ]
+        }
+      ],
+      "reproduction_steps": [
+        "open public target -> /"
+      ],
+      "review_status": "pending_review",
+      "review_history": []
+    }
+  ],
+  "generated_test": {
+    "language": "typescript",
+    "framework_version": "playwright",
+    "source_path": "generated-test.spec.ts",
+    "stability_level": "A",
+    "supported_replay_modes": [
+      "stable"
+    ],
+    "ci_eligible": true,
+    "ci_recommendation": "可作为 CI 候选",
+    "source": "import { test, expect } from '@playwright/test';\n\ntest(\"FR-11 container browser smoke\", async ({ page }) => {\n  await test.step(\"open public target\", async () => {\n    await page.goto(\"http://example.com/\");\n  });\n  await test.step(\"capture evidence\", async () => {\n    await page.screenshot({ fullPage: false });\n  });\n});\n",
+    "manual_steps": [],
+    "source_revision": 1,
+    "source_review_history": []
+  },
+  "replay_mode": "exploration",
+  "onboarding_level": null,
+  "stability_level": "A",
+  "completion_reason": "execution_failed",
+  "project_id": null,
+  "environment_id": null,
+  "environment_updated_at": null,
+  "artifact_retention_days": 30,
+  "scenario_id": null,
+  "scenario_updated_at": null,
+  "scenario_goal": "FR-11 container browser smoke",
+  "goal_status": "incomplete",
+  "goal_summary": "场景未完整执行；无收尾断言；结束原因 execution_failed",
+  "model_calls": 0,
+  "estimated_cost": null,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "model_call_records": [],
+  "confirmation_history": [],
+  "runner_isolation": {
+    "mode": "docker_container",
+    "container_name": "ai-gui-20260721-163303-5bb5da8e",
+    "image": "ai-gui-runner:1.30.00",
+    "root_filesystem_read_only": true,
+    "artifact_mount": "C:\\Users\\zzzzl\\Desktop\\京彩OPC\\AI-GUI-Autotest\\1.30.00\\AI-GUI 1.30.00\\源码\\backend\\.verification\\container-e2e\\20260721-163303-5bb5da8e",
+    "tmpfs_mb": 324,
+    "memory_limit_mb": 2048,
+    "cpu_limit": 2.0,
+    "pids_limit": 256,
+    "capabilities_dropped": "ALL_AFTER_FIREWALL_INIT",
+    "no_new_privileges": true,
+    "container_network_mode": "bridge",
+    "container_private_network_allowed": false,
+    "network_policy": "container_egress_firewall+playwright_request_guard",
+    "forced_termination": false
+  }
+}

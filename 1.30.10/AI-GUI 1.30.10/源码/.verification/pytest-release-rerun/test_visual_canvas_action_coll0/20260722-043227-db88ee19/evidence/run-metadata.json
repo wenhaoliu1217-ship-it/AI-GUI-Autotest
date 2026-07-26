@@ -1,0 +1,16 @@
+{
+  "runId": "20260722-043227-db88ee19",
+  "data": {
+    "runId": "20260722-043227-db88ee19",
+    "planName": "Visual action with Bridge evidence",
+    "status": "passed",
+    "startedAt": "2026-07-22T04:32:27.446231+08:00",
+    "endedAt": "2026-07-22T04:32:29.960337+08:00",
+    "projectId": null,
+    "environmentId": null,
+    "accountId": null,
+    "accountRole": null,
+    "scenarioId": null,
+    "goalStatus": "achieved"
+  }
+}

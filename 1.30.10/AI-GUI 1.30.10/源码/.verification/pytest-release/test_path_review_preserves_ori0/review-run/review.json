@@ -1,0 +1,75 @@
+{
+  "sourceIndexes": [
+    1
+  ],
+  "history": [
+    {
+      "timestamp": "2026-07-21T20:31:56.035101+00:00",
+      "actor": "local-user",
+      "changes": [
+        {
+          "sourceIndex": 1,
+          "action": "edited",
+          "before": {
+            "action": "navigate",
+            "target": "/",
+            "description": "打开首页",
+            "execution_mode": "locator",
+            "stability_level": "A",
+            "stability_reason": "确定性 Playwright 动作",
+            "visual_points": [],
+            "zoom_delta": -600,
+            "gesture_finish": "double_click",
+            "computer_use_triggered": false,
+            "scroll_delta_y": 600,
+            "expected_file_validity": "valid",
+            "expected_residual_count": 0,
+            "cleanup_required": false
+          },
+          "after": {
+            "action": "navigate",
+            "target": "/",
+            "description": "打开审核后的首页",
+            "execution_mode": "locator",
+            "stability_level": "A",
+            "stability_reason": "确定性 Playwright 动作",
+            "visual_points": [],
+            "zoom_delta": -600,
+            "gesture_finish": "double_click",
+            "computer_use_triggered": false,
+            "scroll_delta_y": 600,
+            "expected_file_validity": "valid",
+            "expected_residual_count": 0,
+            "cleanup_required": false
+          }
+        },
+        {
+          "sourceIndex": 2,
+          "action": "removed",
+          "before": {
+            "action": "click",
+            "locator": {
+              "role": "button",
+              "name": "登录"
+            },
+            "description": "点击登录",
+            "execution_mode": "locator",
+            "stability_level": "A",
+            "stability_reason": "确定性 Playwright 动作",
+            "visual_points": [],
+            "zoom_delta": -600,
+            "gesture_finish": "double_click",
+            "computer_use_triggered": false,
+            "scroll_delta_y": 600,
+            "expected_file_validity": "valid",
+            "expected_residual_count": 0,
+            "cleanup_required": false
+          }
+        }
+      ],
+      "retainedSourceIndexes": [
+        1
+      ]
+    }
+  ]
+}

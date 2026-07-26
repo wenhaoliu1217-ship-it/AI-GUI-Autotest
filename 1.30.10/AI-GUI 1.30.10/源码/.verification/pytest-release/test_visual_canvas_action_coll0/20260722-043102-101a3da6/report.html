@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>测试报告 - Visual action with Bridge evidence</title>
+<style>
+  body { font-family: "Segoe UI", system-ui, sans-serif; margin: 2rem; color: #1f2328; }
+  h1 { font-size: 1.4rem; }
+  .summary { background: #f6f8fa; padding: 1rem; border-radius: 8px; }
+  .summary .status { font-weight: 700; }
+  .status.passed { color: #1a7f37; }
+  .status.failed, .status.error { color: #cf222e; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #d0d7de; padding: .4rem .6rem; text-align: left; font-size: .9rem; }
+  th { background: #f6f8fa; }
+  tr.failed, tr.error { background: #fff0f0; }
+  tr.passed { background: #f0fff4; }
+  tr.skipped { color: #999; }
+  .hints li { margin-bottom: .6rem; }
+  .hints .cat { font-weight: 700; color: #9a6700; }
+  .hints .conf, .hints .evidence { font-size: .8rem; color: #57606a; }
+  .finding { border: 1px solid #d0d7de; padding: .8rem 1rem; margin: .8rem 0; border-radius: 6px; }
+  .finding h3 { margin-top: 0; }
+  small { color: #57606a; font-weight: 400; }
+</style></head>
+<body>
+  <h1>测试运行报告：Visual action with Bridge evidence</h1>
+  <div class="summary">
+    <div>运行 ID：<code>20260722-043102-101a3da6</code></div>
+    <div>总体状态：<span class="status passed">通过</span></div>
+    <div>基础地址：http://127.0.0.1:58423</div>
+    <div>耗时：2468 ms ｜ 退出码：0</div>
+    
+  </div>
+  <h2>证据完整度</h2><p><strong>100.0%</strong> · <a href='evidence/evidence-manifest.json'>查看机器可读清单</a></p><ul><li>无</li></ul>
+  <h2>步骤</h2>
+  <table><thead><tr><th>#</th><th>动作</th><th>目标</th><th>状态</th>
+  <th>耗时(ms)</th><th>说明</th><th>截图</th></tr></thead>
+  <tbody><tr class='passed'><td>1</td><td>navigate</td><td>navigate -&gt; /</td><td>通过</td><td>611</td><td></td><td><a href='screenshots/step-1-after.png'>截图</a></td></tr>
+<tr class='passed'><td>2</td><td>visual_click</td><td>visual_click @ css=#map</td><td>通过</td><td>632</td><td></td><td><a href='screenshots/step-2-after.png'>截图</a></td></tr></tbody></table>
+  <h2>Canvas／Bridge 证据</h2><details><summary>步骤 2 · visual_click · complete</summary><pre>{
+  &quot;mode&quot;: &quot;visual&quot;,
+  &quot;action&quot;: &quot;visual_click&quot;,
+  &quot;semanticTarget&quot;: &quot;entity.alpha&quot;,
+  &quot;coordinateSource&quot;: &quot;region-relative:0.5000,0.5000&quot;,
+  &quot;beforeScreenshot&quot;: &quot;screenshots/step-2-before.png&quot;,
+  &quot;afterScreenshot&quot;: &quot;screenshots/step-2-after.png&quot;,
+  &quot;traceArtifact&quot;: &quot;trace.zip&quot;,
+  &quot;collectionStatus&quot;: &quot;complete&quot;,
+  &quot;bridgeAvailable&quot;: true,
+  &quot;bridgeBefore&quot;: {
+    &quot;phase&quot;: &quot;before&quot;,
+    &quot;adapter&quot;: &quot;generic&quot;,
+    &quot;globalName&quot;: &quot;CUSTOM_TEST_BRIDGE&quot;,
+    &quot;version&quot;: &quot;1&quot;,
+    &quot;capabilities&quot;: [
+      &quot;getSceneState&quot;,
+      &quot;listVisibleTargets&quot;,
+      &quot;getTargetScreenPosition&quot;,
+      &quot;getSelectedTargetId&quot;,
+      &quot;waitForSceneReady&quot;
+    ],
+    &quot;sceneReady&quot;: true,
+    &quot;sceneState&quot;: {
+      &quot;camera&quot;: {
+        &quot;heading&quot;: 0
+      },
+      &quot;layers&quot;: [
+        {
+          &quot;id&quot;: &quot;base&quot;,
+          &quot;show&quot;: true
+        }
+      ],
+      &quot;loading&quot;: false,
+      &quot;tilesLoaded&quot;: true
+    },
+    &quot;visibleTargets&quot;: [
+      {
+        &quot;id&quot;: &quot;entity.alpha&quot;,
+        &quot;type&quot;: &quot;entity&quot;,
+        &quot;label&quot;: &quot;Alpha&quot;
+      }
+    ],
+    &quot;selectedTargetId&quot;: null
+  },
+  &quot;bridgeAfter&quot;: {
+    &quot;phase&quot;: &quot;after&quot;,
+    &quot;adapter&quot;: &quot;generic&quot;,
+    &quot;globalName&quot;: &quot;CUSTOM_TEST_BRIDGE&quot;,
+    &quot;version&quot;: &quot;1&quot;,
+    &quot;capabilities&quot;: [
+      &quot;getSceneState&quot;,
+      &quot;listVisibleTargets&quot;,
+      &quot;getTargetScreenPosition&quot;,
+      &quot;getSelectedTargetId&quot;,
+      &quot;waitForSceneReady&quot;
+    ],
+    &quot;sceneReady&quot;: true,
+    &quot;sceneState&quot;: {
+      &quot;camera&quot;: {
+        &quot;heading&quot;: 0
+      },
+      &quot;layers&quot;: [
+        {
+          &quot;id&quot;: &quot;base&quot;,
+          &quot;show&quot;: true
+        }
+      ],
+      &quot;loading&quot;: false,
+      &quot;tilesLoaded&quot;: true
+    },
+    &quot;visibleTargets&quot;: [
+      {
+        &quot;id&quot;: &quot;entity.alpha&quot;,
+        &quot;type&quot;: &quot;entity&quot;,
+        &quot;label&quot;: &quot;Alpha&quot;
+      }
+    ],
+    &quot;selectedTargetId&quot;: &quot;entity.alpha&quot;
+  },
+  &quot;sceneStateChanged&quot;: false,
+  &quot;selectedTargetChanged&quot;: true,
+  &quot;gestureEvidence&quot;: null
+}</pre></details>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</body></html>

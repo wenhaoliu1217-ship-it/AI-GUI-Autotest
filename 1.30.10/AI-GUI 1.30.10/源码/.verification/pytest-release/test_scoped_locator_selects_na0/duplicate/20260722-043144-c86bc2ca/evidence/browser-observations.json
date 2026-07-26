@@ -1,0 +1,102 @@
+{
+  "runId": "20260722-043144-c86bc2ca",
+  "data": [
+    {
+      "stepId": "step-1",
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:31:46.680695+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64413/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [
+          "div | role=row | data-object-id=agent-1 | text=E2E_Alpha Delete",
+          "button | text=Delete",
+          "div | role=row | data-object-id=agent-2 | text=E2E_Beta Delete",
+          "button | text=Delete"
+        ],
+        "accessibility_summary": "- row \"E2E_Alpha Delete\":\n  - text: E2E_Alpha\n  - button \"Delete\"\n- row \"E2E_Beta Delete\":\n  - text: E2E_Beta\n  - button \"Delete\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 29,
+          "visible_element_count": 4,
+          "interactive_count": 2,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:31:47.181758+08:00"
+      }
+    },
+    {
+      "stepId": "step-2",
+      "before": {
+        "url": "http://127.0.0.1:64413/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [
+          "div | role=row | data-object-id=agent-1 | text=E2E_Alpha Delete",
+          "button | text=Delete",
+          "div | role=row | data-object-id=agent-2 | text=E2E_Beta Delete",
+          "button | text=Delete"
+        ],
+        "accessibility_summary": "- row \"E2E_Alpha Delete\":\n  - text: E2E_Alpha\n  - button \"Delete\"\n- row \"E2E_Beta Delete\":\n  - text: E2E_Beta\n  - button \"Delete\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 29,
+          "visible_element_count": 4,
+          "interactive_count": 2,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:31:47.536324+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64413/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after-failure.png",
+        "dom_summary": [
+          "div | role=row | data-object-id=agent-1 | text=E2E_Alpha Delete",
+          "button | text=Delete",
+          "div | role=row | data-object-id=agent-2 | text=E2E_Beta Delete",
+          "button | text=Delete"
+        ],
+        "accessibility_summary": "- row \"E2E_Alpha Delete\":\n  - text: E2E_Alpha\n  - button \"Delete\"\n- row \"E2E_Beta Delete\":\n  - text: E2E_Beta\n  - button \"Delete\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 29,
+          "visible_element_count": 4,
+          "interactive_count": 2,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:31:47.918320+08:00"
+      }
+    }
+  ]
+}

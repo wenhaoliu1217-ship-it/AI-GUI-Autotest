@@ -1,0 +1,16 @@
+ARG RUNNER_DEPENDENCY_BASE=ai-gui-runner:1.30.30-dependency-base
+FROM ${RUNNER_DEPENDENCY_BASE}
+
+USER root
+WORKDIR /app
+COPY src ./src
+COPY container-entrypoint.sh /usr/local/bin/container-entrypoint
+RUN chmod 0555 /usr/local/bin/container-entrypoint \
+    && chown -R 10001:10001 /app/src
+
+ENV PYTHONPATH=/app/src
+ENV PYTHONUNBUFFERED=1
+ENV HOME=/home/runner
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+ENTRYPOINT ["/usr/local/bin/container-entrypoint"]
+CMD ["python", "-m", "gui_agent.execution.container_worker"]

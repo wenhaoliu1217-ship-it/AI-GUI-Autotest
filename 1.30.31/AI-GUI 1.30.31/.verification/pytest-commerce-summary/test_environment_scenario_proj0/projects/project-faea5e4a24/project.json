@@ -1,0 +1,40 @@
+{
+  "id": "project-faea5e4a24",
+  "name": "企业闭环 V2",
+  "baseUrl": "https://example.com",
+  "allowedHosts": [
+    "example.com"
+  ],
+  "forbiddenActions": [],
+  "allowPrivateNetwork": true,
+  "businessContext": {
+    "description": "",
+    "terminology": {
+      "任务池": "待处理任务集合"
+    },
+    "objectTypes": [],
+    "stateModels": {},
+    "exampleGoals": [],
+    "operatingBoundaries": [],
+    "allowedActions": [],
+    "bridgeCapabilities": [],
+    "bridgeSemanticTargets": {}
+  },
+  "commerceProfile": {
+    "enabled": false,
+    "environment": "production_readonly",
+    "accountRef": null,
+    "productionReversibleWriteAuthorized": false,
+    "sandboxDriver": false,
+    "e2eResourcePrefix": "E2E_",
+    "piiMaskSelectors": []
+  },
+  "onboardingLevel": "L3",
+  "limits": {
+    "maxSteps": 50,
+    "timeoutSeconds": 600,
+    "maxModelCalls": 20
+  },
+  "createdAt": "2026-07-23T03:09:55.725052+00:00",
+  "updatedAt": "2026-07-23T03:09:55.878761+00:00"
+}

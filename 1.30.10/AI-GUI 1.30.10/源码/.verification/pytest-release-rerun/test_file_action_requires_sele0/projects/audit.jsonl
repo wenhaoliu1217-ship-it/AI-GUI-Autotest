@@ -1,0 +1,2 @@
+{"timestamp": "2026-07-21T20:33:14.292963+00:00", "action": "create", "objectType": "project", "objectId": "project-7c66ea4337", "projectId": "project-7c66ea4337", "changedFields": ["all"]}
+{"timestamp": "2026-07-21T20:33:14.320319+00:00", "action": "register", "objectType": "test_file", "objectId": "file-6b525b9d8c59", "projectId": "project-7c66ea4337", "changedFields": ["fileName", "size", "sha256", "mimeType", "validationStatus", "expectedResult"]}

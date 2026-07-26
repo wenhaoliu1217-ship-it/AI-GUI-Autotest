@@ -1,0 +1,52 @@
+{
+  "id": "project-e53d5b95a3",
+  "name": "Agent 项目",
+  "baseUrl": "https://example.com",
+  "allowedHosts": [
+    "example.com"
+  ],
+  "forbiddenActions": [
+    "发布内容"
+  ],
+  "allowPrivateNetwork": false,
+  "businessContext": {
+    "description": "",
+    "terminology": {
+      "发布单": "待发布的内容对象"
+    },
+    "objectTypes": [],
+    "stateModels": {},
+    "exampleGoals": [],
+    "operatingBoundaries": [
+      "信息不足时先澄清"
+    ],
+    "allowedActions": [],
+    "bridgeCapabilities": [],
+    "bridgeSemanticTargets": {},
+    "facts": [],
+    "objectRelations": [],
+    "missingFacts": [],
+    "sourceRevision": ""
+  },
+  "asyncStateMachines": [],
+  "sideEffectPolicies": [],
+  "componentAdapters": [],
+  "accountProfiles": [
+    {
+      "id": "default",
+      "name": "默认测试账号",
+      "role": "tester",
+      "loginMethod": "interactive",
+      "credentialRefs": {},
+      "permissions": []
+    }
+  ],
+  "onboardingLevel": "L0",
+  "limits": {
+    "maxSteps": 7,
+    "timeoutSeconds": 90,
+    "maxModelCalls": 4
+  },
+  "createdAt": "2026-07-21T20:21:02.681703+00:00",
+  "updatedAt": "2026-07-21T20:21:02.681703+00:00"
+}

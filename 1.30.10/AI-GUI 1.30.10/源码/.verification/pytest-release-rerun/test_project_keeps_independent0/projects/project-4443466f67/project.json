@@ -1,0 +1,59 @@
+{
+  "id": "project-4443466f67",
+  "name": "角色矩阵",
+  "baseUrl": "https://example.com",
+  "allowedHosts": [
+    "example.com"
+  ],
+  "forbiddenActions": [],
+  "allowPrivateNetwork": false,
+  "businessContext": {
+    "description": "",
+    "terminology": {},
+    "objectTypes": [],
+    "stateModels": {},
+    "exampleGoals": [],
+    "operatingBoundaries": [],
+    "allowedActions": [],
+    "bridgeCapabilities": [],
+    "bridgeSemanticTargets": {},
+    "facts": [],
+    "objectRelations": [],
+    "missingFacts": [],
+    "sourceRevision": ""
+  },
+  "asyncStateMachines": [],
+  "sideEffectPolicies": [],
+  "componentAdapters": [],
+  "accountProfiles": [
+    {
+      "id": "admin",
+      "name": "管理员",
+      "role": "admin",
+      "loginMethod": "interactive",
+      "credentialRefs": {},
+      "permissions": [
+        "管理建模"
+      ]
+    },
+    {
+      "id": "readonly",
+      "name": "只读账号",
+      "role": "readonly",
+      "loginMethod": "credentials",
+      "credentialRefs": {
+        "username": "READONLY_USER",
+        "password": "READONLY_PASSWORD"
+      },
+      "permissions": []
+    }
+  ],
+  "onboardingLevel": "L0",
+  "limits": {
+    "maxSteps": 50,
+    "timeoutSeconds": 600,
+    "maxModelCalls": 20
+  },
+  "createdAt": "2026-07-21T20:33:12.900704+00:00",
+  "updatedAt": "2026-07-21T20:33:12.900704+00:00"
+}

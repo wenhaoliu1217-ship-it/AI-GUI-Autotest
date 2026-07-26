@@ -1,0 +1,16 @@
+{
+  "projectId": "project-329e6ca4db",
+  "importedAt": "2026-07-21T20:21:01.589957+00:00",
+  "cookieCount": 1,
+  "originCount": 0,
+  "domains": [
+    "example.com"
+  ],
+  "expiresAt": null,
+  "expiryStatus": "unknown",
+  "expiredCookieCount": 0,
+  "encryption": "Windows DPAPI / CurrentUser",
+  "accountId": "admin",
+  "accountName": "管理员",
+  "accountRole": "admin"
+}

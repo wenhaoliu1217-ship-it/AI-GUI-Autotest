@@ -1,0 +1,21 @@
+{
+  "id": "scenario-9883fd63d4",
+  "projectId": "project-278daba899",
+  "name": "商品检索",
+  "preconditions": [
+    "已登录"
+  ],
+  "goal": "查找商品 A",
+  "testData": {
+    "keyword": "A"
+  },
+  "expectedResults": [
+    "商品 A 可见"
+  ],
+  "forbiddenActions": [
+    "支付"
+  ],
+  "commerceSteps": [],
+  "createdAt": "2026-07-23T03:45:10.982220+00:00",
+  "updatedAt": "2026-07-23T03:45:10.982220+00:00"
+}

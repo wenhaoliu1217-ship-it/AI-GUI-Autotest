@@ -1,0 +1,6 @@
+{"timestamp": "2026-07-21T20:31:55.094349+00:00", "action": "create", "objectType": "project", "objectId": "project-ae36d43a8b", "projectId": "project-ae36d43a8b", "changedFields": ["all"]}
+{"timestamp": "2026-07-21T20:31:55.126209+00:00", "action": "create", "objectType": "environment", "objectId": "environment-41594c91a6", "projectId": "project-ae36d43a8b", "changedFields": ["all"]}
+{"timestamp": "2026-07-21T20:31:55.155405+00:00", "action": "update", "objectType": "environment", "objectId": "environment-41594c91a6", "projectId": "project-ae36d43a8b", "changedFields": ["name", "variables", "screenshotMaskSelectors", "viewport", "deviceScaleFactor", "artifactRetentionDays"]}
+{"timestamp": "2026-07-21T20:31:55.168704+00:00", "action": "create", "objectType": "scenario", "objectId": "scenario-12eba22d6b", "projectId": "project-ae36d43a8b", "changedFields": ["all"]}
+{"timestamp": "2026-07-21T20:31:55.202103+00:00", "action": "update", "objectType": "scenario", "objectId": "scenario-12eba22d6b", "projectId": "project-ae36d43a8b", "changedFields": ["goal", "expectedResults"]}
+{"timestamp": "2026-07-21T20:31:55.218064+00:00", "action": "update", "objectType": "project", "objectId": "project-ae36d43a8b", "projectId": "project-ae36d43a8b", "changedFields": ["allowPrivateNetwork", "businessContext", "name", "onboardingLevel"]}

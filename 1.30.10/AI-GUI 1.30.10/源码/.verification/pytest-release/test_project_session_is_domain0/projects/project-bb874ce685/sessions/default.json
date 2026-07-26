@@ -1,0 +1,16 @@
+{
+  "projectId": "project-bb874ce685",
+  "importedAt": "2026-07-21T20:31:54.861316+00:00",
+  "cookieCount": 1,
+  "originCount": 0,
+  "domains": [
+    "example.com"
+  ],
+  "expiresAt": "2033-05-18T03:33:20+00:00",
+  "expiryStatus": "active",
+  "expiredCookieCount": 0,
+  "encryption": "Windows DPAPI / CurrentUser",
+  "accountId": "default",
+  "accountName": "默认测试账号",
+  "accountRole": "tester"
+}

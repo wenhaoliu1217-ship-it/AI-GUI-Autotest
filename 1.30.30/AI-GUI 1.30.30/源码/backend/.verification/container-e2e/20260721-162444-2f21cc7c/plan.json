@@ -1,0 +1,27 @@
+{
+  "name": "FR-11 container browser smoke",
+  "base_url": "https://example.com",
+  "preconditions": [],
+  "steps": [
+    {
+      "action": "navigate",
+      "target": "/",
+      "description": "open public target",
+      "execution_mode": "locator",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600
+    },
+    {
+      "action": "screenshot",
+      "description": "capture evidence",
+      "execution_mode": "locator",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600
+    }
+  ],
+  "assertions": []
+}

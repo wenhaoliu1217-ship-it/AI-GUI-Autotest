@@ -1,0 +1,16 @@
+{
+  "runId": "20260722-041023-158473c1",
+  "data": {
+    "runId": "20260722-041023-158473c1",
+    "planName": "Occlusion check",
+    "status": "error",
+    "startedAt": "2026-07-22T04:10:23.310482+08:00",
+    "endedAt": "2026-07-22T04:10:25.201212+08:00",
+    "projectId": null,
+    "environmentId": null,
+    "accountId": null,
+    "accountRole": null,
+    "scenarioId": null,
+    "goalStatus": "incomplete"
+  }
+}

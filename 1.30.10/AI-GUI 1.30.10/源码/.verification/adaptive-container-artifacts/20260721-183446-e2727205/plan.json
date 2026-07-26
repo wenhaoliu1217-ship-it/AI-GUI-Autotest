@@ -1,0 +1,41 @@
+{
+  "name": "real adaptive container verification",
+  "base_url": "http://host.docker.internal:57981",
+  "preconditions": [],
+  "steps": [
+    {
+      "action": "navigate",
+      "target": "/",
+      "execution_mode": "locator",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600
+    },
+    {
+      "action": "visual_click",
+      "locator": {
+        "css": "#map"
+      },
+      "execution_mode": "visual",
+      "stability_level": "C",
+      "stability_reason": "确定性 Playwright 动作",
+      "visual_target": "Canvas center",
+      "relative_position": {
+        "x_ratio": 0.1,
+        "y_ratio": 0.1
+      },
+      "visual_expected_change": "Selected becomes visible",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600
+    }
+  ],
+  "assertions": [
+    {
+      "type": "visible",
+      "locator": {
+        "text": "Selected"
+      }
+    }
+  ]
+}

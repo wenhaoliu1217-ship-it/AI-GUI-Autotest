@@ -1,0 +1,79 @@
+{
+  "projectId": "project-a4aca3cd48",
+  "generatedAt": "2026-07-21T20:11:08.415216+00:00",
+  "onboardingLevel": "L0",
+  "requestedUrl": "https://example.com",
+  "finalUrl": "https://example.com",
+  "title": "历史应用",
+  "status": "attention",
+  "pageSummary": {
+    "buttons": 2
+  },
+  "candidateLocators": {
+    "namedControls": 2
+  },
+  "capabilities": [
+    "标准 DOM"
+  ],
+  "thirdPartyHosts": [],
+  "consoleErrors": [],
+  "failedRequests": [],
+  "blockedAreas": [],
+  "recommendations": [
+    "补充 aria-label"
+  ],
+  "suggestedScenarios": [
+    "验证主要导航入口“客户管理”可见且可访问"
+  ],
+  "recommendedOnboardingLevel": "L2",
+  "scannedPages": [
+    {
+      "url": "https://example.com",
+      "title": "历史应用",
+      "pageType": "导航/工作台"
+    }
+  ],
+  "navigationEntries": [],
+  "authenticationSignals": [],
+  "asyncPatterns": [],
+  "stableAreas": [
+    "2 个具名控件可稳定定位"
+  ],
+  "visualAreas": [],
+  "adaptiveAreas": [
+    "1 个控件需要可访问名称"
+  ],
+  "manualAreas": [],
+  "recommendedConfig": {
+    "allowedHosts": [
+      "example.com"
+    ],
+    "ignoreRules": [],
+    "viewport": {
+      "width": 1440,
+      "height": 960
+    },
+    "limits": {
+      "maxSteps": 50,
+      "timeoutSeconds": 600,
+      "maxModelCalls": 20
+    }
+  },
+  "sampleScenarioId": "scenario-04bf1fb862",
+  "sampleScenarioCreated": true,
+  "scanMode": "low_risk",
+  "appMap": {
+    "version": "1",
+    "projectId": "project-a4aca3cd48",
+    "generatedAt": "2026-07-22T00:00:00Z",
+    "scanMode": "low_risk",
+    "pages": [
+      {
+        "id": "page-1",
+        "url": "https://example.com",
+        "title": "历史应用",
+        "probes": []
+      }
+    ]
+  }
+}

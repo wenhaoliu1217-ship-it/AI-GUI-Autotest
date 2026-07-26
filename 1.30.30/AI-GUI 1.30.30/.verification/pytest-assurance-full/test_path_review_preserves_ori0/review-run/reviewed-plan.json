@@ -1,0 +1,28 @@
+{
+  "name": "审核回归路径",
+  "base_url": "https://example.com",
+  "preconditions": [],
+  "steps": [
+    {
+      "action": "navigate",
+      "target": "/",
+      "description": "打开审核后的首页",
+      "execution_mode": "locator",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600,
+      "browser_target": {
+        "page": "current",
+        "wait_timeout_ms": 10000
+      }
+    }
+  ],
+  "assertions": [
+    {
+      "type": "url_contains",
+      "expected": "/",
+      "description": "保持在站点内"
+    }
+  ]
+}

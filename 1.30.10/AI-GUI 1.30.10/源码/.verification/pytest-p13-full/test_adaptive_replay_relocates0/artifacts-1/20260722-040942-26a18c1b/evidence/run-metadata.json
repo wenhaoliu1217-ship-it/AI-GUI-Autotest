@@ -1,0 +1,16 @@
+{
+  "runId": "20260722-040942-26a18c1b",
+  "data": {
+    "runId": "20260722-040942-26a18c1b",
+    "planName": "Canvas 自适应回放",
+    "status": "passed",
+    "startedAt": "2026-07-22T04:09:42.139656+08:00",
+    "endedAt": "2026-07-22T04:09:44.392389+08:00",
+    "projectId": null,
+    "environmentId": null,
+    "accountId": null,
+    "accountRole": null,
+    "scenarioId": null,
+    "goalStatus": "achieved"
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "runId": "20260722-043135-cac9340a",
+  "data": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": null,
+      "target_summary": "navigate -> /",
+      "status": "passed",
+      "started_at": "2026-07-22T04:31:37.041290+08:00",
+      "ended_at": "2026-07-22T04:31:37.539176+08:00",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-1-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": false,
+        "passed": true,
+        "mode": "not_applicable"
+      },
+      "canvas_evidence": null,
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:31:37.263269+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64387/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [
+          "h1 | text=Canvas Map",
+          "h2 | text=Not selected"
+        ],
+        "accessibility_summary": "- heading \"Canvas Map\" [level=1]\n- heading \"Not selected\" [level=2]",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 20,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:31:37.539176+08:00"
+      },
+      "planner_reason": "按审核后的固定计划执行非视觉步骤",
+      "progress_assessment": "progress"
+    },
+    {
+      "index": 2,
+      "action": "visual_click",
+      "description": "视觉定位并执行 click：Canvas 目标",
+      "target_summary": "视觉定位并执行 click：Canvas 目标 @ css=#map",
+      "status": "passed",
+      "started_at": "2026-07-22T04:31:37.541170+08:00",
+      "ended_at": "2026-07-22T04:31:38.108104+08:00",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-2-after.png",
+      "execution_mode": "visual",
+      "locator_basis": "css=#map",
+      "stability_level": "C",
+      "stability_reason": "运行时视觉模型重新定位语义目标",
+      "computer_use_triggered": true,
+      "computer_use_reason": "显式 adaptive 回放要求按当前截图重新定位",
+      "coordinate_source": "region-relative:0.2500,0.5000",
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": true,
+        "mode": "locator",
+        "visible": true,
+        "enabled": true,
+        "stable": true,
+        "unoccluded": true,
+        "boxBefore": {
+          "x": 8,
+          "y": 84.875,
+          "width": 402,
+          "height": 202,
+          "visible": true
+        },
+        "boxAfter": {
+          "x": 8,
+          "y": 84.875,
+          "width": 402,
+          "height": 202,
+          "visible": true
+        },
+        "occludingElement": null,
+        "passed": true
+      },
+      "canvas_evidence": {
+        "mode": "visual",
+        "action": "visual_click",
+        "semanticTarget": "Canvas 目标",
+        "coordinateSource": "region-relative:0.2500,0.5000",
+        "beforeScreenshot": "screenshots/step-2-before.png",
+        "afterScreenshot": "screenshots/step-2-after.png",
+        "traceArtifact": "trace.zip",
+        "collectionStatus": "complete",
+        "bridgeAvailable": false,
+        "bridgeBefore": null,
+        "bridgeAfter": null,
+        "sceneStateChanged": null,
+        "selectedTargetChanged": null,
+        "gestureEvidence": null,
+        "observationProgressVerified": true
+      },
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "http://127.0.0.1:64387/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [
+          "h1 | text=Canvas Map",
+          "h2 | text=Not selected"
+        ],
+        "accessibility_summary": "- heading \"Canvas Map\" [level=1]\n- heading \"Not selected\" [level=2]",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 20,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:31:37.724446+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64387/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after.png",
+        "dom_summary": [
+          "h1 | text=Canvas Map",
+          "h2 | text=Target selected"
+        ],
+        "accessibility_summary": "- heading \"Canvas Map\" [level=1]\n- heading \"Target selected\" [level=2]",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 23,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:31:38.107109+08:00"
+      },
+      "planner_reason": "按审核计划重新定位视觉语义目标",
+      "progress_assessment": "progress"
+    }
+  ]
+}

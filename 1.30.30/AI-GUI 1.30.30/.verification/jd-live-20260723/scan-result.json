@@ -1,0 +1,327 @@
+{
+  "projectId": "project-7175e33b11",
+  "generatedAt": "2026-07-23T09:39:09.510500+00:00",
+  "onboardingLevel": "L0",
+  "requestedUrl": "https://www.jd.com",
+  "finalUrl": "https://www.jd.com/",
+  "title": "京东(JD.COM)-正品低价、品质保障、配送及时、轻松购物！",
+  "status": "attention",
+  "pageSummary": {
+    "buttons": 5,
+    "links": 506,
+    "inputs": 9,
+    "selects": 0,
+    "textareas": 0,
+    "canvases": 0,
+    "webglRegions": 0,
+    "iframes": 0,
+    "crossOriginIframes": 0,
+    "fileInputs": 4,
+    "shadowRoots": 0,
+    "contentEditors": 0,
+    "unlabeledControls": 8,
+    "duplicateIds": 0,
+    "loadingSignals": 19
+  },
+  "candidateLocators": {
+    "testIds": 0,
+    "labels": 0,
+    "roles": 4,
+    "ariaNames": 20,
+    "namedControls": 512
+  },
+  "capabilities": [
+    "标准 DOM",
+    "ARIA/Accessibility 候选",
+    "主要导航只读遍历",
+    "文件上传",
+    "Vue/SPA candidate",
+    "React/SPA candidate"
+  ],
+  "thirdPartyHosts": [
+    "api.m.jd.com",
+    "gias.jd.com",
+    "h5speed.m.jd.com",
+    "img10.360buyimg.com",
+    "img11.360buyimg.com",
+    "img12.360buyimg.com",
+    "img13.360buyimg.com",
+    "img30.360buyimg.com",
+    "jra.jd.com",
+    "m.360buyimg.com",
+    "mercury.jd.com",
+    "misc.360buyimg.com",
+    "static.360buyimg.com",
+    "storage.360buyimg.com",
+    "wl.jd.com"
+  ],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 403 ()",
+    "公共组件捕获到请求失败 jsonpLogin {params: {\"url\":\"//passport.jd.com/loginservice.aspx?method…out\":2000,\"jsonp\":\"callback\",\"name\":\"jsonpLogin\"}}",
+    "src/atoms/useResult.ts 144 Pe"
+  ],
+  "failedRequests": [
+    "GET https://api.m.jd.com/api?h5st=20260723173909458%3Bzz5iibippbieamb0%3Bb5216%3Btk06wa3effb8741lfZ-6h4f5WGb7pjrfJ2VTGGFT7qURJGVR2DENrrbrMxzWnAzZgW2XUOmegSUWZmndGaVf0XlSISod%3B00ff02c41a87268ffaa1caba78dbc09a9ccf9471cb1aa1d54d6d7999f9c8fc0a%3B5.3%3B1784799544458%3BpjbMhjpfJ2VTGGFT7qURJGVR2DENJrJdJrESJrpjh7Je2boe3XYdyPoezPYfLDIj3ipjLDrgJ3VbmmHRfmUbZSGjL",
+    "GET https://api.m.jd.com/api?h5st=20260723173909479%3Bzz5iibippbieamb0%3Bb5216%3Btk06webed38b141lf0L5NofAfZ-4pjrfJ2VTGGFT7qURJGVR2DENrrbrMxzWnsSe7SWPzLmexakf5qkdGGoS3f4eKm1f%3B4696d8a0562ce8b667bdd433ea10a0adfece682b015116466889a1b161d66f16%3B5.3%3B1784799544479%3BpjbMhjpfJ2VTGGFT7qURJGVR2DENJrJdJrESJrpjh7Je0boe3XYdyPoezPYfLDIj3ipjLDrgJ3VbmmHRfmUbZSGjL",
+    "GET https://search.jd.com/Search?keyword=%E5%8E%A8%E5%8D%AB%E5%A4%A7%E7%94%B5&enc=utf-8&pvid=ba95fa066c7f4d868bb290f303af75df (目标主机不在白名单：cfe.m.jd.com（允许：['item.jd.com', 'jd.com', 'passport.jd.com', 'pcitem.jd.com', 'search.jd.com', 'www.jd.com']）)",
+    "HTTP 403 https://api.m.jd.com/api?h5st=20260723173909458%3Bzz5iibippbieamb0%3Bb5216%3Btk06wa3effb8741lfZ-6h4f5WGb7pjrfJ2VTGGFT7qURJGVR2DENrrbrMxzWnAzZgW2XUOmegSUWZmndGaVf0XlSISod%3B00ff02c41a87268ffaa1caba78dbc09a9ccf9471cb1aa1d54d6d7999f9c8fc0a%3B5.3%3B1784799544458%3BpjbMhjpfJ2VTGGFT7qURJGVR2DENJrJdJrESJrpjh7Je2boe3XYdyPoezPYfLDIj3ipjLDrgJ3VbmmHRfmUbZSGjL",
+    "HTTP 403 https://api.m.jd.com/api?h5st=20260723173909479%3Bzz5iibippbieamb0%3Bb5216%3Btk06webed38b141lf0L5NofAfZ-4pjrfJ2VTGGFT7qURJGVR2DENrrbrMxzWnsSe7SWPzLmexakf5qkdGGoS3f4eKm1f%3B4696d8a0562ce8b667bdd433ea10a0adfece682b015116466889a1b161d66f16%3B5.3%3B1784799544479%3BpjbMhjpfJ2VTGGFT7qURJGVR2DENJrJdJrESJrpjh7Je0boe3XYdyPoezPYfLDIj3ipjLDrgJ3VbmmHRfmUbZSGjL",
+    "HTTP 403 https://api.m.jd.com/api?appid=search-pc-java&t=1784799545847&client=pc&clientVersion=1.0.0&cthr=1&uuid=1784799542443395652400&loginType=3&keyword=%E5%86%B0%E7%AE%B1%2F%E6%B4%97%E8%A1%A3%E6%9C%BA&functionId=pc_search_searchWare&body={%22enc%22:%22utf-8%22,%22pvid%22:%2286906b9466d84cb99b938ce3d1f98eb1%22,%22area%22:%221_72_55653_0%22,%22page%22:1,%"
+  ],
+  "blockedAreas": [],
+  "recommendations": [
+    "关键业务控件尚未发现测试标识；可选补充 data-testid，但不阻止 L0/L1 黑盒测试",
+    "为无可访问名称的关键控件补充 label、aria-label 或 aria-labelledby",
+    "文件上传仅使用用户授权的固定测试文件，并在执行前确认目标目录"
+  ],
+  "suggestedScenarios": [
+    "确认看到“京东”",
+    "验证主要导航入口“冰洗”可见且可访问",
+    "验证主要导航入口“空调”可见且可访问",
+    "验证主要导航入口“电视”可见且可访问",
+    "验证主要导航入口“厨卫大电”可见且可访问",
+    "验证业务区域“京东”可见",
+    "验证业务区域“京东,多快好省”可见"
+  ],
+  "recommendedOnboardingLevel": "L2",
+  "scannedPages": [
+    {
+      "url": "https://www.jd.com/",
+      "title": "京东(JD.COM)-正品低价、品质保障、配送及时、轻松购物！",
+      "pageType": "导航/工作台",
+      "summary": {
+        "buttons": 1,
+        "links": 258,
+        "inputs": 1,
+        "selects": 0,
+        "textareas": 0,
+        "canvases": 0,
+        "webglRegions": 0,
+        "iframes": 0,
+        "crossOriginIframes": 0,
+        "fileInputs": 0,
+        "shadowRoots": 0,
+        "contentEditors": 0,
+        "unlabeledControls": 0,
+        "duplicateIds": 0,
+        "loadingSignals": 15
+      },
+      "candidateLocators": {
+        "testIds": 0,
+        "labels": 0,
+        "roles": 4,
+        "ariaNames": 16,
+        "namedControls": 260
+      },
+      "headings": [
+        "京东",
+        "京东,多快好省"
+      ],
+      "redirectChain": [
+        "https://www.jd.com/"
+      ]
+    },
+    {
+      "url": "https://search.jd.com/Search?keyword=%E5%86%B0%E7%AE%B1%2F%E6%B4%97%E8%A1%A3%E6%9C%BA&enc=utf-8&wq=%E5%86%B0%E6%B4%97&pvid=86906b9466d84cb99b938ce3d1f98eb1",
+      "title": "冰箱/洗衣机 - 商品搜索 - 京东",
+      "pageType": "导航/工作台",
+      "summary": {
+        "buttons": 1,
+        "links": 62,
+        "inputs": 2,
+        "selects": 0,
+        "textareas": 0,
+        "canvases": 0,
+        "webglRegions": 0,
+        "iframes": 0,
+        "crossOriginIframes": 0,
+        "fileInputs": 1,
+        "shadowRoots": 0,
+        "contentEditors": 0,
+        "unlabeledControls": 2,
+        "duplicateIds": 0,
+        "loadingSignals": 1
+      },
+      "candidateLocators": {
+        "testIds": 0,
+        "labels": 0,
+        "roles": 0,
+        "ariaNames": 1,
+        "namedControls": 63
+      },
+      "headings": [],
+      "redirectChain": [
+        "https://search.jd.com/Search?keyword=%E5%86%B0%E7%AE%B1%2F%E6%B4%97%E8%A1%A3%E6%9C%BA&enc=utf-8&wq=%E5%86%B0%E6%B4%97&pvid=86906b9466d84cb99b938ce3d1f98eb1"
+      ]
+    },
+    {
+      "url": "https://search.jd.com/Search?keyword=%E7%A9%BA%E8%B0%83&enc=utf-8&wq=%E7%A9%BA%E8%B0%83&pvid=d4838b0188684013823b83834c67fdeb",
+      "title": "空调 - 商品搜索 - 京东",
+      "pageType": "导航/工作台",
+      "summary": {
+        "buttons": 1,
+        "links": 62,
+        "inputs": 2,
+        "selects": 0,
+        "textareas": 0,
+        "canvases": 0,
+        "webglRegions": 0,
+        "iframes": 0,
+        "crossOriginIframes": 0,
+        "fileInputs": 1,
+        "shadowRoots": 0,
+        "contentEditors": 0,
+        "unlabeledControls": 2,
+        "duplicateIds": 0,
+        "loadingSignals": 1
+      },
+      "candidateLocators": {
+        "testIds": 0,
+        "labels": 0,
+        "roles": 0,
+        "ariaNames": 1,
+        "namedControls": 63
+      },
+      "headings": [],
+      "redirectChain": [
+        "https://search.jd.com/Search?keyword=%E7%A9%BA%E8%B0%83&enc=utf-8&wq=%E7%A9%BA%E8%B0%83&pvid=d4838b0188684013823b83834c67fdeb"
+      ]
+    },
+    {
+      "url": "https://search.jd.com/Search?keyword=%E7%94%B5%E8%A7%86&enc=utf-8&pvid=5cb7fcf3d78045e082eee2cc6d33c054",
+      "title": "电视 - 商品搜索 - 京东",
+      "pageType": "导航/工作台",
+      "summary": {
+        "buttons": 1,
+        "links": 62,
+        "inputs": 2,
+        "selects": 0,
+        "textareas": 0,
+        "canvases": 0,
+        "webglRegions": 0,
+        "iframes": 0,
+        "crossOriginIframes": 0,
+        "fileInputs": 1,
+        "shadowRoots": 0,
+        "contentEditors": 0,
+        "unlabeledControls": 2,
+        "duplicateIds": 0,
+        "loadingSignals": 1
+      },
+      "candidateLocators": {
+        "testIds": 0,
+        "labels": 0,
+        "roles": 0,
+        "ariaNames": 1,
+        "namedControls": 63
+      },
+      "headings": [],
+      "redirectChain": [
+        "https://search.jd.com/Search?keyword=%E7%94%B5%E8%A7%86&enc=utf-8&pvid=5cb7fcf3d78045e082eee2cc6d33c054"
+      ]
+    },
+    {
+      "url": "https://search.jd.com/Search?keyword=%E7%94%B5%E8%84%91%E6%95%B4%E6%9C%BA&enc=utf-8&pvid=e2444eaf9a9b4e33b9bf031c43e39940",
+      "title": "电脑整机 - 商品搜索 - 京东",
+      "pageType": "导航/工作台",
+      "summary": {
+        "buttons": 1,
+        "links": 62,
+        "inputs": 2,
+        "selects": 0,
+        "textareas": 0,
+        "canvases": 0,
+        "webglRegions": 0,
+        "iframes": 0,
+        "crossOriginIframes": 0,
+        "fileInputs": 1,
+        "shadowRoots": 0,
+        "contentEditors": 0,
+        "unlabeledControls": 2,
+        "duplicateIds": 0,
+        "loadingSignals": 1
+      },
+      "candidateLocators": {
+        "testIds": 0,
+        "labels": 0,
+        "roles": 0,
+        "ariaNames": 1,
+        "namedControls": 63
+      },
+      "headings": [],
+      "redirectChain": [
+        "https://search.jd.com/Search?keyword=%E7%94%B5%E8%84%91%E6%95%B4%E6%9C%BA&enc=utf-8&pvid=e2444eaf9a9b4e33b9bf031c43e39940"
+      ]
+    }
+  ],
+  "navigationEntries": [
+    "冰洗",
+    "空调",
+    "电视",
+    "厨卫大电",
+    "电脑",
+    "办公",
+    "文具用品",
+    "手机",
+    "运营商",
+    "数码",
+    "生活电器",
+    "厨房小电",
+    "个护健康",
+    "食品",
+    "酒类",
+    "生鲜",
+    "特产",
+    "美妆",
+    "个护清洁",
+    "宠物",
+    "元器件",
+    "劳保物资",
+    "五金机电",
+    "家装",
+    "建材",
+    "家具",
+    "家居日用",
+    "厨具",
+    "男鞋",
+    "运动"
+  ],
+  "authenticationSignals": [
+    "未发现明确登录表单；本次按公开页面状态扫描"
+  ],
+  "asyncPatterns": [
+    "观察到 17 个 Fetch/XHR 资源，页面存在异步数据加载",
+    "观察到 19 个 loading/skeleton/aria-busy 信号"
+  ],
+  "stableAreas": [
+    "512 个具名 DOM 控件可优先使用角色、标签或文本定位",
+    "识别 30 个主要导航入口；仅遍历具有安全 GET 地址的入口"
+  ],
+  "visualAreas": [],
+  "adaptiveAreas": [
+    "8 个控件缺少可访问名称，定位稳定性较低"
+  ],
+  "manualAreas": [],
+  "recommendedConfig": {
+    "allowedHosts": [
+      "www.jd.com",
+      "jd.com",
+      "search.jd.com",
+      "item.jd.com",
+      "pcitem.jd.com",
+      "passport.jd.com"
+    ],
+    "ignoreRules": [],
+    "viewport": {
+      "width": 1440,
+      "height": 960
+    },
+    "limits": {
+      "maxSteps": 50,
+      "timeoutSeconds": 600,
+      "maxModelCalls": 20
+    }
+  },
+  "sampleScenarioId": "scenario-55da9b6510",
+  "sampleScenarioCreated": true
+}

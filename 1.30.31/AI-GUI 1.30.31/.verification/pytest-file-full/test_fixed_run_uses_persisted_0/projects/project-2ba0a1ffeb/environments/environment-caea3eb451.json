@@ -1,0 +1,29 @@
+{
+  "id": "environment-caea3eb451",
+  "projectId": "project-2ba0a1ffeb",
+  "name": "QA",
+  "variables": {
+    "TEST_BASE_URL": "https://example.com",
+    "TENANT": "qa"
+  },
+  "secretRefs": {
+    "PASSWORD": "QA_PASSWORD"
+  },
+  "ignoreRules": [
+    "**/analytics/**"
+  ],
+  "screenshotMaskSelectors": [],
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "deviceScaleFactor": 1.25,
+  "appBridge": {
+    "enabled": true,
+    "globalName": "CUSTOM_TEST_BRIDGE",
+    "adapter": "cesium"
+  },
+  "artifactRetentionDays": 14,
+  "createdAt": "2026-07-23T04:24:55.921772+00:00",
+  "updatedAt": "2026-07-23T04:24:55.921772+00:00"
+}

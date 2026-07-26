@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1",
+  "id": "S08",
+  "name": "装备智能体上传非法 JSON",
+  "category": "文件负向",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "管理员",
+  "prerequisites": [
+    {
+      "id": "S08-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "非法智能体 JSON 样例"
+    },
+    {
+      "id": "S08-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "预期校验错误"
+    },
+    {
+      "id": "S08-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "残留对象查询接口"
+    }
+  ],
+  "goal": "装备智能体上传非法 JSON",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "上传登记的非法 schema JSON",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "拒绝文件并显示结构错误",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "无残留业务对象",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": true,
+    "order": "reverse_dependency",
+    "verification": "business_object_not_queryable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "file_transfer",
+    "cleanup"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "非法智能体 JSON 样例",
+    "预期校验错误",
+    "残留对象查询接口"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

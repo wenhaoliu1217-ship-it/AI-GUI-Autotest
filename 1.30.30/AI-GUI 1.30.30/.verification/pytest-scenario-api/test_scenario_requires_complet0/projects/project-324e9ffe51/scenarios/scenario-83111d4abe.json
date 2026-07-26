@@ -1,0 +1,19 @@
+{
+  "id": "scenario-83111d4abe",
+  "projectId": "project-324e9ffe51",
+  "name": "登录",
+  "preconditions": [
+    "测试账号可用"
+  ],
+  "goal": "登录后台",
+  "testData": {
+    "password": "<secret:TEST_PASSWORD>"
+  },
+  "expectedResults": [
+    "进入控制台"
+  ],
+  "forbiddenActions": [],
+  "commerceSteps": [],
+  "createdAt": "2026-07-23T03:20:39.001764+00:00",
+  "updatedAt": "2026-07-23T03:20:39.001764+00:00"
+}

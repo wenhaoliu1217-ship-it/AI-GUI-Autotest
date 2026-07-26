@@ -1,0 +1,7 @@
+{"timestamp": "2026-07-21T08:33:04.894159+00:00", "type": "run_started", "run_id": "20260721-163303-5bb5da8e", "plan_name": "FR-11 container browser smoke", "role": null}
+{"timestamp": "2026-07-21T08:33:05.391434+00:00", "type": "trace_pixel_privacy_enabled", "screenshots_embedded": false}
+{"timestamp": "2026-07-21T08:33:05.450913+00:00", "type": "step_started", "index": 1, "action": "navigate", "target": "open public target -> /"}
+{"timestamp": "2026-07-21T08:33:05.586916+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-1-before.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T08:33:11.571963+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-1-after-failure.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T08:33:11.639844+00:00", "type": "step_failed", "index": 1, "category": "locator", "error": "页面返回 HTTP 502：http://example.com/", "screenshot": "screenshots/step-1-after-failure.png", "observed_facts": {"url": "http://example.com/", "title": "", "consoleErrors": ["Failed to load resource: the server responded with a status of 502 (Bad Gateway)"], "pageErrors": [], "failedRequests": ["HTTP 502 GET http://example.com/"]}}
+{"timestamp": "2026-07-21T08:33:11.788876+00:00", "type": "run_finished", "status": "error", "duration_ms": 6906}

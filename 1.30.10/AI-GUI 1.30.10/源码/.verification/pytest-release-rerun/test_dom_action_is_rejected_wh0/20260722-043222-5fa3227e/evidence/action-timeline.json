@@ -1,0 +1,190 @@
+{
+  "runId": "20260722-043222-5fa3227e",
+  "data": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": null,
+      "target_summary": "navigate -> /",
+      "status": "passed",
+      "started_at": "2026-07-22T04:32:23.556311+08:00",
+      "ended_at": "2026-07-22T04:32:24.090295+08:00",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-1-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": false,
+        "passed": true,
+        "mode": "not_applicable"
+      },
+      "canvas_evidence": null,
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:32:23.803112+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:52753/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [
+          "button | text=Run"
+        ],
+        "accessibility_summary": "- button \"Run\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [
+          {
+            "kind": "element_obscured",
+            "severity": "High",
+            "confidence": "high",
+            "message": "交互控件中心点被其他元素遮挡，可能无法点击",
+            "target": "button | text=Run",
+            "details": {
+              "coveringElement": "div",
+              "x": 28,
+              "y": 21
+            }
+          }
+        ],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 3,
+          "visible_element_count": 2,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:32:24.090295+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    },
+    {
+      "index": 2,
+      "action": "click",
+      "description": null,
+      "target_summary": "click @ css=#target",
+      "status": "error",
+      "started_at": "2026-07-22T04:32:24.091295+08:00",
+      "ended_at": "2026-07-22T04:32:24.610497+08:00",
+      "error_message": "动作前稳定性检查失败：unoccluded",
+      "failure_category": "locator",
+      "screenshot": "screenshots/step-2-after-failure.png",
+      "execution_mode": "locator",
+      "locator_basis": "css=#target",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": true,
+        "passed": false,
+        "error": "动作前稳定性检查失败：unoccluded"
+      },
+      "canvas_evidence": null,
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "http://127.0.0.1:52753/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [
+          "button | text=Run"
+        ],
+        "accessibility_summary": "- button \"Run\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [
+          {
+            "kind": "element_obscured",
+            "severity": "High",
+            "confidence": "high",
+            "message": "交互控件中心点被其他元素遮挡，可能无法点击",
+            "target": "button | text=Run",
+            "details": {
+              "coveringElement": "div",
+              "x": 28,
+              "y": 21
+            }
+          }
+        ],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 3,
+          "visible_element_count": 2,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:32:24.297933+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:52753/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after-failure.png",
+        "dom_summary": [
+          "button | text=Run"
+        ],
+        "accessibility_summary": "- button \"Run\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [
+          {
+            "kind": "element_obscured",
+            "severity": "High",
+            "confidence": "high",
+            "message": "交互控件中心点被其他元素遮挡，可能无法点击",
+            "target": "button | text=Run",
+            "details": {
+              "coveringElement": "div",
+              "x": 28,
+              "y": 21
+            }
+          }
+        ],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 3,
+          "visible_element_count": 2,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:32:24.610497+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    }
+  ]
+}

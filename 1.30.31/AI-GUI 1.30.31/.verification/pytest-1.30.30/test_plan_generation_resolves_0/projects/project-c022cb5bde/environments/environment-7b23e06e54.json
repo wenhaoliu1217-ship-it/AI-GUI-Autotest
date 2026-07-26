@@ -1,0 +1,24 @@
+{
+  "id": "environment-7b23e06e54",
+  "projectId": "project-c022cb5bde",
+  "name": "QA",
+  "variables": {
+    "TEST_BASE_URL": "https://example.com"
+  },
+  "secretRefs": {},
+  "ignoreRules": [],
+  "screenshotMaskSelectors": [],
+  "viewport": {
+    "width": 1440,
+    "height": 960
+  },
+  "deviceScaleFactor": 1.0,
+  "appBridge": {
+    "enabled": false,
+    "globalName": "__WEB_AI_TEST__",
+    "adapter": "generic"
+  },
+  "artifactRetentionDays": 30,
+  "createdAt": "2026-07-23T02:50:28.534473+00:00",
+  "updatedAt": "2026-07-23T02:50:28.534473+00:00"
+}

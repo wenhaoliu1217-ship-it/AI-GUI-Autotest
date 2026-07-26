@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>测试报告 - Bridge semantic click</title>
+<style>
+  body { font-family: "Segoe UI", system-ui, sans-serif; margin: 2rem; color: #1f2328; }
+  h1 { font-size: 1.4rem; }
+  .summary { background: #f6f8fa; padding: 1rem; border-radius: 8px; }
+  .summary .status { font-weight: 700; }
+  .status.passed { color: #1a7f37; }
+  .status.failed, .status.error { color: #cf222e; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #d0d7de; padding: .4rem .6rem; text-align: left; font-size: .9rem; }
+  th { background: #f6f8fa; }
+  tr.failed, tr.error { background: #fff0f0; }
+  tr.passed { background: #f0fff4; }
+  tr.skipped { color: #999; }
+  .hints li { margin-bottom: .6rem; }
+  .hints .cat { font-weight: 700; color: #9a6700; }
+  .hints .conf, .hints .evidence { font-size: .8rem; color: #57606a; }
+  .finding { border: 1px solid #d0d7de; padding: .8rem 1rem; margin: .8rem 0; border-radius: 6px; }
+  .finding h3 { margin-top: 0; }
+  small { color: #57606a; font-weight: 400; }
+</style></head>
+<body>
+  <h1>测试运行报告：Bridge semantic click</h1>
+  <div class="summary">
+    <div>运行 ID：<code>20260722-041018-c7dc22b9</code></div>
+    <div>总体状态：<span class="status passed">通过</span></div>
+    <div>基础地址：http://127.0.0.1:64827</div>
+    <div>耗时：2087 ms ｜ 退出码：0</div>
+    
+  </div>
+  <h2>证据完整度</h2><p><strong>100.0%</strong> · <a href='evidence/evidence-manifest.json'>查看机器可读清单</a></p><ul><li>无</li></ul>
+  <h2>步骤</h2>
+  <table><thead><tr><th>#</th><th>动作</th><th>目标</th><th>状态</th>
+  <th>耗时(ms)</th><th>说明</th><th>截图</th></tr></thead>
+  <tbody><tr class='passed'><td>1</td><td>navigate</td><td>navigate -&gt; /</td><td>通过</td><td>484</td><td></td><td><a href='screenshots/step-1-after.png'>截图</a></td></tr>
+<tr class='passed'><td>2</td><td>bridge_click</td><td>Select entity Alpha @ </td><td>通过</td><td>438</td><td>Select entity Alpha</td><td><a href='screenshots/step-2-after.png'>截图</a></td></tr></tbody></table>
+  <h2>Canvas／Bridge 证据</h2><details><summary>步骤 2 · bridge_click · complete</summary><pre>{
+  &quot;mode&quot;: &quot;app_bridge&quot;,
+  &quot;action&quot;: &quot;bridge_click&quot;,
+  &quot;semanticTarget&quot;: &quot;entity.alpha&quot;,
+  &quot;coordinateSource&quot;: &quot;app_bridge:entity.alpha&quot;,
+  &quot;beforeScreenshot&quot;: &quot;screenshots/step-2-before.png&quot;,
+  &quot;afterScreenshot&quot;: &quot;screenshots/step-2-after.png&quot;,
+  &quot;traceArtifact&quot;: &quot;trace.zip&quot;,
+  &quot;collectionStatus&quot;: &quot;complete&quot;,
+  &quot;bridgeAvailable&quot;: true,
+  &quot;bridgeVersion&quot;: &quot;1&quot;,
+  &quot;bridgeCapabilities&quot;: [
+    &quot;getSceneState&quot;,
+    &quot;listVisibleTargets&quot;,
+    &quot;getTargetScreenPosition&quot;,
+    &quot;getSelectedTargetId&quot;,
+    &quot;waitForSceneReady&quot;
+  ],
+  &quot;sceneBefore&quot;: {
+    &quot;camera&quot;: {
+      &quot;heading&quot;: 0
+    },
+    &quot;layers&quot;: [
+      {
+        &quot;id&quot;: &quot;base&quot;,
+        &quot;show&quot;: true
+      }
+    ],
+    &quot;loading&quot;: false,
+    &quot;tilesLoaded&quot;: true
+  },
+  &quot;sceneAfter&quot;: {
+    &quot;camera&quot;: {
+      &quot;heading&quot;: 0
+    },
+    &quot;layers&quot;: [
+      {
+        &quot;id&quot;: &quot;base&quot;,
+        &quot;show&quot;: true
+      }
+    ],
+    &quot;loading&quot;: false,
+    &quot;tilesLoaded&quot;: true
+  },
+  &quot;visibleTargets&quot;: [
+    {
+      &quot;id&quot;: &quot;entity.alpha&quot;,
+      &quot;type&quot;: &quot;entity&quot;,
+      &quot;label&quot;: &quot;Alpha&quot;
+    }
+  ],
+  &quot;selectedTargetBefore&quot;: null,
+  &quot;selectedTargetAfter&quot;: &quot;entity.alpha&quot;,
+  &quot;semanticStateVerified&quot;: true
+}</pre></details>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</body></html>

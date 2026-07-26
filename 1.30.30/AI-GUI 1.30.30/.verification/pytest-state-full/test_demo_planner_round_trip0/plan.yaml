@@ -1,0 +1,108 @@
+name: 管理员创建并分配客户
+base_url: ${TEST_BASE_URL}
+role: admin
+preconditions:
+- description: 本地演示站或企业授权测试环境可用
+steps:
+- action: navigate
+  target: /
+  description: 打开登录页
+  execution_mode: locator
+  stability_level: A
+  stability_reason: 确定性 Playwright 动作
+  computer_use_triggered: false
+  scroll_delta_y: 600
+  browser_target:
+    page: current
+    wait_timeout_ms: 10000
+- action: fill
+  locator:
+    label: 用户名
+  value_from_secret: ADMIN_USERNAME
+  description: 填写管理员用户名
+  execution_mode: locator
+  stability_level: A
+  stability_reason: 确定性 Playwright 动作
+  computer_use_triggered: false
+  scroll_delta_y: 600
+  browser_target:
+    page: current
+    wait_timeout_ms: 10000
+- action: fill
+  locator:
+    label: 密码
+  value_from_secret: ADMIN_PASSWORD
+  description: 填写管理员密码
+  execution_mode: locator
+  stability_level: A
+  stability_reason: 确定性 Playwright 动作
+  computer_use_triggered: false
+  scroll_delta_y: 600
+  browser_target:
+    page: current
+    wait_timeout_ms: 10000
+- action: click
+  locator:
+    role: button
+    name: 登录
+  description: 登录系统
+  execution_mode: locator
+  stability_level: A
+  stability_reason: 确定性 Playwright 动作
+  computer_use_triggered: false
+  scroll_delta_y: 600
+  browser_target:
+    page: current
+    wait_timeout_ms: 10000
+- action: fill
+  locator:
+    label: 客户名称
+  value: 星河科技
+  description: 填写客户名称
+  execution_mode: locator
+  stability_level: A
+  stability_reason: 确定性 Playwright 动作
+  computer_use_triggered: false
+  scroll_delta_y: 600
+  browser_target:
+    page: current
+    wait_timeout_ms: 10000
+- action: select
+  locator:
+    label: 负责人
+  value: emp1
+  description: 将客户分配给员工一
+  execution_mode: locator
+  stability_level: A
+  stability_reason: 确定性 Playwright 动作
+  computer_use_triggered: false
+  scroll_delta_y: 600
+  browser_target:
+    page: current
+    wait_timeout_ms: 10000
+- action: click
+  locator:
+    role: button
+    name: 新建客户
+  description: 提交新客户
+  execution_mode: locator
+  stability_level: A
+  stability_reason: 确定性 Playwright 动作
+  computer_use_triggered: false
+  scroll_delta_y: 600
+  browser_target:
+    page: current
+    wait_timeout_ms: 10000
+assertions:
+- type: url_contains
+  expected: /customers
+  description: 已进入客户管理页面
+- type: visible
+  locator:
+    role: heading
+    name: 客户管理
+  description: 客户管理标题可见
+- type: visible
+  locator:
+    text: 星河科技
+  description: 新客户出现在列表中

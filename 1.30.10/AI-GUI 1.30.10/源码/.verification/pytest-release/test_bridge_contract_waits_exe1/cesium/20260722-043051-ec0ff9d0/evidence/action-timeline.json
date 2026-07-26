@@ -1,0 +1,255 @@
+{
+  "runId": "20260722-043051-ec0ff9d0",
+  "data": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": null,
+      "target_summary": "navigate -> /",
+      "status": "passed",
+      "started_at": "2026-07-22T04:30:52.300599+08:00",
+      "ended_at": "2026-07-22T04:30:52.960032+08:00",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-1-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": false,
+        "passed": true,
+        "mode": "not_applicable"
+      },
+      "canvas_evidence": null,
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:30:52.613260+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:58384/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:30:52.960032+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    },
+    {
+      "index": 2,
+      "action": "bridge_click",
+      "description": "Select entity Alpha",
+      "target_summary": "Select entity Alpha @ ",
+      "status": "passed",
+      "started_at": "2026-07-22T04:30:52.961033+08:00",
+      "ended_at": "2026-07-22T04:30:53.504648+08:00",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-2-after.png",
+      "execution_mode": "app_bridge",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": "app_bridge:entity.alpha",
+      "app_bridge_result": {
+        "adapter": "cesium",
+        "globalName": "CUSTOM_TEST_BRIDGE",
+        "version": "1",
+        "capabilities": [
+          "getSceneState",
+          "listVisibleTargets",
+          "getTargetScreenPosition",
+          "getSelectedTargetId",
+          "waitForSceneReady"
+        ],
+        "sceneBefore": {
+          "camera": {
+            "heading": 0
+          },
+          "layers": [
+            {
+              "id": "base",
+              "show": true
+            }
+          ],
+          "loading": false,
+          "tilesLoaded": true
+        },
+        "visibleTargets": [
+          {
+            "id": "entity.alpha",
+            "type": "entity",
+            "label": "Alpha"
+          }
+        ],
+        "selectedTargetBefore": null,
+        "targetPosition": {
+          "x": 209.0,
+          "y": 109.0
+        },
+        "sceneReadyBefore": true,
+        "sceneAfter": {
+          "camera": {
+            "heading": 0
+          },
+          "layers": [
+            {
+              "id": "base",
+              "show": true
+            }
+          ],
+          "loading": false,
+          "tilesLoaded": true
+        },
+        "selectedTargetAfter": "entity.alpha",
+        "sceneReadyAfter": true,
+        "semanticStateVerified": true
+      },
+      "stability_evidence": {
+        "checked": true,
+        "passed": true,
+        "mode": "app_bridge",
+        "sceneReady": true,
+        "targetId": "entity.alpha",
+        "adapter": "cesium"
+      },
+      "canvas_evidence": {
+        "mode": "app_bridge",
+        "action": "bridge_click",
+        "semanticTarget": "entity.alpha",
+        "coordinateSource": "app_bridge:entity.alpha",
+        "beforeScreenshot": "screenshots/step-2-before.png",
+        "afterScreenshot": "screenshots/step-2-after.png",
+        "traceArtifact": "trace.zip",
+        "collectionStatus": "complete",
+        "bridgeAvailable": true,
+        "bridgeVersion": "1",
+        "bridgeCapabilities": [
+          "getSceneState",
+          "listVisibleTargets",
+          "getTargetScreenPosition",
+          "getSelectedTargetId",
+          "waitForSceneReady"
+        ],
+        "sceneBefore": {
+          "camera": {
+            "heading": 0
+          },
+          "layers": [
+            {
+              "id": "base",
+              "show": true
+            }
+          ],
+          "loading": false,
+          "tilesLoaded": true
+        },
+        "sceneAfter": {
+          "camera": {
+            "heading": 0
+          },
+          "layers": [
+            {
+              "id": "base",
+              "show": true
+            }
+          ],
+          "loading": false,
+          "tilesLoaded": true
+        },
+        "visibleTargets": [
+          {
+            "id": "entity.alpha",
+            "type": "entity",
+            "label": "Alpha"
+          }
+        ],
+        "selectedTargetBefore": null,
+        "selectedTargetAfter": "entity.alpha",
+        "semanticStateVerified": true
+      },
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "http://127.0.0.1:58384/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:30:53.200824+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:58384/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Selected",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 8,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:30:53.504648+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    }
+  ]
+}

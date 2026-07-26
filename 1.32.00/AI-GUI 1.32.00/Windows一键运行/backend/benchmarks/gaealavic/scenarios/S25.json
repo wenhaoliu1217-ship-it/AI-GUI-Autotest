@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1",
+  "id": "S25",
+  "name": "新增想定并关联实例",
+  "category": "业务编排",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "管理员",
+  "prerequisites": [
+    {
+      "id": "S25-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "想定最小字段"
+    },
+    {
+      "id": "S25-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "固定智能体实例"
+    },
+    {
+      "id": "S25-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "关系查询与逆序清理接口"
+    }
+  ],
+  "goal": "新增想定并关联实例",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "创建 E2E_ 想定",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "关联固定智能体实例",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "保存关系",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "对象关系可查询且来源一致",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": true,
+    "order": "reverse_dependency",
+    "verification": "business_object_not_queryable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "cleanup"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "想定最小字段",
+    "固定智能体实例",
+    "关系查询与逆序清理接口"
+  ],
+  "executablePlan": null,
+  "l4Stage": "scenario"
+}

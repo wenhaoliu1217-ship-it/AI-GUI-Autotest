@@ -1,0 +1,3 @@
+{"timestamp": "2026-07-21T20:31:55.361400+00:00", "action": "create", "objectType": "project", "objectId": "project-96fb983a43", "projectId": "project-96fb983a43", "changedFields": ["all"]}
+{"timestamp": "2026-07-21T20:31:55.394818+00:00", "action": "create", "objectType": "environment", "objectId": "environment-2708268c27", "projectId": "project-96fb983a43", "changedFields": ["all"]}
+{"timestamp": "2026-07-21T20:31:55.404106+00:00", "action": "create", "objectType": "scenario", "objectId": "scenario-e36df07f6d", "projectId": "project-96fb983a43", "changedFields": ["all"]}

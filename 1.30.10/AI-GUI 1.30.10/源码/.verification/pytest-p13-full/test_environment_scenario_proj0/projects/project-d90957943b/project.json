@@ -1,0 +1,48 @@
+{
+  "id": "project-d90957943b",
+  "name": "企业闭环 V2",
+  "baseUrl": "https://example.com",
+  "allowedHosts": [
+    "example.com"
+  ],
+  "forbiddenActions": [],
+  "allowPrivateNetwork": true,
+  "businessContext": {
+    "description": "",
+    "terminology": {
+      "任务池": "待处理任务集合"
+    },
+    "objectTypes": [],
+    "stateModels": {},
+    "exampleGoals": [],
+    "operatingBoundaries": [],
+    "allowedActions": [],
+    "bridgeCapabilities": [],
+    "bridgeSemanticTargets": {},
+    "facts": [],
+    "objectRelations": [],
+    "missingFacts": [],
+    "sourceRevision": ""
+  },
+  "asyncStateMachines": [],
+  "sideEffectPolicies": [],
+  "componentAdapters": [],
+  "accountProfiles": [
+    {
+      "id": "default",
+      "name": "默认测试账号",
+      "role": "tester",
+      "loginMethod": "interactive",
+      "credentialRefs": {},
+      "permissions": []
+    }
+  ],
+  "onboardingLevel": "L3",
+  "limits": {
+    "maxSteps": 50,
+    "timeoutSeconds": 600,
+    "maxModelCalls": 20
+  },
+  "createdAt": "2026-07-21T20:11:07.892907+00:00",
+  "updatedAt": "2026-07-21T20:11:08.024442+00:00"
+}

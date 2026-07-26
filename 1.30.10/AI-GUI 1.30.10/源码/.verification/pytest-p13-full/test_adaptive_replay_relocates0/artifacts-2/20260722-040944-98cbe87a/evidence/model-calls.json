@@ -1,0 +1,49 @@
+{
+  "runId": "20260722-040944-98cbe87a",
+  "data": [
+    {
+      "index": 1,
+      "model": "adaptive-replay-controller",
+      "protocol": "local",
+      "elapsed_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost": 0.0,
+      "decision": "action",
+      "reason": "按审核后的固定计划执行非视觉步骤"
+    },
+    {
+      "index": 2,
+      "model": "adaptive-replay-controller",
+      "protocol": "local",
+      "elapsed_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost": 0.0,
+      "decision": "visual",
+      "reason": "按审核计划重新定位视觉语义目标"
+    },
+    {
+      "index": 3,
+      "model": "scripted-vision",
+      "protocol": "test",
+      "elapsed_ms": 1,
+      "input_tokens": 20,
+      "output_tokens": 10,
+      "estimated_cost": 2e-05,
+      "decision": "visual_suggestion",
+      "reason": "测试目标位于 Canvas 中心"
+    },
+    {
+      "index": 4,
+      "model": "adaptive-replay-controller",
+      "protocol": "local",
+      "elapsed_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost": 0.0,
+      "decision": "complete",
+      "reason": "已执行全部审核步骤，进入收尾断言"
+    }
+  ]
+}

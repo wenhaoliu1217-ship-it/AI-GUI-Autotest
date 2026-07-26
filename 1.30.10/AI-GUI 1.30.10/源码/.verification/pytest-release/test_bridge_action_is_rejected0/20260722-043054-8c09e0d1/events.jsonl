@@ -1,0 +1,15 @@
+{"timestamp": "2026-07-22T04:30:54.240171+08:00", "type": "run_started", "run_id": "20260722-043054-8c09e0d1", "plan_name": "Bridge semantic click", "role": null}
+{"timestamp": "2026-07-22T04:30:54.240171+08:00", "type": "app_bridge_configuration", "enabled": false, "adapter": "generic", "global_name": "__WEB_AI_TEST__", "fallback_mode": "locator_only"}
+{"timestamp": "2026-07-22T04:30:55.339601+08:00", "type": "trace_pixel_privacy_enabled", "screenshots_embedded": false}
+{"timestamp": "2026-07-22T04:30:55.480564+08:00", "type": "step_started", "index": 1, "action": "navigate", "target": "navigate -> /"}
+{"timestamp": "2026-07-22T04:30:55.618069+08:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-1-before.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-22T04:30:55.726026+08:00", "type": "action_stability_checked", "index": 1, "checked": false, "passed": true, "mode": "not_applicable"}
+{"timestamp": "2026-07-22T04:30:55.915993+08:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-1-after.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-22T04:30:56.004125+08:00", "type": "step_passed", "index": 1, "duration_ms": 522}
+{"timestamp": "2026-07-22T04:30:56.004717+08:00", "type": "step_started", "index": 2, "action": "bridge_click", "target": "Select entity Alpha @ "}
+{"timestamp": "2026-07-22T04:30:56.124169+08:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-2-before.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-22T04:30:56.352503+08:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-2-after-failure.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-22T04:30:56.425712+08:00", "type": "action_stability_failed", "index": 2, "error": "当前环境未启用 App Bridge，拒绝执行 app_bridge 动作"}
+{"timestamp": "2026-07-22T04:30:56.425712+08:00", "type": "canvas_evidence_failed", "index": 2, "mode": "app_bridge", "action": "bridge_click", "semanticTarget": "entity.alpha", "beforeScreenshot": "screenshots/step-2-before.png", "afterScreenshot": "screenshots/step-2-after-failure.png", "traceArtifact": "trace.zip", "collectionStatus": "failed", "failurePhase": "stability", "error": "当前环境未启用 App Bridge，拒绝执行 app_bridge 动作"}
+{"timestamp": "2026-07-22T04:30:56.425712+08:00", "type": "step_failed", "index": 2, "category": "locator", "error": "当前环境未启用 App Bridge，拒绝执行 app_bridge 动作", "screenshot": "screenshots/step-2-after-failure.png", "observed_facts": {"url": "http://127.0.0.1:58389/", "title": "", "consoleErrors": [], "pageErrors": [], "failedRequests": []}}
+{"timestamp": "2026-07-22T04:30:56.611209+08:00", "type": "run_finished", "status": "error", "duration_ms": 2367}

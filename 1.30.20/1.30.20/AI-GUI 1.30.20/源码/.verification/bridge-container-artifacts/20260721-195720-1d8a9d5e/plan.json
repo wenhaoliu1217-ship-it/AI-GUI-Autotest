@@ -1,0 +1,27 @@
+{
+  "name": "real container bridge verification",
+  "base_url": "http://host.docker.internal:62445",
+  "preconditions": [],
+  "steps": [
+    {
+      "action": "navigate",
+      "target": "/",
+      "execution_mode": "locator",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600
+    },
+    {
+      "action": "bridge_click",
+      "description": "Select entity Alpha through Bridge",
+      "execution_mode": "app_bridge",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "bridge_target_id": "entity.alpha",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600
+    }
+  ],
+  "assertions": []
+}

@@ -1,0 +1,96 @@
+{
+  "runId": "20260722-040944-98cbe87a",
+  "data": [
+    {
+      "stepId": "step-1",
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:09:45.976977+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64365/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [
+          "h1 | text=Canvas Map",
+          "h2 | text=Not selected"
+        ],
+        "accessibility_summary": "- heading \"Canvas Map\" [level=1]\n- heading \"Not selected\" [level=2]",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 20,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:09:46.242667+08:00"
+      }
+    },
+    {
+      "stepId": "step-2",
+      "before": {
+        "url": "http://127.0.0.1:64365/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [
+          "h1 | text=Canvas Map",
+          "h2 | text=Not selected"
+        ],
+        "accessibility_summary": "- heading \"Canvas Map\" [level=1]\n- heading \"Not selected\" [level=2]",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 20,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:09:46.426504+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64365/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after.png",
+        "dom_summary": [
+          "h1 | text=Canvas Map",
+          "h2 | text=Target selected"
+        ],
+        "accessibility_summary": "- heading \"Canvas Map\" [level=1]\n- heading \"Target selected\" [level=2]",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 23,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:09:46.845712+08:00"
+      }
+    }
+  ]
+}

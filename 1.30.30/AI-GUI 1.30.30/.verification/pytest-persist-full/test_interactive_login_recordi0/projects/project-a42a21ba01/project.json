@@ -1,0 +1,38 @@
+{
+  "id": "project-a42a21ba01",
+  "name": "登录录制",
+  "baseUrl": "https://example.com",
+  "allowedHosts": [
+    "example.com"
+  ],
+  "forbiddenActions": [],
+  "allowPrivateNetwork": false,
+  "businessContext": {
+    "description": "",
+    "terminology": {},
+    "objectTypes": [],
+    "stateModels": {},
+    "exampleGoals": [],
+    "operatingBoundaries": [],
+    "allowedActions": [],
+    "bridgeCapabilities": [],
+    "bridgeSemanticTargets": {}
+  },
+  "commerceProfile": {
+    "enabled": false,
+    "environment": "production_readonly",
+    "accountRef": null,
+    "productionReversibleWriteAuthorized": false,
+    "sandboxDriver": false,
+    "e2eResourcePrefix": "E2E_",
+    "piiMaskSelectors": []
+  },
+  "onboardingLevel": "L1",
+  "limits": {
+    "maxSteps": 50,
+    "timeoutSeconds": 600,
+    "maxModelCalls": 20
+  },
+  "createdAt": "2026-07-23T04:05:41.445406+00:00",
+  "updatedAt": "2026-07-23T04:05:41.445406+00:00"
+}

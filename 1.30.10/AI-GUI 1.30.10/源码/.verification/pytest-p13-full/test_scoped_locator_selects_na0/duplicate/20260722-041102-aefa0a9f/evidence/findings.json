@@ -1,0 +1,48 @@
+{
+  "runId": "20260722-041102-aefa0a9f",
+  "data": [
+    {
+      "id": "finding-6a1073da4b",
+      "title": "步骤 2 未完成：click",
+      "category": "unknown",
+      "severity": "Medium",
+      "confidence": "medium",
+      "actual_result": "动作目标必须唯一，实际匹配 2 个：role=button[name=Delete]",
+      "expected_result": "动作成功并进入可验证的下一状态",
+      "facts": [
+        "步骤 2 状态为 error",
+        "动作目标必须唯一，实际匹配 2 个：role=button[name=Delete]"
+      ],
+      "inference": "可能是产品、环境、测试数据、定位或时序问题，需结合证据人工确认。",
+      "evidence": [
+        "screenshots/step-2-before.png",
+        "screenshots/step-2-after-failure.png"
+      ],
+      "evidence_timeline": [
+        {
+          "phase": "before_action",
+          "timestamp": "2026-07-22T04:11:04.367500+08:00",
+          "screenshot": "screenshots/step-2-before.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:65009/"
+          ]
+        },
+        {
+          "phase": "after_action",
+          "timestamp": "2026-07-22T04:11:04.563307+08:00",
+          "screenshot": "screenshots/step-2-after-failure.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:65009/",
+            "动作目标必须唯一，实际匹配 2 个：role=button[name=Delete]"
+          ]
+        }
+      ],
+      "reproduction_steps": [
+        "navigate -> /",
+        "click @ role=button[name=Delete]"
+      ],
+      "review_status": "pending_review",
+      "review_history": []
+    }
+  ]
+}

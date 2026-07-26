@@ -1,0 +1,16 @@
+[
+  {
+    "id": "file-02af6ca7556c",
+    "projectId": "project-68e4343524",
+    "fileName": "E2E_agent.json",
+    "size": 20,
+    "sha256": "aa7c6f723dc9f0de40ecc7db1681c0c5bd3030afb0c21bcc59d32a3453c2773d",
+    "mimeType": "application/json",
+    "extension": ".json",
+    "validationProfile": "json",
+    "validationStatus": "valid",
+    "validationErrors": [],
+    "expectedResult": "accepted",
+    "createdAt": "2026-07-21T20:11:09.145779+00:00"
+  }
+]

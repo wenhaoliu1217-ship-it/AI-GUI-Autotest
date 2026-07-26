@@ -1,0 +1,24 @@
+{
+  "id": "environment-8221bba4a7",
+  "projectId": "project-7240f75320",
+  "name": "QA",
+  "variables": {},
+  "secretRefs": {
+    "LOGIN_PASSWORD": "FR01_MISSING_PASSWORD"
+  },
+  "ignoreRules": [],
+  "screenshotMaskSelectors": [],
+  "viewport": {
+    "width": 1440,
+    "height": 960
+  },
+  "deviceScaleFactor": 1.0,
+  "appBridge": {
+    "enabled": false,
+    "globalName": "__WEB_AI_TEST__",
+    "adapter": "generic"
+  },
+  "artifactRetentionDays": 30,
+  "createdAt": "2026-07-23T03:20:39.204297+00:00",
+  "updatedAt": "2026-07-23T03:20:39.204297+00:00"
+}

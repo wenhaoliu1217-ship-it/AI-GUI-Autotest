@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "1",
+  "id": "S04",
+  "name": "侧栏折叠与恢复",
+  "category": "布局",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "普通测试",
+  "prerequisites": [
+    {
+      "id": "S04-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "侧栏控件稳定定位"
+    },
+    {
+      "id": "S04-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "折叠状态可观察事实"
+    }
+  ],
+  "goal": "侧栏折叠与恢复",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "折叠侧栏",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "恢复侧栏",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "侧栏状态可观察且主区域未错位",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": false,
+    "order": "reverse_dependency",
+    "verification": "not_applicable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "侧栏控件稳定定位",
+    "折叠状态可观察事实"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

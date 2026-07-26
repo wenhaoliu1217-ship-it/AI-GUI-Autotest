@@ -1,0 +1,122 @@
+{
+  "id": "project-ea7c4c2263",
+  "name": "GAE",
+  "baseUrl": "https://example.com",
+  "allowedHosts": [
+    "example.com"
+  ],
+  "forbiddenActions": [],
+  "allowPrivateNetwork": false,
+  "businessContext": {
+    "description": "",
+    "terminology": {},
+    "objectTypes": [],
+    "stateModels": {},
+    "exampleGoals": [],
+    "operatingBoundaries": [],
+    "allowedActions": [],
+    "bridgeCapabilities": [],
+    "bridgeSemanticTargets": {},
+    "facts": [
+      {
+        "id": "fact.agent",
+        "category": "object",
+        "statement": "装备智能体对象",
+        "source": "企业文档 v1",
+        "status": "confirmed"
+      }
+    ],
+    "objectRelations": [
+      {
+        "sourceObject": "装备智能体",
+        "relation": "产生",
+        "targetObject": "实例",
+        "source": "待确认",
+        "status": "blocked"
+      }
+    ],
+    "missingFacts": [
+      "运行状态协议"
+    ],
+    "sourceRevision": "v1"
+  },
+  "asyncStateMachines": [
+    {
+      "id": "job",
+      "name": "任务",
+      "states": [
+        "done"
+      ],
+      "terminalStates": [
+        "done"
+      ],
+      "failureStates": [],
+      "transitions": {},
+      "pollingIntervalMs": 1000,
+      "timeoutMs": 120000,
+      "websocketEvents": []
+    }
+  ],
+  "sideEffectPolicies": [
+    {
+      "id": "delete",
+      "actionCategory": "delete",
+      "objectType": "job",
+      "namePattern": "^E2E_",
+      "environmentId": null,
+      "role": null,
+      "preconditionState": null,
+      "decision": "confirm",
+      "rollbackRule": ""
+    }
+  ],
+  "componentAdapters": [
+    {
+      "id": "run.tab",
+      "module": "run",
+      "page": "运行",
+      "action": {
+        "kind": "tab",
+        "semanticTarget": "运行页签",
+        "locators": [
+          {
+            "role": "tab",
+            "name": "运行",
+            "label": null,
+            "placeholder": null,
+            "test_id": null,
+            "attribute": null,
+            "css": null,
+            "text": null,
+            "scope": null
+          }
+        ],
+        "values": [],
+        "expectedText": null,
+        "fileId": null,
+        "scrollDeltaY": 600
+      },
+      "status": "blocked",
+      "source": "",
+      "blockedReason": "待授权页面"
+    }
+  ],
+  "accountProfiles": [
+    {
+      "id": "default",
+      "name": "默认测试账号",
+      "role": "tester",
+      "loginMethod": "interactive",
+      "credentialRefs": {},
+      "permissions": []
+    }
+  ],
+  "onboardingLevel": "L0",
+  "limits": {
+    "maxSteps": 50,
+    "timeoutSeconds": 600,
+    "maxModelCalls": 20
+  },
+  "createdAt": "2026-07-21T20:33:19.727383+00:00",
+  "updatedAt": "2026-07-21T20:33:19.727383+00:00"
+}

@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1",
+  "id": "S13",
+  "name": "智能体删除确认与取消",
+  "category": "危险动作",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "管理员",
+  "prerequisites": [
+    {
+      "id": "S13-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "专用 E2E_ 对象"
+    },
+    {
+      "id": "S13-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "删除书面授权"
+    },
+    {
+      "id": "S13-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "删除确认与查询接口"
+    }
+  ],
+  "goal": "智能体删除确认与取消",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "对 E2E_ 对象触发删除",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "取消并验证仍存在",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "再次确认删除",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "取消无副作用",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "确认后对象不可查询",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "confirm",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": true,
+    "order": "reverse_dependency",
+    "verification": "business_object_not_queryable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "cleanup"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "专用 E2E_ 对象",
+    "删除书面授权",
+    "删除确认与查询接口"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

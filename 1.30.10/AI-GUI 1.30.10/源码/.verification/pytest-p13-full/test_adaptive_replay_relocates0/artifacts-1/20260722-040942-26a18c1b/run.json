@@ -1,0 +1,531 @@
+{
+  "run_id": "20260722-040942-26a18c1b",
+  "plan_name": "Canvas 自适应回放",
+  "role": null,
+  "base_url_summary": "http://127.0.0.1:64365",
+  "status": "passed",
+  "started_at": "2026-07-22T04:09:42.139656+08:00",
+  "ended_at": "2026-07-22T04:09:44.392389+08:00",
+  "steps": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": null,
+      "target_summary": "navigate -> /",
+      "status": "passed",
+      "started_at": "2026-07-22T04:09:43.255948+08:00",
+      "ended_at": "2026-07-22T04:09:43.690345+08:00",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-1-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": false,
+        "passed": true,
+        "mode": "not_applicable"
+      },
+      "canvas_evidence": null,
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:09:43.424203+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64365/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [
+          "h1 | text=Canvas Map",
+          "h2 | text=Not selected"
+        ],
+        "accessibility_summary": "- heading \"Canvas Map\" [level=1]\n- heading \"Not selected\" [level=2]",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 20,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:09:43.690345+08:00"
+      },
+      "planner_reason": "按审核后的固定计划执行非视觉步骤",
+      "progress_assessment": "progress"
+    },
+    {
+      "index": 2,
+      "action": "visual_click",
+      "description": "视觉定位并执行 click：Canvas 目标",
+      "target_summary": "视觉定位并执行 click：Canvas 目标 @ css=#map",
+      "status": "passed",
+      "started_at": "2026-07-22T04:09:43.691347+08:00",
+      "ended_at": "2026-07-22T04:09:44.186725+08:00",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-2-after.png",
+      "execution_mode": "visual",
+      "locator_basis": "css=#map",
+      "stability_level": "C",
+      "stability_reason": "运行时视觉模型重新定位语义目标",
+      "computer_use_triggered": true,
+      "computer_use_reason": "显式 adaptive 回放要求按当前截图重新定位",
+      "coordinate_source": "region-relative:0.2500,0.5000",
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": true,
+        "mode": "locator",
+        "visible": true,
+        "enabled": true,
+        "stable": true,
+        "unoccluded": true,
+        "boxBefore": {
+          "x": 8,
+          "y": 84.875,
+          "width": 402,
+          "height": 202,
+          "visible": true
+        },
+        "boxAfter": {
+          "x": 8,
+          "y": 84.875,
+          "width": 402,
+          "height": 202,
+          "visible": true
+        },
+        "occludingElement": null,
+        "passed": true
+      },
+      "canvas_evidence": {
+        "mode": "visual",
+        "action": "visual_click",
+        "semanticTarget": "Canvas 目标",
+        "coordinateSource": "region-relative:0.2500,0.5000",
+        "beforeScreenshot": "screenshots/step-2-before.png",
+        "afterScreenshot": "screenshots/step-2-after.png",
+        "traceArtifact": "trace.zip",
+        "collectionStatus": "complete",
+        "bridgeAvailable": false,
+        "bridgeBefore": null,
+        "bridgeAfter": null,
+        "sceneStateChanged": null,
+        "selectedTargetChanged": null,
+        "gestureEvidence": null,
+        "observationProgressVerified": true
+      },
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "http://127.0.0.1:64365/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [
+          "h1 | text=Canvas Map",
+          "h2 | text=Not selected"
+        ],
+        "accessibility_summary": "- heading \"Canvas Map\" [level=1]\n- heading \"Not selected\" [level=2]",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 20,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:09:43.863665+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64365/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after.png",
+        "dom_summary": [
+          "h1 | text=Canvas Map",
+          "h2 | text=Target selected"
+        ],
+        "accessibility_summary": "- heading \"Canvas Map\" [level=1]\n- heading \"Target selected\" [level=2]",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 23,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:09:44.185433+08:00"
+      },
+      "planner_reason": "按审核计划重新定位视觉语义目标",
+      "progress_assessment": "progress"
+    }
+  ],
+  "assertions": [
+    {
+      "index": 1,
+      "type": "visible",
+      "description": null,
+      "detail": "text=Target selected",
+      "status": "passed",
+      "expected_summary": "None",
+      "actual_summary": "visible=True",
+      "error_message": null,
+      "screenshot": null,
+      "semantic_evidence": null
+    }
+  ],
+  "failed_step_index": null,
+  "reproduction_steps": [
+    "navigate -> /",
+    "视觉定位并执行 click：Canvas 目标 @ css=#map"
+  ],
+  "cause_hints": [],
+  "findings": [],
+  "generated_test": {
+    "language": "typescript",
+    "framework_version": "playwright",
+    "source_path": "generated-test.spec.ts",
+    "stability_level": "C",
+    "supported_replay_modes": [
+      "adaptive"
+    ],
+    "ci_eligible": false,
+    "ci_recommendation": "仅允许显式自适应回放，不作为严格 CI 门禁",
+    "source": "import { test, expect } from '@playwright/test';\n\ntest(\"Canvas 自适应回放\", async ({ page }, testInfo) => {\n  await test.step(\"步骤 1\", async () => {\n    await page.goto(\"http://127.0.0.1:64365/\");\n  });\n  await test.step(\"视觉定位并执行 click：Canvas 目标\", async () => {\n    const visualBox = await page.locator(\"#map\").boundingBox();\n    if (!visualBox) throw new Error('Visual region is not visible');\n    await page.mouse.click(visualBox.x + visualBox.width * 0.25, visualBox.y + visualBox.height * 0.5);\n  });\n  await expect(page.getByText(\"Target selected\")).toBeVisible();\n});\n",
+    "manual_steps": [],
+    "source_revision": 1,
+    "source_review_history": []
+  },
+  "replay_mode": "exploration",
+  "onboarding_level": null,
+  "stability_level": "C",
+  "completion_reason": "agent_goal_completed",
+  "project_id": null,
+  "account_id": null,
+  "account_role": null,
+  "environment_id": null,
+  "environment_updated_at": null,
+  "artifact_retention_days": 30,
+  "scenario_id": null,
+  "scenario_updated_at": null,
+  "scenario_goal": "Canvas 自适应回放",
+  "goal_status": "achieved",
+  "goal_summary": "场景目标已完成；断言通过 1/1",
+  "model_calls": 4,
+  "estimated_cost": 2e-05,
+  "input_tokens": 20,
+  "output_tokens": 10,
+  "model_call_records": [
+    {
+      "index": 1,
+      "model": "adaptive-replay-controller",
+      "protocol": "local",
+      "elapsed_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost": 0.0,
+      "decision": "action",
+      "reason": "按审核后的固定计划执行非视觉步骤"
+    },
+    {
+      "index": 2,
+      "model": "adaptive-replay-controller",
+      "protocol": "local",
+      "elapsed_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost": 0.0,
+      "decision": "visual",
+      "reason": "按审核计划重新定位视觉语义目标"
+    },
+    {
+      "index": 3,
+      "model": "scripted-vision",
+      "protocol": "test",
+      "elapsed_ms": 1,
+      "input_tokens": 20,
+      "output_tokens": 10,
+      "estimated_cost": 2e-05,
+      "decision": "visual_suggestion",
+      "reason": "测试目标位于 Canvas 中心"
+    },
+    {
+      "index": 4,
+      "model": "adaptive-replay-controller",
+      "protocol": "local",
+      "elapsed_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost": 0.0,
+      "decision": "complete",
+      "reason": "已执行全部审核步骤，进入收尾断言"
+    }
+  ],
+  "confirmation_history": [],
+  "runner_isolation": null,
+  "websocket_timeline": [],
+  "cleanup_report": null,
+  "business_context_snapshot": null,
+  "project_snapshot": null,
+  "environment_snapshot": null,
+  "app_map_snapshot": null,
+  "evidence_manifest": {
+    "schemaVersion": "1",
+    "runId": "20260722-040942-26a18c1b",
+    "items": [
+      {
+        "id": "run_metadata",
+        "label": "运行元数据",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/run-metadata.json"
+        ],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "plan",
+        "label": "受约束执行计划",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "plan.json"
+        ],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "project_environment",
+        "label": "脱敏项目／环境与业务上下文",
+        "status": "not_applicable",
+        "reason": "未关联项目",
+        "artifacts": [
+          "evidence/project-environment.json"
+        ],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "app_map",
+        "label": "兼容性扫描与页面地图",
+        "status": "not_applicable",
+        "reason": "未关联项目",
+        "artifacts": [],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "actions",
+        "label": "动作时间线",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/action-timeline.json"
+        ],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "observations",
+        "label": "DOM／ARIA／console／network 观察",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/browser-observations.json"
+        ],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "screenshots",
+        "label": "步骤截图",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "screenshots/step-1-after.png",
+          "screenshots/step-2-after.png"
+        ],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "trace",
+        "label": "Playwright Trace",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "trace.zip"
+        ],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "websocket",
+        "label": "WebSocket 时间线",
+        "status": "not_applicable",
+        "reason": "运行未建立 WebSocket",
+        "artifacts": [],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "model_calls",
+        "label": "模型调用记录",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/model-calls.json"
+        ],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "file_transfer",
+        "label": "上传／下载证据",
+        "status": "not_applicable",
+        "reason": "计划无上传／下载",
+        "artifacts": [],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "canvas",
+        "label": "Canvas／Bridge 语义证据",
+        "status": "present",
+        "reason": "",
+        "artifacts": [],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "findings",
+        "label": "Finding 与证据时间线",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/findings.json"
+        ],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "generated_test",
+        "label": "生成的 Playwright 测试",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "generated-test.spec.ts"
+        ],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "confirmations",
+        "label": "危险动作确认历史",
+        "status": "not_applicable",
+        "reason": "运行无确认动作",
+        "artifacts": [],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "cleanup",
+        "label": "业务对象清理报告",
+        "status": "not_applicable",
+        "reason": "场景未声明业务对象清理",
+        "artifacts": [],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "review_history",
+        "label": "Finding／路径审核历史",
+        "status": "not_applicable",
+        "reason": "运行结束后人工审核阶段生成",
+        "artifacts": [],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "acceptance_summary",
+        "label": "批次验收摘要",
+        "status": "not_applicable",
+        "reason": "仅批量验收任务适用",
+        "artifacts": [],
+        "runId": "20260722-040942-26a18c1b",
+        "stepIds": [],
+        "businessIds": []
+      }
+    ],
+    "applicableCount": 10,
+    "presentCount": 10,
+    "missingCount": 0,
+    "completeness": 1.0
+  },
+  "evidence_completeness": 1.0,
+  "evidence_manifest_path": "evidence/evidence-manifest.json"
+}

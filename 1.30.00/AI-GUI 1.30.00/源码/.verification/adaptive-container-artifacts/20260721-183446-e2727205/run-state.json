@@ -1,0 +1,253 @@
+{
+  "run_id": "20260721-183446-e2727205",
+  "plan_name": "real adaptive container verification",
+  "role": null,
+  "base_url_summary": "http://host.docker.internal:57981",
+  "status": "passed",
+  "started_at": "2026-07-21T10:34:48.245446Z",
+  "ended_at": "2026-07-21T10:34:51.021440Z",
+  "steps": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": null,
+      "target_summary": "navigate -> /",
+      "status": "passed",
+      "started_at": "2026-07-21T10:34:49.914871Z",
+      "ended_at": "2026-07-21T10:34:50.308722Z",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-1-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-21T10:34:50.092888Z"
+      },
+      "after": {
+        "url": "http://host.docker.internal:57981/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [
+          "h1 | text=Adaptive target"
+        ],
+        "accessibility_summary": "- heading \"Adaptive target\" [level=1]\n- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 21,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-21T10:34:50.308679Z"
+      },
+      "planner_reason": "按审核后的固定计划执行非视觉步骤",
+      "progress_assessment": "progress"
+    },
+    {
+      "index": 2,
+      "action": "visual_click",
+      "description": "视觉定位并执行 click：Canvas center",
+      "target_summary": "视觉定位并执行 click：Canvas center @ css=#map",
+      "status": "passed",
+      "started_at": "2026-07-21T10:34:50.424098Z",
+      "ended_at": "2026-07-21T10:34:50.838684Z",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-2-after.png",
+      "execution_mode": "visual",
+      "locator_basis": "css=#map",
+      "stability_level": "C",
+      "stability_reason": "运行时视觉模型重新定位语义目标",
+      "computer_use_triggered": true,
+      "computer_use_reason": "显式 adaptive 回放要求按当前截图重新定位",
+      "coordinate_source": "region-relative:0.5000,0.5000",
+      "app_bridge_result": null,
+      "before": {
+        "url": "http://host.docker.internal:57981/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [
+          "h1 | text=Adaptive target"
+        ],
+        "accessibility_summary": "- heading \"Adaptive target\" [level=1]\n- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 21,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-21T10:34:50.614762Z"
+      },
+      "after": {
+        "url": "http://host.docker.internal:57981/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after.png",
+        "dom_summary": [
+          "h1 | text=Adaptive target"
+        ],
+        "accessibility_summary": "- heading \"Adaptive target\" [level=1]\n- paragraph: Selected",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 22,
+          "visible_element_count": 3,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-21T10:34:50.835734Z"
+      },
+      "planner_reason": "按审核计划重新定位视觉语义目标",
+      "progress_assessment": "progress"
+    }
+  ],
+  "assertions": [
+    {
+      "index": 1,
+      "type": "visible",
+      "description": null,
+      "detail": "text=Selected",
+      "status": "passed",
+      "expected_summary": "None",
+      "actual_summary": "visible=True",
+      "error_message": null,
+      "screenshot": null
+    }
+  ],
+  "failed_step_index": null,
+  "reproduction_steps": [
+    "navigate -> /",
+    "视觉定位并执行 click：Canvas center @ css=#map"
+  ],
+  "cause_hints": [],
+  "findings": [],
+  "generated_test": {
+    "language": "typescript",
+    "framework_version": "playwright",
+    "source_path": "generated-test.spec.ts",
+    "stability_level": "C",
+    "supported_replay_modes": [
+      "adaptive"
+    ],
+    "ci_eligible": false,
+    "ci_recommendation": "仅允许显式自适应回放，不作为严格 CI 门禁",
+    "source": "import { test, expect } from '@playwright/test';\n\ntest(\"real adaptive container verification\", async ({ page }) => {\n  await test.step(\"步骤 1\", async () => {\n    await page.goto(\"http://host.docker.internal:57981/\");\n  });\n  await test.step(\"视觉定位并执行 click：Canvas center\", async () => {\n    const visualBox = await page.locator(\"#map\").boundingBox();\n    if (!visualBox) throw new Error('Visual region is not visible');\n    await page.mouse.click(visualBox.x + visualBox.width * 0.5, visualBox.y + visualBox.height * 0.5);\n  });\n  await expect(page.getByText(\"Selected\")).toBeVisible();\n});\n",
+    "manual_steps": [],
+    "source_revision": 1,
+    "source_review_history": []
+  },
+  "replay_mode": "exploration",
+  "onboarding_level": null,
+  "stability_level": "C",
+  "completion_reason": "agent_goal_completed",
+  "project_id": null,
+  "environment_id": null,
+  "environment_updated_at": null,
+  "artifact_retention_days": 30,
+  "scenario_id": null,
+  "scenario_updated_at": null,
+  "scenario_goal": "real adaptive container verification",
+  "goal_status": "achieved",
+  "goal_summary": "场景目标已完成；断言通过 1/1",
+  "model_calls": 4,
+  "estimated_cost": null,
+  "input_tokens": 10,
+  "output_tokens": 10,
+  "model_call_records": [
+    {
+      "index": 1,
+      "model": "adaptive-replay-controller",
+      "protocol": "local",
+      "elapsed_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost": 0.0,
+      "decision": "action",
+      "reason": "按审核后的固定计划执行非视觉步骤"
+    },
+    {
+      "index": 2,
+      "model": "adaptive-replay-controller",
+      "protocol": "local",
+      "elapsed_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost": 0.0,
+      "decision": "visual",
+      "reason": "按审核计划重新定位视觉语义目标"
+    },
+    {
+      "index": 3,
+      "model": "verification-vision",
+      "protocol": "responses",
+      "elapsed_ms": 92,
+      "input_tokens": 10,
+      "output_tokens": 10,
+      "estimated_cost": null,
+      "decision": "visual_suggestion",
+      "reason": "Target is at the visible canvas center"
+    },
+    {
+      "index": 4,
+      "model": "adaptive-replay-controller",
+      "protocol": "local",
+      "elapsed_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "estimated_cost": 0.0,
+      "decision": "complete",
+      "reason": "已执行全部审核步骤，进入收尾断言"
+    }
+  ],
+  "confirmation_history": [],
+  "runner_isolation": {
+    "mode": "docker_container",
+    "container_name": "ai-gui-20260721-183446-e2727205",
+    "image": "ai-gui-runner:1.30.00",
+    "root_filesystem_read_only": true,
+    "artifact_mount": "C:\\Users\\zzzzl\\Desktop\\京彩OPC\\AI-GUI-Autotest\\1.30.00\\AI-GUI 1.30.00\\源码\\.verification\\adaptive-container-artifacts\\20260721-183446-e2727205",
+    "tmpfs_mb": 324,
+    "memory_limit_mb": 2048,
+    "cpu_limit": 2.0,
+    "pids_limit": 256,
+    "capabilities_dropped": "ALL_AFTER_FIREWALL_INIT",
+    "no_new_privileges": true,
+    "container_network_mode": "bridge",
+    "container_private_network_allowed": true,
+    "network_policy": "explicit_private_network_exception+playwright_request_guard",
+    "forced_termination": false
+  }
+}

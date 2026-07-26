@@ -1,0 +1,40 @@
+{
+  "id": "project-50566b16e9",
+  "name": "JD production readonly",
+  "baseUrl": "https://example.com",
+  "allowedHosts": [
+    "example.com"
+  ],
+  "forbiddenActions": [],
+  "allowPrivateNetwork": false,
+  "businessContext": {
+    "description": "",
+    "terminology": {},
+    "objectTypes": [],
+    "stateModels": {},
+    "exampleGoals": [],
+    "operatingBoundaries": [],
+    "allowedActions": [],
+    "bridgeCapabilities": [],
+    "bridgeSemanticTargets": {}
+  },
+  "commerceProfile": {
+    "enabled": true,
+    "environment": "production_readonly",
+    "accountRef": "JD_BUYER_ACCOUNT",
+    "productionReversibleWriteAuthorized": false,
+    "sandboxDriver": false,
+    "e2eResourcePrefix": "E2E_",
+    "piiMaskSelectors": [
+      "[data-testid='mobile']"
+    ]
+  },
+  "onboardingLevel": "L0",
+  "limits": {
+    "maxSteps": 50,
+    "timeoutSeconds": 600,
+    "maxModelCalls": 20
+  },
+  "createdAt": "2026-07-23T03:44:23.716095+00:00",
+  "updatedAt": "2026-07-23T03:44:23.716095+00:00"
+}

@@ -1,0 +1,16 @@
+{
+  "runId": "run-evidence-1",
+  "data": {
+    "runId": "run-evidence-1",
+    "planName": "evidence package",
+    "status": "passed",
+    "startedAt": "2026-07-22T04:15:36.753497+08:00",
+    "endedAt": "2026-07-22T04:15:36.753497+08:00",
+    "projectId": null,
+    "environmentId": null,
+    "accountId": null,
+    "accountRole": null,
+    "scenarioId": null,
+    "goalStatus": "incomplete"
+  }
+}

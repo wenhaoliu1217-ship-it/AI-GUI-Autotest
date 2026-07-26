@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1",
+  "id": "S07",
+  "name": "装备智能体上传合法 JSON",
+  "category": "文件上传",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "管理员",
+  "prerequisites": [
+    {
+      "id": "S07-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "合法智能体 JSON 样例与 schema"
+    },
+    {
+      "id": "S07-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "上传入口"
+    },
+    {
+      "id": "S07-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "生成对象查询与清理接口"
+    }
+  ],
+  "goal": "装备智能体上传合法 JSON",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "上传登记的合法最小智能体 JSON",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "等待处理终态",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "创建 E2E_ 对象",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "上传哈希与业务 ID 可追溯",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": true,
+    "order": "reverse_dependency",
+    "verification": "business_object_not_queryable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "file_transfer",
+    "cleanup"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "合法智能体 JSON 样例与 schema",
+    "上传入口",
+    "生成对象查询与清理接口"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

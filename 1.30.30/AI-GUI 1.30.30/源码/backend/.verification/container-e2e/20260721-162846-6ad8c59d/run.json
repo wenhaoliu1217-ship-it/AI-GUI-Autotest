@@ -1,0 +1,199 @@
+{
+  "run_id": "20260721-162846-6ad8c59d",
+  "plan_name": "FR-11 container browser smoke",
+  "role": null,
+  "base_url_summary": "https://example.com",
+  "status": "passed",
+  "started_at": "2026-07-21T08:28:48.186352Z",
+  "ended_at": "2026-07-21T08:28:56.382833Z",
+  "steps": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": "open public target",
+      "target_summary": "open public target -> /",
+      "status": "passed",
+      "started_at": "2026-07-21T08:28:49.167314Z",
+      "ended_at": "2026-07-21T08:28:55.780663Z",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-1-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-21T08:28:49.406602Z"
+      },
+      "after": {
+        "url": "https://example.com/",
+        "title": "Example Domain",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [
+          "h1 | text=Example Domain",
+          "a | text=Learn more"
+        ],
+        "accessibility_summary": "- heading \"Example Domain\" [level=1]\n- paragraph: This domain is for use in documentation examples without needing permission. Avoid use in operations.\n- paragraph:\n  - link \"Learn more\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 109,
+          "visible_element_count": 5,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-21T08:28:55.780546Z"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    },
+    {
+      "index": 2,
+      "action": "screenshot",
+      "description": "capture evidence",
+      "target_summary": "capture evidence",
+      "status": "passed",
+      "started_at": "2026-07-21T08:28:55.785555Z",
+      "ended_at": "2026-07-21T08:28:56.197139Z",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-2-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "before": {
+        "url": "https://example.com/",
+        "title": "Example Domain",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [
+          "h1 | text=Example Domain",
+          "a | text=Learn more"
+        ],
+        "accessibility_summary": "- heading \"Example Domain\" [level=1]\n- paragraph: This domain is for use in documentation examples without needing permission. Avoid use in operations.\n- paragraph:\n  - link \"Learn more\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 109,
+          "visible_element_count": 5,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-21T08:28:55.991558Z"
+      },
+      "after": {
+        "url": "https://example.com/",
+        "title": "Example Domain",
+        "screenshot": "screenshots/step-2-after.png",
+        "dom_summary": [
+          "h1 | text=Example Domain",
+          "a | text=Learn more"
+        ],
+        "accessibility_summary": "- heading \"Example Domain\" [level=1]\n- paragraph: This domain is for use in documentation examples without needing permission. Avoid use in operations.\n- paragraph:\n  - link \"Learn more\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 109,
+          "visible_element_count": 5,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-21T08:28:56.197094Z"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    }
+  ],
+  "assertions": [],
+  "failed_step_index": null,
+  "reproduction_steps": [
+    "open public target -> /",
+    "capture evidence"
+  ],
+  "cause_hints": [],
+  "findings": [],
+  "generated_test": {
+    "language": "typescript",
+    "framework_version": "playwright",
+    "source_path": "generated-test.spec.ts",
+    "stability_level": "A",
+    "supported_replay_modes": [
+      "stable"
+    ],
+    "ci_eligible": true,
+    "ci_recommendation": "可作为 CI 候选",
+    "source": "import { test, expect } from '@playwright/test';\n\ntest(\"FR-11 container browser smoke\", async ({ page }) => {\n  await test.step(\"open public target\", async () => {\n    await page.goto(\"https://example.com/\");\n  });\n  await test.step(\"capture evidence\", async () => {\n    await page.screenshot({ fullPage: false });\n  });\n});\n",
+    "manual_steps": [],
+    "source_revision": 1,
+    "source_review_history": []
+  },
+  "replay_mode": "exploration",
+  "onboarding_level": null,
+  "stability_level": "A",
+  "completion_reason": "plan_completed",
+  "project_id": null,
+  "environment_id": null,
+  "environment_updated_at": null,
+  "artifact_retention_days": 30,
+  "scenario_id": null,
+  "scenario_updated_at": null,
+  "scenario_goal": "FR-11 container browser smoke",
+  "goal_status": "achieved",
+  "goal_summary": "场景目标已完成；无收尾断言",
+  "model_calls": 0,
+  "estimated_cost": null,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "model_call_records": [],
+  "confirmation_history": [],
+  "runner_isolation": {
+    "mode": "docker_container",
+    "container_name": "ai-gui-20260721-162846-6ad8c59d",
+    "image": "ai-gui-runner:1.30.00",
+    "root_filesystem_read_only": true,
+    "artifact_mount": "C:\\Users\\zzzzl\\Desktop\\京彩OPC\\AI-GUI-Autotest\\1.30.00\\AI-GUI 1.30.00\\源码\\backend\\.verification\\container-e2e\\20260721-162846-6ad8c59d",
+    "tmpfs_mb": 324,
+    "memory_limit_mb": 2048,
+    "cpu_limit": 2.0,
+    "pids_limit": 256,
+    "capabilities_dropped": "ALL_AFTER_FIREWALL_INIT",
+    "no_new_privileges": true,
+    "container_network_mode": "bridge",
+    "container_private_network_allowed": false,
+    "network_policy": "container_egress_firewall+playwright_request_guard",
+    "forced_termination": false
+  }
+}

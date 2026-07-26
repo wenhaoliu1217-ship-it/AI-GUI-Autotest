@@ -1,0 +1,16 @@
+{
+  "projectId": "project-d932cfed05",
+  "importedAt": "2026-07-21T20:33:12.789818+00:00",
+  "cookieCount": 1,
+  "originCount": 0,
+  "domains": [
+    "example.com"
+  ],
+  "expiresAt": "2033-05-18T03:33:20+00:00",
+  "expiryStatus": "active",
+  "expiredCookieCount": 0,
+  "encryption": "Windows DPAPI / CurrentUser",
+  "accountId": "default",
+  "accountName": "默认测试账号",
+  "accountRole": "tester"
+}

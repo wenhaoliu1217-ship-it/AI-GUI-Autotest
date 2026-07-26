@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "1",
+  "runId": "20260722-043059-1dd8657a",
+  "items": [
+    {
+      "id": "run_metadata",
+      "label": "运行元数据",
+      "status": "present",
+      "reason": "",
+      "artifacts": [
+        "evidence/run-metadata.json"
+      ],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "plan",
+      "label": "受约束执行计划",
+      "status": "present",
+      "reason": "",
+      "artifacts": [
+        "plan.json"
+      ],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [
+        "step-1",
+        "step-2"
+      ],
+      "businessIds": []
+    },
+    {
+      "id": "project_environment",
+      "label": "脱敏项目／环境与业务上下文",
+      "status": "not_applicable",
+      "reason": "未关联项目",
+      "artifacts": [
+        "evidence/project-environment.json"
+      ],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "app_map",
+      "label": "兼容性扫描与页面地图",
+      "status": "not_applicable",
+      "reason": "未关联项目",
+      "artifacts": [],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "actions",
+      "label": "动作时间线",
+      "status": "present",
+      "reason": "",
+      "artifacts": [
+        "evidence/action-timeline.json"
+      ],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [
+        "step-1",
+        "step-2"
+      ],
+      "businessIds": []
+    },
+    {
+      "id": "observations",
+      "label": "DOM／ARIA／console／network 观察",
+      "status": "present",
+      "reason": "",
+      "artifacts": [
+        "evidence/browser-observations.json"
+      ],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [
+        "step-1",
+        "step-2"
+      ],
+      "businessIds": []
+    },
+    {
+      "id": "screenshots",
+      "label": "步骤截图",
+      "status": "present",
+      "reason": "",
+      "artifacts": [
+        "screenshots/step-1-after.png",
+        "screenshots/step-2-after-failure.png"
+      ],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [
+        "step-1",
+        "step-2"
+      ],
+      "businessIds": []
+    },
+    {
+      "id": "trace",
+      "label": "Playwright Trace",
+      "status": "present",
+      "reason": "",
+      "artifacts": [
+        "trace.zip"
+      ],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "websocket",
+      "label": "WebSocket 时间线",
+      "status": "not_applicable",
+      "reason": "运行未建立 WebSocket",
+      "artifacts": [],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "model_calls",
+      "label": "模型调用记录",
+      "status": "not_applicable",
+      "reason": "固定计划未调用模型",
+      "artifacts": [],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "file_transfer",
+      "label": "上传／下载证据",
+      "status": "not_applicable",
+      "reason": "计划无上传／下载",
+      "artifacts": [],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "canvas",
+      "label": "Canvas／Bridge 语义证据",
+      "status": "present",
+      "reason": "",
+      "artifacts": [],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [
+        "step-2"
+      ],
+      "businessIds": []
+    },
+    {
+      "id": "findings",
+      "label": "Finding 与证据时间线",
+      "status": "present",
+      "reason": "",
+      "artifacts": [
+        "evidence/findings.json"
+      ],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "generated_test",
+      "label": "生成的 Playwright 测试",
+      "status": "present",
+      "reason": "",
+      "artifacts": [
+        "generated-test.spec.ts"
+      ],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "confirmations",
+      "label": "危险动作确认历史",
+      "status": "not_applicable",
+      "reason": "运行无确认动作",
+      "artifacts": [],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "cleanup",
+      "label": "业务对象清理报告",
+      "status": "not_applicable",
+      "reason": "场景未声明业务对象清理",
+      "artifacts": [],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "review_history",
+      "label": "Finding／路径审核历史",
+      "status": "not_applicable",
+      "reason": "运行结束后人工审核阶段生成",
+      "artifacts": [],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    },
+    {
+      "id": "acceptance_summary",
+      "label": "批次验收摘要",
+      "status": "not_applicable",
+      "reason": "仅批量验收任务适用",
+      "artifacts": [],
+      "runId": "20260722-043059-1dd8657a",
+      "stepIds": [],
+      "businessIds": []
+    }
+  ],
+  "applicableCount": 9,
+  "presentCount": 9,
+  "missingCount": 0,
+  "completeness": 1.0
+}

@@ -1,0 +1,7 @@
+{"timestamp": "2026-07-21T08:31:06.543235+00:00", "type": "run_started", "run_id": "20260721-163105-2b2a4f4f", "plan_name": "FR-11 container browser smoke", "role": null}
+{"timestamp": "2026-07-21T08:31:07.704457+00:00", "type": "trace_pixel_privacy_enabled", "screenshots_embedded": false}
+{"timestamp": "2026-07-21T08:31:07.800390+00:00", "type": "step_started", "index": 1, "action": "navigate", "target": "open public target -> /"}
+{"timestamp": "2026-07-21T08:31:07.930777+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-1-before.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T08:31:19.651602+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-1-after-failure.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T08:31:19.725313+00:00", "type": "step_failed", "index": 1, "category": "locator", "error": "Page.goto: net::ERR_CONNECTION_CLOSED at https://example.com/\nCall log:\n  - navigating to \"https://example.com/\", waiting until \"commit\"\n", "screenshot": "screenshots/step-1-after-failure.png", "observed_facts": {"url": "chrome-error://chromewebdata/", "title": "", "consoleErrors": [], "pageErrors": [], "failedRequests": ["GET https://example.com/ - net::ERR_CONNECTION_CLOSED"]}}
+{"timestamp": "2026-07-21T08:31:19.888801+00:00", "type": "run_finished", "status": "error", "duration_ms": 13354}

@@ -1,0 +1,52 @@
+{
+  "runId": "20260722-043219-4c9d613f",
+  "data": [
+    {
+      "id": "finding-a83eae5d11",
+      "title": "步骤 2 Bridge 契约不可用",
+      "category": "bridge_contract_error",
+      "severity": "High",
+      "confidence": "high",
+      "actual_result": "当前环境未启用 App Bridge，拒绝执行 app_bridge 动作",
+      "expected_result": "Bridge v1 五项最小契约可用并返回有效结构",
+      "facts": [
+        "collectionStatus=\"failed\"",
+        "failurePhase=\"stability\"",
+        "semanticTarget=\"entity.alpha\"",
+        "error=\"当前环境未启用 App Bridge，拒绝执行 app_bridge 动作\""
+      ],
+      "inference": "需由接入方核对 Bridge 是否注入、版本及五项最小契约实现。",
+      "evidence": [
+        "screenshots/step-2-before.png",
+        "screenshots/step-2-after-failure.png"
+      ],
+      "evidence_timeline": [
+        {
+          "phase": "before_action",
+          "timestamp": "2026-07-22T04:32:21.943502+08:00",
+          "screenshot": "screenshots/step-2-before.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:52733/"
+          ]
+        },
+        {
+          "phase": "after_action",
+          "timestamp": "2026-07-22T04:32:22.162511+08:00",
+          "screenshot": "screenshots/step-2-after-failure.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:52733/",
+            "collectionStatus=\"failed\"",
+            "failurePhase=\"stability\"",
+            "error=\"当前环境未启用 App Bridge，拒绝执行 app_bridge 动作\""
+          ]
+        }
+      ],
+      "reproduction_steps": [
+        "navigate -> /",
+        "Select entity Alpha @ "
+      ],
+      "review_status": "pending_review",
+      "review_history": []
+    }
+  ]
+}

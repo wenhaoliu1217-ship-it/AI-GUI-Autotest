@@ -1,0 +1,2 @@
+{"timestamp": "2026-07-23T04:24:56.298133+00:00", "action": "create", "objectType": "project", "objectId": "project-9f2f6cc6dc", "projectId": "project-9f2f6cc6dc", "changedFields": ["all"]}
+{"timestamp": "2026-07-23T04:24:56.339147+00:00", "action": "record", "objectType": "session", "objectId": "recording-test", "projectId": "project-9f2f6cc6dc", "changedFields": ["storageState"]}

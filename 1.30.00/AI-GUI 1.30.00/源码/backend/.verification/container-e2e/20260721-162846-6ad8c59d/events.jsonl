@@ -1,0 +1,11 @@
+{"timestamp": "2026-07-21T08:28:48.206308+00:00", "type": "run_started", "run_id": "20260721-162846-6ad8c59d", "plan_name": "FR-11 container browser smoke", "role": null}
+{"timestamp": "2026-07-21T08:28:49.073919+00:00", "type": "trace_pixel_privacy_enabled", "screenshots_embedded": false}
+{"timestamp": "2026-07-21T08:28:49.167355+00:00", "type": "step_started", "index": 1, "action": "navigate", "target": "open public target -> /"}
+{"timestamp": "2026-07-21T08:28:49.309527+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-1-before.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T08:28:55.704426+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-1-after.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T08:28:55.780957+00:00", "type": "step_passed", "index": 1, "duration_ms": 6613}
+{"timestamp": "2026-07-21T08:28:55.785580+00:00", "type": "step_started", "index": 2, "action": "screenshot", "target": "capture evidence"}
+{"timestamp": "2026-07-21T08:28:55.931072+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-2-before.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T08:28:56.133229+00:00", "type": "screenshot_privacy_applied", "screenshot": "screenshots/step-2-after.png", "masked_count": 0, "invalid_selectors": [], "selector_count": 5}
+{"timestamp": "2026-07-21T08:28:56.197213+00:00", "type": "step_passed", "index": 2, "duration_ms": 411}
+{"timestamp": "2026-07-21T08:28:56.389635+00:00", "type": "run_finished", "status": "passed", "duration_ms": 8196}

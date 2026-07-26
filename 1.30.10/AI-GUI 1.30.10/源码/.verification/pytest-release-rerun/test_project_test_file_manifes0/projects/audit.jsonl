@@ -1,0 +1,4 @@
+{"timestamp": "2026-07-21T20:33:14.148277+00:00", "action": "create", "objectType": "project", "objectId": "project-36b3e5fe1b", "projectId": "project-36b3e5fe1b", "changedFields": ["all"]}
+{"timestamp": "2026-07-21T20:33:14.193227+00:00", "action": "register", "objectType": "test_file", "objectId": "file-9f34d002a2c0", "projectId": "project-36b3e5fe1b", "changedFields": ["fileName", "size", "sha256", "mimeType", "validationStatus", "expectedResult"]}
+{"timestamp": "2026-07-21T20:33:14.232124+00:00", "action": "register", "objectType": "test_file", "objectId": "file-ed107405ea08", "projectId": "project-36b3e5fe1b", "changedFields": ["fileName", "size", "sha256", "mimeType", "validationStatus", "expectedResult"]}
+{"timestamp": "2026-07-21T20:33:14.263857+00:00", "action": "delete", "objectType": "test_file", "objectId": "file-ed107405ea08", "projectId": "project-36b3e5fe1b", "changedFields": []}

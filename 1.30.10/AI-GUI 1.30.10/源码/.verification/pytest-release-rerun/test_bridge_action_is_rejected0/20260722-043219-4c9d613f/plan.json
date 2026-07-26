@@ -1,0 +1,39 @@
+{
+  "name": "Bridge semantic click",
+  "base_url": "http://127.0.0.1:52733",
+  "preconditions": [],
+  "steps": [
+    {
+      "action": "navigate",
+      "target": "/",
+      "execution_mode": "locator",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "visual_points": [],
+      "zoom_delta": -600,
+      "gesture_finish": "double_click",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600,
+      "expected_file_validity": "valid",
+      "expected_residual_count": 0,
+      "cleanup_required": false
+    },
+    {
+      "action": "bridge_click",
+      "description": "Select entity Alpha",
+      "execution_mode": "app_bridge",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "visual_points": [],
+      "zoom_delta": -600,
+      "gesture_finish": "double_click",
+      "bridge_target_id": "entity.alpha",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600,
+      "expected_file_validity": "valid",
+      "expected_residual_count": 0,
+      "cleanup_required": false
+    }
+  ],
+  "assertions": []
+}

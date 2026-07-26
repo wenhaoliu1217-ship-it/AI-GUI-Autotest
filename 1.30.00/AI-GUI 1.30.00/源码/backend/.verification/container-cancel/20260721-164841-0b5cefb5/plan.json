@@ -1,0 +1,28 @@
+{
+  "name": "FR-11 forced cancellation",
+  "base_url": "http://172.17.0.2:18993",
+  "preconditions": [],
+  "steps": [
+    {
+      "action": "navigate",
+      "target": "/",
+      "execution_mode": "locator",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600
+    },
+    {
+      "action": "wait_for",
+      "locator": {
+        "text": "never-visible"
+      },
+      "execution_mode": "locator",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "scroll_delta_y": 600
+    }
+  ],
+  "assertions": []
+}

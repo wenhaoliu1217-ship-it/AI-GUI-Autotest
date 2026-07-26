@@ -1,0 +1,568 @@
+{
+  "run_id": "20260722-043222-5fa3227e",
+  "plan_name": "Occlusion check",
+  "role": null,
+  "base_url_summary": "http://127.0.0.1:52753",
+  "status": "error",
+  "started_at": "2026-07-22T04:32:22.523626+08:00",
+  "ended_at": "2026-07-22T04:32:24.812920+08:00",
+  "steps": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": null,
+      "target_summary": "navigate -> /",
+      "status": "passed",
+      "started_at": "2026-07-22T04:32:23.556311+08:00",
+      "ended_at": "2026-07-22T04:32:24.090295+08:00",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-1-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": false,
+        "passed": true,
+        "mode": "not_applicable"
+      },
+      "canvas_evidence": null,
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:32:23.803112+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:52753/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [
+          "button | text=Run"
+        ],
+        "accessibility_summary": "- button \"Run\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [
+          {
+            "kind": "element_obscured",
+            "severity": "High",
+            "confidence": "high",
+            "message": "交互控件中心点被其他元素遮挡，可能无法点击",
+            "target": "button | text=Run",
+            "details": {
+              "coveringElement": "div",
+              "x": 28,
+              "y": 21
+            }
+          }
+        ],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 3,
+          "visible_element_count": 2,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:32:24.090295+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    },
+    {
+      "index": 2,
+      "action": "click",
+      "description": null,
+      "target_summary": "click @ css=#target",
+      "status": "error",
+      "started_at": "2026-07-22T04:32:24.091295+08:00",
+      "ended_at": "2026-07-22T04:32:24.610497+08:00",
+      "error_message": "动作前稳定性检查失败：unoccluded",
+      "failure_category": "locator",
+      "screenshot": "screenshots/step-2-after-failure.png",
+      "execution_mode": "locator",
+      "locator_basis": "css=#target",
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": true,
+        "passed": false,
+        "error": "动作前稳定性检查失败：unoccluded"
+      },
+      "canvas_evidence": null,
+      "file_evidence": null,
+      "async_evidence": null,
+      "side_effect_evidence": null,
+      "component_evidence": null,
+      "before": {
+        "url": "http://127.0.0.1:52753/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [
+          "button | text=Run"
+        ],
+        "accessibility_summary": "- button \"Run\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [
+          {
+            "kind": "element_obscured",
+            "severity": "High",
+            "confidence": "high",
+            "message": "交互控件中心点被其他元素遮挡，可能无法点击",
+            "target": "button | text=Run",
+            "details": {
+              "coveringElement": "div",
+              "x": 28,
+              "y": 21
+            }
+          }
+        ],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 3,
+          "visible_element_count": 2,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:32:24.297933+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:52753/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after-failure.png",
+        "dom_summary": [
+          "button | text=Run"
+        ],
+        "accessibility_summary": "- button \"Run\"",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [
+          {
+            "kind": "element_obscured",
+            "severity": "High",
+            "confidence": "high",
+            "message": "交互控件中心点被其他元素遮挡，可能无法点击",
+            "target": "button | text=Run",
+            "details": {
+              "coveringElement": "div",
+              "x": 28,
+              "y": 21
+            }
+          }
+        ],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 3,
+          "visible_element_count": 2,
+          "interactive_count": 1,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:32:24.610497+08:00"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    }
+  ],
+  "assertions": [],
+  "failed_step_index": 2,
+  "reproduction_steps": [
+    "navigate -> /",
+    "click @ css=#target"
+  ],
+  "cause_hints": [
+    {
+      "heuristic": true,
+      "category": "locator",
+      "message": "页面元素可能不存在、尚未加载或定位信息已变化，请检查页面和稳定定位属性。",
+      "evidence": [
+        "步骤/断言 2",
+        "动作前稳定性检查失败：unoccluded"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "findings": [
+    {
+      "id": "finding-355a46c00e",
+      "title": "步骤 1 检测到交互控件中心点被其他元素遮挡，可能无法点击",
+      "category": "element_obscured",
+      "severity": "High",
+      "confidence": "high",
+      "actual_result": "交互控件中心点被其他元素遮挡，可能无法点击",
+      "expected_result": "页面关键内容和交互控件完整可见且可操作",
+      "facts": [
+        "交互控件中心点被其他元素遮挡，可能无法点击",
+        "目标：button | text=Run"
+      ],
+      "inference": "该结论来自浏览器布局与命中测试信号，仍需结合业务状态人工确认。",
+      "evidence": [
+        "screenshots/step-1-before.png",
+        "screenshots/step-1-after.png"
+      ],
+      "evidence_timeline": [
+        {
+          "phase": "before_action",
+          "timestamp": "2026-07-22T04:32:23.803112+08:00",
+          "screenshot": "screenshots/step-1-before.png",
+          "facts": [
+            "页面：无标题 · about:blank"
+          ]
+        },
+        {
+          "phase": "after_action",
+          "timestamp": "2026-07-22T04:32:24.090295+08:00",
+          "screenshot": "screenshots/step-1-after.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:52753/",
+            "交互控件中心点被其他元素遮挡，可能无法点击",
+            "目标：button | text=Run"
+          ]
+        }
+      ],
+      "reproduction_steps": [
+        "navigate -> /"
+      ],
+      "review_status": "pending_review",
+      "review_history": []
+    },
+    {
+      "id": "finding-14db2d0af4",
+      "title": "步骤 2 未完成：click",
+      "category": "locator",
+      "severity": "Medium",
+      "confidence": "medium",
+      "actual_result": "动作前稳定性检查失败：unoccluded",
+      "expected_result": "动作成功并进入可验证的下一状态",
+      "facts": [
+        "步骤 2 状态为 error",
+        "动作前稳定性检查失败：unoccluded"
+      ],
+      "inference": "可能是产品、环境、测试数据、定位或时序问题，需结合证据人工确认。",
+      "evidence": [
+        "screenshots/step-2-before.png",
+        "screenshots/step-2-after-failure.png"
+      ],
+      "evidence_timeline": [
+        {
+          "phase": "before_action",
+          "timestamp": "2026-07-22T04:32:24.297933+08:00",
+          "screenshot": "screenshots/step-2-before.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:52753/"
+          ]
+        },
+        {
+          "phase": "after_action",
+          "timestamp": "2026-07-22T04:32:24.610497+08:00",
+          "screenshot": "screenshots/step-2-after-failure.png",
+          "facts": [
+            "页面：无标题 · http://127.0.0.1:52753/",
+            "动作前稳定性检查失败：unoccluded"
+          ]
+        }
+      ],
+      "reproduction_steps": [
+        "navigate -> /",
+        "click @ css=#target"
+      ],
+      "review_status": "pending_review",
+      "review_history": []
+    }
+  ],
+  "generated_test": {
+    "language": "typescript",
+    "framework_version": "playwright",
+    "source_path": "generated-test.spec.ts",
+    "stability_level": "A",
+    "supported_replay_modes": [
+      "stable"
+    ],
+    "ci_eligible": true,
+    "ci_recommendation": "可作为 CI 候选",
+    "source": "import { test, expect } from '@playwright/test';\n\ntest(\"Occlusion check\", async ({ page }, testInfo) => {\n  await test.step(\"步骤 1\", async () => {\n    await page.goto(\"http://127.0.0.1:52753/\");\n  });\n  await test.step(\"步骤 2\", async () => {\n    await page.locator(\"#target\").click();\n  });\n});\n",
+    "manual_steps": [],
+    "source_revision": 1,
+    "source_review_history": []
+  },
+  "replay_mode": "exploration",
+  "onboarding_level": null,
+  "stability_level": "A",
+  "completion_reason": "execution_failed",
+  "project_id": null,
+  "account_id": null,
+  "account_role": null,
+  "environment_id": null,
+  "environment_updated_at": null,
+  "artifact_retention_days": 30,
+  "scenario_id": null,
+  "scenario_updated_at": null,
+  "scenario_goal": "Occlusion check",
+  "goal_status": "incomplete",
+  "goal_summary": "场景未完整执行；无收尾断言；结束原因 execution_failed",
+  "model_calls": 0,
+  "estimated_cost": null,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "model_call_records": [],
+  "confirmation_history": [],
+  "runner_isolation": null,
+  "websocket_timeline": [],
+  "cleanup_report": null,
+  "business_context_snapshot": null,
+  "project_snapshot": null,
+  "environment_snapshot": null,
+  "app_map_snapshot": null,
+  "evidence_manifest": {
+    "schemaVersion": "1",
+    "runId": "20260722-043222-5fa3227e",
+    "items": [
+      {
+        "id": "run_metadata",
+        "label": "运行元数据",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/run-metadata.json"
+        ],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "plan",
+        "label": "受约束执行计划",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "plan.json"
+        ],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "project_environment",
+        "label": "脱敏项目／环境与业务上下文",
+        "status": "not_applicable",
+        "reason": "未关联项目",
+        "artifacts": [
+          "evidence/project-environment.json"
+        ],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "app_map",
+        "label": "兼容性扫描与页面地图",
+        "status": "not_applicable",
+        "reason": "未关联项目",
+        "artifacts": [],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "actions",
+        "label": "动作时间线",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/action-timeline.json"
+        ],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "observations",
+        "label": "DOM／ARIA／console／network 观察",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/browser-observations.json"
+        ],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "screenshots",
+        "label": "步骤截图",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "screenshots/step-1-after.png",
+          "screenshots/step-2-after-failure.png"
+        ],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [
+          "step-1",
+          "step-2"
+        ],
+        "businessIds": []
+      },
+      {
+        "id": "trace",
+        "label": "Playwright Trace",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "trace.zip"
+        ],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "websocket",
+        "label": "WebSocket 时间线",
+        "status": "not_applicable",
+        "reason": "运行未建立 WebSocket",
+        "artifacts": [],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "model_calls",
+        "label": "模型调用记录",
+        "status": "not_applicable",
+        "reason": "固定计划未调用模型",
+        "artifacts": [],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "file_transfer",
+        "label": "上传／下载证据",
+        "status": "not_applicable",
+        "reason": "计划无上传／下载",
+        "artifacts": [],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "canvas",
+        "label": "Canvas／Bridge 语义证据",
+        "status": "not_applicable",
+        "reason": "计划无 Canvas／Bridge 行为",
+        "artifacts": [],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "findings",
+        "label": "Finding 与证据时间线",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "evidence/findings.json"
+        ],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "generated_test",
+        "label": "生成的 Playwright 测试",
+        "status": "present",
+        "reason": "",
+        "artifacts": [
+          "generated-test.spec.ts"
+        ],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "confirmations",
+        "label": "危险动作确认历史",
+        "status": "not_applicable",
+        "reason": "运行无确认动作",
+        "artifacts": [],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "cleanup",
+        "label": "业务对象清理报告",
+        "status": "not_applicable",
+        "reason": "场景未声明业务对象清理",
+        "artifacts": [],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "review_history",
+        "label": "Finding／路径审核历史",
+        "status": "not_applicable",
+        "reason": "运行结束后人工审核阶段生成",
+        "artifacts": [],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      },
+      {
+        "id": "acceptance_summary",
+        "label": "批次验收摘要",
+        "status": "not_applicable",
+        "reason": "仅批量验收任务适用",
+        "artifacts": [],
+        "runId": "20260722-043222-5fa3227e",
+        "stepIds": [],
+        "businessIds": []
+      }
+    ],
+    "applicableCount": 8,
+    "presentCount": 8,
+    "missingCount": 0,
+    "completeness": 1.0
+  },
+  "evidence_completeness": 1.0,
+  "evidence_manifest_path": "evidence/evidence-manifest.json"
+}

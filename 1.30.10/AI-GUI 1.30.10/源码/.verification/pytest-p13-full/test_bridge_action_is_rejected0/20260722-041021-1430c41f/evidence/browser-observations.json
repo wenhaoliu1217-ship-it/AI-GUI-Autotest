@@ -1,0 +1,87 @@
+{
+  "runId": "20260722-041021-1430c41f",
+  "data": [
+    {
+      "stepId": "step-1",
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-22T04:10:22.268215+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64850/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:10:22.550364+08:00"
+      }
+    },
+    {
+      "stepId": "step-2",
+      "before": {
+        "url": "http://127.0.0.1:64850/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:10:22.767335+08:00"
+      },
+      "after": {
+        "url": "http://127.0.0.1:64850/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after-failure.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-22T04:10:22.990359+08:00"
+      }
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "scenario-9f45ea4e63",
+  "projectId": "project-f0d770a1f4",
+  "name": "生命周期",
+  "preconditions": [
+    "无"
+  ],
+  "goal": "测试",
+  "testData": {},
+  "expectedResults": [
+    "完成"
+  ],
+  "forbiddenActions": [],
+  "businessObjects": [
+    {
+      "key": "job",
+      "objectType": "job",
+      "name": "E2E_job",
+      "businessId": null,
+      "dependencies": [],
+      "reuse": false,
+      "cleanupStep": {
+        "action": "click",
+        "locator": {
+          "text": "remove"
+        },
+        "execution_mode": "locator",
+        "stability_level": "A",
+        "stability_reason": "确定性 Playwright 动作",
+        "visual_points": [],
+        "zoom_delta": -600,
+        "gesture_finish": "double_click",
+        "computer_use_triggered": false,
+        "scroll_delta_y": 600,
+        "expected_file_validity": "valid",
+        "business_object_name": "E2E_job",
+        "expected_residual_count": 0,
+        "action_category": "delete",
+        "object_type": "job",
+        "cleanup_required": true
+      },
+      "verificationLocator": null,
+      "manualFallback": ""
+    }
+  ],
+  "createdAt": "2026-07-21T20:32:01.856354+00:00",
+  "updatedAt": "2026-07-21T20:32:01.856354+00:00"
+}

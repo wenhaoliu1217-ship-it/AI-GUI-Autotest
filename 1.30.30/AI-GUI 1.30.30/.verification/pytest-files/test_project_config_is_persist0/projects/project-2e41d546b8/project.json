@@ -1,0 +1,63 @@
+{
+  "id": "project-2e41d546b8",
+  "name": "企业测试站",
+  "baseUrl": "https://example.com/app",
+  "allowedHosts": [
+    "example.com",
+    "assets.example.net"
+  ],
+  "forbiddenActions": [
+    "支付",
+    "删除数据"
+  ],
+  "allowPrivateNetwork": false,
+  "businessContext": {
+    "description": "客户运营后台",
+    "terminology": {
+      "客户池": "未分配客户"
+    },
+    "objectTypes": [
+      "客户"
+    ],
+    "stateModels": {
+      "客户": [
+        "待分配",
+        "跟进中"
+      ]
+    },
+    "exampleGoals": [
+      "把客户分配给销售"
+    ],
+    "operatingBoundaries": [
+      "只操作 QA 租户"
+    ],
+    "allowedActions": [
+      "查询客户",
+      "分配客户"
+    ],
+    "bridgeCapabilities": [
+      "等待场景就绪",
+      "读取选中对象"
+    ],
+    "bridgeSemanticTargets": {
+      "agent.primary": "主仿真 Agent"
+    }
+  },
+  "commerceProfile": {
+    "enabled": false,
+    "environment": "production_readonly",
+    "accountRef": null,
+    "productionReversibleWriteAuthorized": false,
+    "sandboxDriver": false,
+    "e2eResourcePrefix": "E2E_",
+    "piiMaskSelectors": []
+  },
+  "onboardingLevel": "L0",
+  "limits": {
+    "maxSteps": 30,
+    "timeoutSeconds": 300,
+    "maxModelCalls": 10
+  },
+  "createdAt": "2026-07-23T04:15:48.712421+00:00",
+  "updatedAt": "2026-07-23T04:15:48.712421+00:00"
+}

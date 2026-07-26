@@ -1,0 +1,2 @@
+{"timestamp": "2026-07-21T20:31:55.547418+00:00", "action": "create", "objectType": "project", "objectId": "project-f65050299d", "projectId": "project-f65050299d", "changedFields": ["all"]}
+{"timestamp": "2026-07-21T20:31:55.574757+00:00", "action": "create", "objectType": "environment", "objectId": "environment-a25705d904", "projectId": "project-f65050299d", "changedFields": ["all"]}

@@ -1,0 +1,256 @@
+{
+  "run_id": "20260721-195720-1d8a9d5e",
+  "plan_name": "real container bridge verification",
+  "role": null,
+  "base_url_summary": "http://host.docker.internal:62445",
+  "status": "passed",
+  "started_at": "2026-07-21T11:57:22.159949Z",
+  "ended_at": "2026-07-21T11:57:24.781785Z",
+  "steps": [
+    {
+      "index": 1,
+      "action": "navigate",
+      "description": null,
+      "target_summary": "navigate -> /",
+      "status": "passed",
+      "started_at": "2026-07-21T11:57:23.607720Z",
+      "ended_at": "2026-07-21T11:57:24.091256Z",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-1-after.png",
+      "execution_mode": "locator",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": null,
+      "app_bridge_result": null,
+      "stability_evidence": {
+        "checked": false,
+        "passed": true,
+        "mode": "not_applicable"
+      },
+      "before": {
+        "url": "about:blank",
+        "title": "",
+        "screenshot": "screenshots/step-1-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 0,
+          "visible_element_count": 0,
+          "interactive_count": 0,
+          "visual_surface_count": 0
+        },
+        "captured_at": "2026-07-21T11:57:23.826247Z"
+      },
+      "after": {
+        "url": "http://host.docker.internal:62445/",
+        "title": "",
+        "screenshot": "screenshots/step-1-after.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-21T11:57:24.091225Z"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    },
+    {
+      "index": 2,
+      "action": "bridge_click",
+      "description": "Select entity Alpha through Bridge",
+      "target_summary": "Select entity Alpha through Bridge @ ",
+      "status": "passed",
+      "started_at": "2026-07-21T11:57:24.094488Z",
+      "ended_at": "2026-07-21T11:57:24.547162Z",
+      "error_message": null,
+      "failure_category": null,
+      "screenshot": "screenshots/step-2-after.png",
+      "execution_mode": "app_bridge",
+      "locator_basis": null,
+      "stability_level": "A",
+      "stability_reason": "确定性 Playwright 动作",
+      "computer_use_triggered": false,
+      "computer_use_reason": null,
+      "coordinate_source": "app_bridge:entity.alpha",
+      "app_bridge_result": {
+        "adapter": "cesium",
+        "globalName": "CONTAINER_BRIDGE",
+        "version": "1",
+        "capabilities": [
+          "getSceneState",
+          "listVisibleTargets",
+          "getTargetScreenPosition",
+          "getSelectedTargetId",
+          "waitForSceneReady"
+        ],
+        "sceneBefore": {
+          "camera": {
+            "heading": 0
+          },
+          "layers": [
+            {
+              "id": "base",
+              "show": true
+            }
+          ],
+          "tilesLoaded": true,
+          "loading": false
+        },
+        "visibleTargets": [
+          {
+            "id": "entity.alpha",
+            "type": "entity",
+            "label": "Alpha"
+          }
+        ],
+        "selectedTargetBefore": null,
+        "targetPosition": {
+          "x": 208.0,
+          "y": 108.0
+        },
+        "sceneReadyBefore": true,
+        "sceneAfter": {
+          "camera": {
+            "heading": 0
+          },
+          "layers": [
+            {
+              "id": "base",
+              "show": true
+            }
+          ],
+          "tilesLoaded": true,
+          "loading": false
+        },
+        "selectedTargetAfter": "entity.alpha",
+        "sceneReadyAfter": true,
+        "semanticStateVerified": true
+      },
+      "stability_evidence": {
+        "checked": true,
+        "passed": true,
+        "mode": "app_bridge",
+        "sceneReady": true,
+        "targetId": "entity.alpha",
+        "adapter": "cesium"
+      },
+      "before": {
+        "url": "http://host.docker.internal:62445/",
+        "title": "",
+        "screenshot": "screenshots/step-2-before.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Waiting",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 7,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-21T11:57:24.289908Z"
+      },
+      "after": {
+        "url": "http://host.docker.internal:62445/",
+        "title": "",
+        "screenshot": "screenshots/step-2-after.png",
+        "dom_summary": [],
+        "accessibility_summary": "- paragraph: Selected",
+        "console_errors": [],
+        "page_errors": [],
+        "failed_requests": [],
+        "page_issues": [],
+        "page_health": {
+          "ready_state": "complete",
+          "visible_text_length": 8,
+          "visible_element_count": 2,
+          "interactive_count": 0,
+          "visual_surface_count": 1
+        },
+        "captured_at": "2026-07-21T11:57:24.547090Z"
+      },
+      "planner_reason": null,
+      "progress_assessment": null
+    }
+  ],
+  "assertions": [],
+  "failed_step_index": null,
+  "reproduction_steps": [
+    "navigate -> /",
+    "Select entity Alpha through Bridge @ "
+  ],
+  "cause_hints": [],
+  "findings": [],
+  "generated_test": {
+    "language": "typescript",
+    "framework_version": "playwright",
+    "source_path": "generated-test.spec.ts",
+    "stability_level": "A",
+    "supported_replay_modes": [
+      "stable"
+    ],
+    "ci_eligible": true,
+    "ci_recommendation": "可作为 CI 候选",
+    "source": "import { test, expect } from '@playwright/test';\n\ntest(\"real container bridge verification\", async ({ page }) => {\n  await test.step(\"步骤 1\", async () => {\n    await page.goto(\"http://host.docker.internal:62445/\");\n  });\n  await test.step(\"Select entity Alpha through Bridge\", async () => {\n    const bridgeGlobalName = process.env.APP_BRIDGE_GLOBAL || '__WEB_AI_TEST__';\n    const bridgeResult = await page.evaluate(async (args) => {\n      const { id, globalName } = args;\n      const bridge = (window as any)[globalName];\n      const required = ['getSceneState', 'listVisibleTargets', 'getTargetScreenPosition', 'getSelectedTargetId', 'waitForSceneReady'];\n      if (!bridge || String(bridge.version || '') !== '1' || required.some((name) => typeof bridge[name] !== 'function')) throw new Error('Canvas App Bridge v1 contract is unavailable');\n      await bridge.waitForSceneReady();\n      const before = await bridge.getSceneState();\n      const targets = await bridge.listVisibleTargets();\n      if (!targets.some((target) => (target.id || target.targetId) === id)) throw new Error(`Bridge target is not visible: ${id}`);\n      const position = await bridge.getTargetScreenPosition(id);\n      return { position, before };\n    }, { id: \"entity.alpha\", globalName: bridgeGlobalName });\n    const bridgePosition = bridgeResult.position;\n    await page.mouse.click(bridgePosition.x, bridgePosition.y);\n    const bridgeVerification = await page.evaluate(async (args) => {\n      const bridge = (window as any)[args.globalName];\n      await bridge.waitForSceneReady();\n      return { selectedTargetId: await bridge.getSelectedTargetId(), after: await bridge.getSceneState() };\n    }, { id: \"entity.alpha\", globalName: bridgeGlobalName });\n    if (bridgeVerification.selectedTargetId !== \"entity.alpha\") throw new Error('Bridge semantic selection verification failed');\n  });\n});\n",
+    "manual_steps": [],
+    "source_revision": 1,
+    "source_review_history": []
+  },
+  "replay_mode": "exploration",
+  "onboarding_level": null,
+  "stability_level": "A",
+  "completion_reason": "plan_completed",
+  "project_id": null,
+  "environment_id": null,
+  "environment_updated_at": null,
+  "artifact_retention_days": 30,
+  "scenario_id": null,
+  "scenario_updated_at": null,
+  "scenario_goal": "real container bridge verification",
+  "goal_status": "achieved",
+  "goal_summary": "场景目标已完成；无收尾断言",
+  "model_calls": 0,
+  "estimated_cost": null,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "model_call_records": [],
+  "confirmation_history": [],
+  "runner_isolation": {
+    "mode": "docker_container",
+    "container_name": "ai-gui-20260721-195720-1d8a9d5e",
+    "image": "ai-gui-runner:1.30.00",
+    "root_filesystem_read_only": true,
+    "artifact_mount": "C:\\Users\\zzzzl\\Desktop\\京彩OPC\\AI-GUI-Autotest\\1.30.00\\AI-GUI 1.30.00\\源码\\.verification\\bridge-container-artifacts\\20260721-195720-1d8a9d5e",
+    "tmpfs_mb": 324,
+    "memory_limit_mb": 2048,
+    "cpu_limit": 2.0,
+    "pids_limit": 256,
+    "capabilities_dropped": "ALL_AFTER_FIREWALL_INIT",
+    "no_new_privileges": true,
+    "container_network_mode": "bridge",
+    "container_private_network_allowed": true,
+    "network_policy": "explicit_private_network_exception+playwright_request_guard",
+    "forced_termination": false
+  }
+}
