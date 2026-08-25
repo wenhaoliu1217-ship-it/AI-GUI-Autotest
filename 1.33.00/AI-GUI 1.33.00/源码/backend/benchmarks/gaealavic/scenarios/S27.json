@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1",
+  "id": "S27",
+  "name": "运行记录完整筛选与批量控件",
+  "category": "运行列表",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "普通测试",
+  "prerequisites": [
+    {
+      "id": "S27-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "固定运行与 DoE 记录"
+    },
+    {
+      "id": "S27-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "运行列表字段"
+    },
+    {
+      "id": "S27-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "筛选重置和日期组件映射"
+    },
+    {
+      "id": "S27-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "批量删除授权边界"
+    },
+    {
+      "id": "S27-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "导出文件格式"
+    }
+  ],
+  "goal": "运行记录完整筛选与批量控件",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "按固定想定筛选",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "按固定 DoE 筛选",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "按运行状态筛选",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-4",
+      "businessAction": "设置开始和结束时间",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-5",
+      "businessAction": "按 E2E_ 运行 ID 定位记录",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-6",
+      "businessAction": "重置筛选",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-7",
+      "businessAction": "验证未选择时批量删除和导出禁用",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-8",
+      "businessAction": "选择记录后打开批量删除确认并取消",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-9",
+      "businessAction": "选择记录后导出数据",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "筛选命中固定运行且时间范围生效",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "重置恢复默认列表",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-3",
+      "businessFact": "批量删除二次确认且取消无副作用",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-4",
+      "businessFact": "导出产生文件或明确提示",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": false,
+    "order": "reverse_dependency",
+    "verification": "not_applicable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "固定运行与 DoE 记录",
+    "运行列表字段",
+    "筛选重置和日期组件映射",
+    "批量删除授权边界",
+    "导出文件格式"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

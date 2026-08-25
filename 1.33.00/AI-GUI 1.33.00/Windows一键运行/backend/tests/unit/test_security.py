@@ -1,0 +1,226 @@
+import time
+
+import pytest
+
+from gui_agent.security.policy import DomainPolicy, SecurityError, guard_playwright_route, guard_playwright_websocket, resolve_env_placeholder, resolve_secret
+from gui_agent.security.redaction import REDACTION_MASK, Redactor
+
+
+def test_domain_policy_rejects_cross_domain() -> None:
+    policy = DomainPolicy("https://demo.example.com", resolver=lambda _: {"93.184.216.34"})
+    with pytest.raises(SecurityError):
+        policy.check_url("https://other.example.com/admin")
+
+
+def test_domain_policy_allows_same_site_subdomain_for_www_entrypoint() -> None:
+    policy = DomainPolicy("https://www.wikipedia.org", resolver=lambda _: {"208.80.154.224"})
+
+    policy.check_url("https://zh.wikipedia.org/wiki/Cesium")
+    policy.check_url("https://wikipedia.org/")
+
+
+def test_domain_policy_www_scope_does_not_allow_lookalike_domain() -> None:
+    policy = DomainPolicy("https://www.wikipedia.org", resolver=lambda _: {"93.184.216.34"})
+
+    with pytest.raises(SecurityError, match="白名单"):
+        policy.check_url("https://evilwikipedia.org/")
+
+
+@pytest.mark.parametrize("address", ["127.0.0.1", "10.1.2.3", "100.64.1.2", "169.254.10.20", "::1", "fe80::1", "fd00::1"])
+def test_domain_policy_blocks_restricted_networks_by_default(address: str) -> None:
+    base_url = f"http://[{address}]" if ":" in address else f"http://{address}"
+    policy = DomainPolicy(base_url)
+
+    with pytest.raises(SecurityError, match="默认禁止访问"):
+        policy.check_url(f"{base_url}/health")
+
+
+def test_domain_policy_allows_explicit_controlled_private_network() -> None:
+    policy = DomainPolicy("http://127.0.0.1", allow_private_network=True)
+
+    policy.check_url("http://127.0.0.1:8080/health")
+
+
+def test_domain_policy_allows_enterprise_proxy_benchmark_mapping() -> None:
+    policy = DomainPolicy("https://example.com", resolver=lambda _: {"198.18.0.36"})
+
+    policy.check_url("https://example.com")
+
+
+def test_domain_policy_rejects_dns_scope_rebinding_even_with_private_exception() -> None:
+    answers = iter([{"93.184.216.34"}, {"127.0.0.1"}])
+    policy = DomainPolicy(
+        "https://demo.example.com",
+        allow_private_network=True,
+        resolver=lambda _: next(answers),
+    )
+    policy.check_url("https://demo.example.com")
+
+    with pytest.raises(SecurityError, match="DNS 重绑定"):
+        policy.check_url("https://demo.example.com/dashboard")
+
+
+def test_domain_policy_reuses_dns_result_for_subresources_but_rechecks_navigation() -> None:
+    calls: list[str] = []
+
+    def resolver(host: str) -> set[str]:
+        calls.append(host)
+        return {"93.184.216.34"}
+
+    policy = DomainPolicy("https://demo.example.com", resolver=resolver)
+    policy.check_url("https://demo.example.com")
+    for index in range(20):
+        policy.check_url(f"https://demo.example.com/assets/{index}.js", require_allowed_host=False)
+    assert calls == ["demo.example.com"]
+
+    policy.check_url("https://demo.example.com/dashboard")
+    assert calls == ["demo.example.com", "demo.example.com"]
+
+
+def test_domain_policy_bounds_a_stuck_dns_resolver() -> None:
+    def resolver(_: str) -> set[str]:
+        time.sleep(30)
+        return {"93.184.216.34"}
+
+    policy = DomainPolicy(
+        "https://demo.example.com",
+        resolver=resolver,
+        resolver_timeout_seconds=0.05,
+    )
+    started = time.monotonic()
+
+    with pytest.raises(SecurityError, match="安全解析目标主机超时"):
+        policy.check_url("https://demo.example.com")
+
+    assert time.monotonic() - started < 0.5
+
+
+def test_domain_policy_rejects_non_http_and_credentials() -> None:
+    policy = DomainPolicy("https://demo.example.com", resolver=lambda _: {"93.184.216.34"})
+
+    with pytest.raises(SecurityError, match="http/https"):
+        policy.check_url("file:///etc/passwd")
+    with pytest.raises(SecurityError, match="用户名或密码"):
+        policy.check_url("https://user:password@demo.example.com")
+
+
+def test_browser_route_blocks_private_subresource_and_records_reason() -> None:
+    class Request:
+        url = "http://127.0.0.1/internal"
+        resource_type = "fetch"
+
+        @staticmethod
+        def is_navigation_request() -> bool:
+            return False
+
+    class Route:
+        request = Request()
+        aborted = False
+
+        def continue_(self) -> None:
+            raise AssertionError("受限地址不得继续请求")
+
+        def abort(self, reason: str) -> None:
+            assert reason == "blockedbyclient"
+            self.aborted = True
+
+    route = Route()
+    rejections: list[tuple[str, str, str]] = []
+    policy = DomainPolicy("https://demo.example.com", resolver=lambda host: {
+        "93.184.216.34" if host == "demo.example.com" else "127.0.0.1"
+    })
+
+    guard_playwright_route(route, policy, lambda *items: rejections.append(items))
+
+    assert route.aborted is True
+    assert "默认禁止访问" in rejections[0][0]
+    assert policy.consume_rejection() == rejections[0][0]
+
+
+def test_browser_websocket_requires_allowed_host_and_network_scope() -> None:
+    class WebSocketRoute:
+        url = "ws://127.0.0.1/internal"
+        closed = False
+
+        def connect_to_server(self) -> None:
+            raise AssertionError("受限 WebSocket 不得连接")
+
+        def close(self, *, code: int, reason: str) -> None:
+            assert code == 1008
+            assert reason == "blocked by network policy"
+            self.closed = True
+
+    route = WebSocketRoute()
+    rejections: list[tuple[str, str, str]] = []
+    policy = DomainPolicy("https://demo.example.com", resolver=lambda host: {
+        "93.184.216.34" if host == "demo.example.com" else "127.0.0.1"
+    })
+
+    guard_playwright_websocket(route, policy, lambda *items: rejections.append(items))
+
+    assert route.closed is True
+    assert rejections[0][2] == "websocket"
+    assert "白名单" in rejections[0][0]
+
+
+def test_redactor_scrubs_nested_values() -> None:
+    redactor = Redactor()
+    redactor.register("secret-value")
+    result = redactor.scrub_mapping(
+        {"message": "token=secret-value", "nested": ["secret-value", {"x": "secret-value"}]}
+    )
+    assert result == {
+        "message": f"token={REDACTION_MASK}",
+        "nested": [REDACTION_MASK, {"x": REDACTION_MASK}],
+    }
+    assert b"secret-value" not in redactor.scrub_bytes(b"token=secret-value")
+
+
+def test_redactor_masks_common_pii_and_business_ids_in_text_and_trace_bytes() -> None:
+    redactor = Redactor()
+    value = "phone=13800138000 email=buyer@example.com order=1234567890123456"
+
+    scrubbed = redactor.scrub(value)
+    assert "13800138000" not in scrubbed
+    assert "buyer@example.com" not in scrubbed
+    assert "1234567890123456" not in scrubbed
+
+    scrubbed_bytes = redactor.scrub_bytes(value.encode("utf-8"))
+    assert b"13800138000" not in scrubbed_bytes
+    assert b"buyer@example.com" not in scrubbed_bytes
+    assert b"1234567890123456" not in scrubbed_bytes
+
+
+def test_redactor_registers_available_environment_refs_without_requiring_missing_refs(monkeypatch) -> None:
+    monkeypatch.setenv("JD_TEST_USERNAME", "runtime-account-value")
+    redactor = Redactor()
+
+    redactor.register_environment_refs({
+        "LOGIN_USERNAME": "JD_TEST_USERNAME",
+        "OPTIONAL_PASSWORD": "JD_TEST_PASSWORD_NOT_SET",
+    })
+
+    assert "runtime-account-value" not in redactor.scrub("user=runtime-account-value")
+
+
+def test_request_url_summary_removes_credentials_query_fragment_and_long_path_ids() -> None:
+    from gui_agent.security.redaction import summarize_request_url
+
+    raw = "https://user:password@example.com/orders/1234567890123456?token=secret&mobile=13800138000#private"
+    summary = summarize_request_url(raw)
+
+    assert summary.startswith("https://example.com/orders/{id}")
+    assert "urlSha256=" in summary
+    assert "password" not in summary
+    assert "token" not in summary
+    assert "13800138000" not in summary
+    assert "#private" not in summary
+
+
+def test_environment_values_and_secret_aliases_resolve_per_run(monkeypatch) -> None:
+    monkeypatch.setenv("QA_LOGIN_PASSWORD", "runtime-only-secret")
+    redactor = Redactor()
+
+    assert resolve_env_placeholder("${TEST_BASE_URL}", {"TEST_BASE_URL": "https://qa.example.com"}) == "https://qa.example.com"
+    assert resolve_secret("LOGIN_PASSWORD", redactor, {"LOGIN_PASSWORD": "QA_LOGIN_PASSWORD"}) == "runtime-only-secret"
+    assert redactor.scrub("password=runtime-only-secret") == f"password={REDACTION_MASK}"

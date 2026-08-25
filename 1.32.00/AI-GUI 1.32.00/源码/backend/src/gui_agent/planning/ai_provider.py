@@ -167,6 +167,7 @@ def probe_capabilities(settings: AISettings) -> dict[str, Any]:
             "严格按 Schema 返回 echo=schema-ok。",
             schema=schema,
             schema_name="gui_capability_probe",
+            transient_retries=2,
         )
     except AIProviderError as exc:
         raise AIProviderError(f"结构化输出没有通过：{exc}") from exc
@@ -184,6 +185,7 @@ def probe_capabilities(settings: AISettings) -> dict[str, Any]:
             schema=agent_schema,
             schema_name="gui_agent_decision_probe",
             instructions="你正在验证逐步 Web Agent 的真实决策输出格式。不得返回动作，只能按 Schema 返回 complete。",
+            transient_retries=2,
         )
     except AIProviderError as exc:
         raise AIProviderError(f"网页操作决策能力没有通过：{exc}") from exc
@@ -201,7 +203,7 @@ def probe_capabilities(settings: AISettings) -> dict[str, Any]:
             {"role": "user", "content": f"记住标记 {marker}，只回复已记住。"},
             {"role": "assistant", "content": "已记住。"},
             {"role": "user", "content": "回复刚才的标记。"},
-        ], schema=None)
+        ], schema=None, transient_retries=2)
     except AIProviderError as exc:
         raise AIProviderError(f"连续对话能力没有通过：{exc}") from exc
     if marker not in _extract_text(settings.protocol, multi_data):
@@ -249,7 +251,13 @@ def _post_vision_probe(settings: AISettings) -> dict[str, Any]:
                 {"type": "image_url", "image_url": {"url": image}},
             ],
         }]
-    return _post(settings, prompt, schema=None, instructions="Answer the image question exactly and briefly.")
+    return _post(
+        settings,
+        prompt,
+        schema=None,
+        instructions="Answer the image question exactly and briefly.",
+        transient_retries=2,
+    )
 
 
 def plan_with_ai(
@@ -314,6 +322,7 @@ def _post(
     connection_test: bool = False,
     schema_name: str = "gui_test_plan",
     instructions: str = "你是 GUI 自动化测试规划器。严格遵守输出约束，不编造执行结果。",
+    transient_retries: int = 0,
 ) -> dict[str, Any]:
     base = _openai_endpoint_base(settings.base_url)
     headers = {
@@ -358,32 +367,38 @@ def _post(
                              {"role": "user", "content": chat_prompt},
                          ]),
         }
+        payload.update(_chat_compatibility_options(settings))
         if schema is not None:
             payload["response_format"] = {"type": "json_object"}
         elif connection_test:
             payload["max_tokens"] = 16
     response: httpx.Response | None = None
-    for attempt in range(3):
+    attempts = 3 if connection_test else max(1, transient_retries + 1)
+    request_timeout = 60.0 if connection_test or transient_retries else 105.0
+    for attempt in range(attempts):
         try:
-            with httpx.Client(timeout=httpx.Timeout(120.0, connect=15.0), follow_redirects=False) as client:
+            with httpx.Client(
+                timeout=httpx.Timeout(request_timeout, connect=15.0),
+                follow_redirects=False,
+            ) as client:
                 response = client.post(endpoint, headers=headers, json=payload)
         except httpx.TimeoutException as exc:
-            if attempt == 2:
+            if attempt == attempts - 1:
                 raise AIProviderError(
-                    "模型 API 连续三次响应超时，请稍后重试或检查服务状态",
+                    "模型 API 响应超时，请稍后重试或检查服务状态",
                     retryable=True,
                 ) from exc
             time.sleep(0.4 * (attempt + 1))
             continue
         except httpx.HTTPError as exc:
-            if attempt == 2:
+            if attempt == attempts - 1:
                 raise AIProviderError(
                     "无法连接模型 API，请检查 Base URL 和网络",
                     retryable=True,
                 ) from exc
             time.sleep(0.4 * (attempt + 1))
             continue
-        if response.status_code not in {502, 503, 504} or attempt == 2:
+        if response.status_code not in {502, 503, 504} or attempt == attempts - 1:
             break
         time.sleep(0.4 * (attempt + 1))
     assert response is not None
@@ -411,6 +426,16 @@ def _openai_endpoint_base(value: str) -> str:
     if parsed.path in {"", "/"}:
         return f"{base}/v1"
     return base
+
+
+def _chat_compatibility_options(settings: AISettings) -> dict[str, Any]:
+    """Apply documented provider options needed by otherwise OpenAI-compatible APIs."""
+    parsed = urlparse(settings.base_url.strip())
+    hostname = (parsed.hostname or "").lower()
+    model = settings.model.strip().lower()
+    if hostname == "api.moonshot.cn" and model in {"kimi-k2.5", "kimi-k2.6"}:
+        return {"thinking": {"type": "disabled"}}
+    return {}
 
 
 def _extract_text(protocol: Protocol, data: dict[str, Any]) -> str:
@@ -478,6 +503,12 @@ def _planning_prompt(
         f"策略表：{json.dumps(SIDE_EFFECTS, ensure_ascii=False)}；"
         if is_cesium_target(target_url) else ""
     )
+    canvas_rule = (
+        "涉及 Canvas/WebGL 地图时，必须把交互限制在 canvas_region_locator 指定的唯一可见区域；"
+        "绘制面使用 visual_draw_polygon 和 Canvas 内 0..1 相对 visual_points，至少三个顶点，"
+        "按站点约定用 gesture_finish=double_click 或 enter 结束；矩形拖绘使用 visual_draw_rectangle 的两个边界点；"
+        "不得保存或生成裸屏幕像素坐标。"
+    )
     return (
         "把下面的中文测试需求转换为可执行的 Playwright 测试计划。\n"
         "要求：第一步必须 navigate 到 /；只使用 schema 中允许的动作、定位器和断言；"
@@ -488,7 +519,7 @@ def _planning_prompt(
         "若 allowedActions 非空，只能生成其中明确允许的业务操作；"
         "Bridge 能力和语义目标只能引用业务上下文中声明的配置，不得虚构；"
         "若上下文不足以解释专业术语、对象、状态或允许操作，应拒绝生成并明确指出需要澄清的信息。\n\n"
-        + cesium_rule +
+        + cesium_rule + canvas_rule +
         f"用户需求：{json.dumps(request, ensure_ascii=False)}\n\n"
         f"必须输出且只输出符合此 JSON Schema 的对象：{json.dumps(schema, ensure_ascii=False)}"
     )

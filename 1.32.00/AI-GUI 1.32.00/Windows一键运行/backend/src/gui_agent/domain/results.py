@@ -244,6 +244,8 @@ class RunResult(BaseModel):
     app_map_snapshot: Optional[dict[str, Any]] = None
     websocket_timeline: list[dict[str, Any]] = Field(default_factory=list)
     cleanup_report: Optional[dict[str, Any]] = None
+    checkpoint: Optional[dict[str, Any]] = None
+    resume_from_run_id: Optional[str] = None
 
     @property
     def duration_ms(self) -> int:

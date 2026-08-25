@@ -1,0 +1,27 @@
+﻿[
+    {
+        "pid":  26076,
+        "path":  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+        "startedAtUtc":  "2026-08-11T18:17:29.9069234Z"
+    },
+    {
+        "pid":  36732,
+        "path":  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+        "startedAtUtc":  "2026-08-11T18:17:29.9603827Z"
+    },
+    {
+        "pid":  61224,
+        "path":  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+        "startedAtUtc":  "2026-08-11T18:17:29.7955052Z"
+    },
+    {
+        "pid":  63156,
+        "path":  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+        "startedAtUtc":  "2026-08-11T18:17:29.8984325Z"
+    },
+    {
+        "pid":  65204,
+        "path":  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+        "startedAtUtc":  "2026-08-11T18:17:29.7157176Z"
+    }
+]

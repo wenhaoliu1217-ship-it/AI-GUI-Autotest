@@ -1,0 +1,11 @@
+{
+  "task_id": "fixture.crm.search",
+  "intent": "Find a customer in the self-hosted CRM fixture",
+  "site": "webarena-self-hosted-fixture",
+  "trajectory": [
+    {"step": 0, "action": "goto('/search')", "observation": {"url": "http://crm.local/search", "dom": "fixture-placeholder"}, "reward": 0, "terminated": false, "truncated": false},
+    {"step": 1, "action": "click('[data-testid=customer]')", "observation": {"url": "http://crm.local/customer/1", "dom": "fixture-placeholder"}, "reward": 1, "terminated": true, "truncated": false}
+  ],
+  "summary": {"totalReward": 1, "success": true, "terminated": true, "truncated": false},
+  "evaluator": {"success": true, "passed": true, "score": 1, "message": "fixture evaluator passed"}
+}

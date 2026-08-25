@@ -1,0 +1,7 @@
+artifacts
+data
+tests
+.pytest*
+__pycache__
+*.pyc
+*.log

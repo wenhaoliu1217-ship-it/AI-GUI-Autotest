@@ -14,10 +14,16 @@ from urllib.parse import urlsplit
 REDACTION_MASK = "***REDACTED***"
 _PATH_IDENTIFIER = re.compile(r"(?<![A-Za-z0-9])(?:\d{6,}|[A-Fa-f0-9]{16,}|[A-Za-z0-9_-]{32,})(?![A-Za-z0-9])")
 _SENSITIVE_TEXT_PATTERNS = (
+    # Browser summaries can truncate a JWT before its signature. Mask two
+    # complete JWT-shaped segments as well as full three-segment values.
+    re.compile(r"(?<![A-Za-z0-9_-])eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}(?:\.[A-Za-z0-9_-]{0,})?(?![A-Za-z0-9_-])"),
     re.compile(r"(?<!\d)1[3-9]\d{9}(?!\d)"),
     re.compile(r"(?<!\d)\d{17}[0-9Xx](?!\d)"),
     re.compile(r"(?<!\d)\d{12,19}(?!\d)"),
     re.compile(r"(?<![\w.+-])[\w.+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}(?![\w.-])"),
+)
+_SENSITIVE_CONTROL_VALUE = re.compile(
+    r'(?im)(-\s*(?:textbox|searchbox)\s+"[^"]*(?:token|api\s*key|secret|password|令牌|密钥|密码)[^"]*"\s*:\s*)([^\r\n]+)'
 )
 _SENSITIVE_BYTE_PATTERNS = tuple(
     re.compile(pattern.pattern.encode("ascii")) for pattern in _SENSITIVE_TEXT_PATTERNS
@@ -71,6 +77,7 @@ class Redactor:
             text = text.replace(secret, REDACTION_MASK)
         for pattern in _SENSITIVE_TEXT_PATTERNS:
             text = pattern.sub(REDACTION_MASK, text)
+        text = _SENSITIVE_CONTROL_VALUE.sub(lambda match: match.group(1) + REDACTION_MASK, text)
         return text
 
     def scrub_bytes(self, data: bytes) -> bytes:

@@ -1,0 +1,10 @@
+# MATC-8.17 运行依赖（固定版本，避免范围漂移）
+pydantic==2.9.2
+PyYAML==6.0.2
+playwright==1.49.1
+fastapi==0.115.6
+uvicorn==0.34.0
+
+# 开发/测试依赖
+pytest==8.3.3
+httpx==0.28.1

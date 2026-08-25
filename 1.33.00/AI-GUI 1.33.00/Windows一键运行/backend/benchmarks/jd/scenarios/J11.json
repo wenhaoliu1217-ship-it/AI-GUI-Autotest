@@ -1,0 +1,46 @@
+{
+  "id": "J11",
+  "priority": "P0",
+  "title": "按 skuId 打开详情",
+  "role": "dedicated_buyer_or_required_authorized_role",
+  "repeatCount": 5,
+  "allowedEnvironments": [
+    "production_readonly",
+    "isolated_transaction"
+  ],
+  "riskLevel": "read",
+  "formalSitePolicy": "read_only",
+  "preconditions": [
+    "使用专用测试账号或游客会话，不记录真实个人信息",
+    "固定数据、角色、环境和动作授权均已登记"
+  ],
+  "requiredBusinessIds": [
+    "skuId",
+    "cartLineId",
+    "orderId",
+    "paymentId",
+    "refundId"
+  ],
+  "acceptanceAssertions": [
+    "SKU 唯一且一致",
+    "页面事实与脱敏网络／后台状态证据一致"
+  ],
+  "evidenceRequirements": [
+    "runId/caseId/stepId/role/environment",
+    "脱敏路由、定位器、前后截图、Console/Network",
+    "业务 ID 仅保存 SHA-256 和脱敏后缀",
+    "写场景保存状态时间线、幂等键结果和资源台账"
+  ],
+  "cleanup": "无需持久资源清理",
+  "requiredCapabilities": [
+    "jd_page_adapter",
+    "pii_redaction",
+    "network_evidence"
+  ],
+  "blockedDependencies": [
+    "京东目标环境与账号授权",
+    "稳定页面 Adapter／业务 ID 属性"
+  ],
+  "bindingStatus": "blocked",
+  "verificationStatus": "unverified"
+}

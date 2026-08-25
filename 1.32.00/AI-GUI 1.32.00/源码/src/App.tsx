@@ -32,6 +32,9 @@ const recoverableRunStatuses = new Set(['passed', 'failed', 'error', 'issues_fou
 
 export function displayedRunStatus(run: Pick<TestRun, 'status' | 'executionStatus' | 'completionReason'>): TestRun['status'] {
   if (run.completionReason === 'model_error' || run.executionStatus === 'system_error') return 'system_error';
+  if (run.executionStatus && ['incomplete', 'cancelled', 'failed', 'error'].includes(run.executionStatus)) {
+    return run.executionStatus;
+  }
   return run.status;
 }
 
@@ -173,7 +176,7 @@ export function detectedModules(report: CompatibilityReport | null): string[] {
   if (report.navigationEntries.length || report.scannedPages.length > 1 || report.scannedPages.some((page) => (page.regions || []).some((region) => region.role === 'navigation'))) modules.push('当前网站实际识别到的栏目和页面跳转');
   if (summary.unlabeledControls > 0 || summary.duplicateIds > 0) modules.push('控件是否清楚易用、有没有无法识别的按钮');
   if (report.consoleErrors.length || report.failedRequests.length) modules.push('扫描中已经出现的报错和失败请求');
-  if (report.authenticationSignals.some((item) => /登录|账号|密码/.test(item) && !/未发现|没有发现/.test(item))) modules.push('账号登录入口和登录后的功能');
+  if (report.authenticationSignals.some((item) => /登录|账号|密码|验证|挑战|无法确认登录状态/.test(item) && !/未发现|没有发现/.test(item))) modules.push('网站验证、账号登录入口和登录后的功能');
   if (summary.canvases + summary.webglRegions > 0 || report.visualAreas.length) modules.push('当前页面实际存在的画布、三维或可视化区域');
   if (summary.fileInputs > 0 || /(?:^|\s)(?:upload|download)(?:\s|$)|上传文件|选择文件|文件上传|导出(?:文件|数据|报告|结果)|下载(?:文件|数据|报告|结果)/.test(observedControlText)) modules.push('当前网站实际提供的文件上传或下载');
   if (summary.loadingSignals > 0 || report.asyncPatterns.length) modules.push('页面加载、后台任务或长时间等待');
@@ -184,12 +187,12 @@ export function detectedModules(report: CompatibilityReport | null): string[] {
 export function websiteRequiresLogin(report: Pick<CompatibilityReport, 'authenticationSignals' | 'blockedAreas'>): boolean {
   return report.authenticationSignals
     .filter((item) => !/未发现|没有发现|未检测到/.test(item))
-    .some((item) => /登录墙|登录表单|登录拦截|未登录无法|必须登录|需要登录后|网站仍要求登录|登录(?:态|状态)可能未生效|仍出现登录信号/.test(item))
-    || report.blockedAreas.some((item) => /登录(?:态|状态)(?:可能)?未生效|会话.*失效|已被网站拒绝|需要登录|必须登录/.test(item));
+    .some((item) => /登录墙|登录表单|登录拦截|未登录无法|必须登录|需要登录后|网站仍要求登录|登录(?:态|状态)可能未生效|仍出现登录信号|验证\/挑战|验证或挑战|无法确认登录状态|人机验证/.test(item))
+    || report.blockedAreas.some((item) => /登录(?:态|状态)(?:可能)?未生效|会话.*失效|已被网站拒绝|需要登录|必须登录|验证|挑战/.test(item));
 }
 
 export function goalRequiresLogin(goal: string): boolean {
-  return /购物车|收藏|关注|订单|结算|收货地址|个人中心|我的账户|账号信息|提交订单|付款方式/.test(goal);
+  return /登录|登录后|登录状态|需要账号|购物车|收藏|关注|订单|结算|收货地址|个人中心|我的账户|账号信息|账户信息|提交订单|付款方式|(?:已有|现有|当前).{0,20}(?:stories?|故事)/i.test(goal);
 }
 
 function acceptanceStatusText(status: string): string {
@@ -505,12 +508,15 @@ export default function App({
       : `${lowRisk ? '该操作' : '该高风险动作'}已拒绝，不会执行。`);
   });
 
-  const answerClarification = (answer = clarificationAnswer) => execute(async () => {
-    if (!run?.pendingClarification || !answer.trim()) return;
-    const isFollowUp = run.pendingClarification.round === 0;
-    const nextRun = await api.answerClarification(run.id, run.pendingClarification.id, answer.trim());
-    setRun(nextRun);
-    setClarificationAnswer('');
+	  const answerClarification = (answer = clarificationAnswer) => execute(async () => {
+	    if (!run?.pendingClarification || !answer.trim()) return;
+	    const isFollowUp = run.pendingClarification.round === 0;
+	    const nextRun = await api.answerClarification(run.id, run.pendingClarification.id, answer.trim());
+	    setRun(nextRun);
+	    if (isFollowUp) {
+	      setDraft((current) => ({ ...current, flow: answer.trim() }));
+	    }
+	    setClarificationAnswer('');
     setMessage(isFollowUp ? '新要求已发送，AI 将在当前页面继续。' : '补充信息已提交，AI 将在当前页面继续。');
   });
 
@@ -737,7 +743,7 @@ export default function App({
 
   const launchBeginnerRun = () => execute(async () => {
     if (!draft.flow.trim()) throw new Error('请在聊天框里告诉 AI 你想测试什么。');
-    if (aiConnection !== 'connected') throw new Error('内置AI算力有限，请在高级设置中更换AI服务。');
+    if (aiConnection !== 'connected') throw new Error('请先打开“高级设置 → 更换 AI 服务”，填写已轮换的 API Key 并运行模型能力探针；连接成功后才能开始真实测试。');
     if (goalRequiresLogin(draft.flow) && !session && selectedProject) {
       const recording = await api.startSessionRecording(selectedProject.id, Math.min(selectedProject.limits.timeoutSeconds, 1800));
       setRecordingId(recording.id);
@@ -758,6 +764,27 @@ export default function App({
     setHistory(await api.getHistory());
     setPage('run');
     setMessage('AI 已开始操作网站；左侧画面会随每一步更新。');
+  });
+
+  const launchResumeRun = () => execute(async () => {
+    if (!run?.checkpoint) throw new Error('本次运行没有可验证检查点，只能从头重试。');
+    if (run.checkpoint.resumeVerification?.verified === false) {
+      throw new Error('恢复前页面状态未确认，请选择从头重试。');
+    }
+    if (aiConnection !== 'connected') throw new Error('请先打开“高级设置 → 更换 AI 服务”，连接 AI 模型后才能继续上次测试。');
+    const nextRun = await api.startAgentRun({
+      ...draft,
+      name: draft.name.trim() || draft.flow.trim().slice(0, 80),
+      expectation: draft.expectation || '继续完成用户提出的检查，并说明是否符合预期。'
+    }, aiSettings, {
+      siteHost: resolveTargetHost(draft.targetUrl, selectedProject?.baseUrl),
+      allowDom: true,
+      allowScreenshots: screenshotModelAuthorized
+    }, selectedProject?.id, undefined, selectedEnvironment?.id, visualFallbackEnabled, approvalMode, run.id);
+    setRun(nextRun);
+    setHistory(await api.getHistory());
+    setPage('run');
+    setMessage('正在重新确认页面状态；已验证的只读步骤不会盲目重跑。');
   });
 
   const saveProject = () => execute(async () => {
@@ -1199,6 +1226,11 @@ export default function App({
               <div className="chat-composer">
                 <textarea id="test-goal" value={draft.flow} onChange={(event) => setDraft({ ...draft, flow: event.target.value })} placeholder="告诉 AI 你想测试什么……" disabled={Boolean(recordingId)} />
                 {aiConnection !== 'connected' && <p className="ai-limited-note">内置AI算力有限，请在高级设置中<button className="text-link" onClick={goToAISettings}>更换AI服务</button>。</p>}
+                <label className="checkline visual-consent"><input type="checkbox" checked={visualFallbackEnabled && screenshotModelAuthorized} disabled={aiCapabilities?.vision !== 'passed'} onChange={(event) => {
+                  setVisualFallbackEnabled(event.target.checked);
+                  setScreenshotModelAuthorized(event.target.checked);
+                }} />允许本次测试把脱敏的网站画面发送给已配置的 AI，用于识别地图和 Canvas 内部控件与结果</label>
+                {aiCapabilities?.vision !== 'passed' && <small className="ai-limited-note">当前 AI 尚未通过看图能力探针，此项暂不可用。</small>}
                 <div className="composer-actions">
                   <label>AI 操作前
                     <select value={approvalMode} onChange={(event) => {
@@ -1516,7 +1548,10 @@ export default function App({
                   {(() => {
                     const last = run.steps[run.steps.length - 1];
                     const screenshot = last?.after?.screenshot || last?.before?.screenshot || last?.evidence;
-                    return screenshot ? <img src={screenshot} alt="AI 正在操作的网站画面" /> : <div className="screen-placeholder"><Monitor size={44} /><p>网站窗口启动后，画面会显示在这里</p></div>;
+                    const observed = last?.after || last?.before;
+                    if (screenshot) return <img src={screenshot} alt="AI 正在操作的网站画面" />;
+                    if (observed) return <div className="screen-placeholder"><Monitor size={44} /><p>截图暂时不可用，DOM 和页面状态检查仍在继续。</p><small>{observed.title || '无标题'}<br />{observed.url || '页面地址未知'}<br />状态：{observed.pageHealth?.readyState || '未知'} · 可见内容：{observed.pageHealth?.visibleTextLength ?? 0}</small></div>;
+                    return <div className="screen-placeholder"><Monitor size={44} /><p>正在建立网站页面证据。</p></div>;
                   })()}
                 </div>
                 <div className="run-chat">
@@ -1524,7 +1559,7 @@ export default function App({
                     <div className="assistant-message"><Bot size={20} /><div><strong>AI 正在测试</strong><p>{run.scenarioGoal || '正在理解你的要求…'}</p></div></div>
                     {run.steps.slice(-6).map((step) => <div className="chat-step" key={step.id}><span className={`step-dot step-${step.result}`} /><div><strong>{step.action}</strong><p>{step.progressAssessment || step.plannerReason || step.target}</p></div></div>)}
                     {run.status === 'passed' && <div className="assistant-message result-good"><ShieldCheck size={20} /><div><strong>检查完成</strong><p>{run.goalSummary || '这次检查已完成，没有发现阻止目标完成的问题。'}</p></div></div>}
-                    {['failed', 'error', 'issues_found', 'incomplete', 'system_error'].includes(displayedRunStatus(run)) && <div className="assistant-message result-attention"><ShieldAlert size={20} /><div><strong>{displayedRunStatus(run) === 'system_error' ? (run.completionReason === 'model_error' ? 'AI 在测试中遇到问题' : '测试没有成功启动') : '检查发现问题'}</strong><p>{displayedRunStatus(run) === 'system_error' ? '测试没有完整执行。你可以修改要求后重新开始，本次不算测试完成。' : (run.goalSummary || run.completionReason)}</p></div></div>}
+                    {['failed', 'error', 'issues_found', 'incomplete', 'system_error'].includes(displayedRunStatus(run)) && <div className="assistant-message result-attention"><ShieldAlert size={20} /><div><strong>{run.checkpoint?.resumeVerification?.verified === false ? '页面已变化，请重新观察' : displayedRunStatus(run) === 'system_error' ? (run.completionReason === 'model_error' ? 'AI 在测试中遇到问题' : '测试没有成功启动') : '检查发现问题'}</strong><p>{run.checkpoint?.resumeVerification?.verified === false ? '恢复前重新观察到的页面状态与检查点不一致，系统已停止，不能盲目跳过步骤。请重新观察当前页面后再继续，或从头重试。' : displayedRunStatus(run) === 'system_error' ? '测试没有完整执行。你可以修改要求后重新开始，本次不算测试完成。' : (run.goalSummary || run.completionReason)}</p></div></div>}
                   </div>
                   <div className="approval-dock">
                     <label>AI 操作前<select value={approvalMode} onChange={(event) => {
@@ -1549,9 +1584,9 @@ export default function App({
               </div>}
               {run && run.confirmationHistory.length > 0 && <details className="review-history"><summary>操作确认记录（{run.confirmationHistory.length}）</summary><ol>{run.confirmationHistory.map((item) => <li key={item.id}>步骤 #{item.stepIndex} · {item.action} · {item.decision === 'approved' ? '已批准' : '已拒绝'} · {item.actor} · {new Date(item.decidedAt).toLocaleString('zh-CN', { hour12: false })}</li>)}</ol></details>}
               {run && <details className="technical-details"><summary>查看技术详情</summary><div className="run-classification"><span>已完成步骤 {run.steps.length}</span><span>完成原因 {run.completionReason}</span><span>环境 {run.environmentId || '系统默认'}</span><span>证据保留 {run.artifactRetentionDays} 天</span>{run.runnerIsolation && <span>{isolationText(run.runnerIsolation)}</span>}<span>模型调用 {run.modelCalls}</span><span>Token {run.inputTokens + run.outputTokens}</span>{run.estimatedCost !== undefined && <span>估算成本 {run.estimatedCost}</span>}</div><CommerceRunSummary run={run} /><AgentDecisionList run={run} /><RunSteps run={run} /></details>}
-              {run && runCanRecover(run) && <div className="run-recovery-composer">
-                <label>{displayedRunStatus(run) === 'system_error' ? '修改要求后开始新的测试' : '这次会话已经结束；如需继续，请开始新的测试'}<textarea value={draft.flow} onChange={(event) => setDraft({ ...draft, flow: event.target.value })} placeholder="告诉 AI 新的测试要求……" /></label>
-                <div className="toolbar"><button className="primary" onClick={launchBeginnerRun} disabled={busy || !draft.flow.trim()}><Play size={17} />开始新的测试</button><button onClick={returnToRunScope} disabled={busy}>返回检查范围</button><button onClick={() => { setRun(null); setPage('start'); }} disabled={busy}>更换网站</button></div>
+              {run && runCanRecover(run) && displayedRunStatus(run) !== 'passed' && <div className="run-recovery-composer">
+                <label>{run.checkpoint?.resumeVerification?.verified === false ? '页面已变化，请重新观察当前页面后再继续。系统不会跳过未经确认的步骤。' : displayedRunStatus(run) === 'system_error' ? '测试中断了。可以从安全检查点继续，也可以从头重试。' : '这次会话已经结束；可以继续上次测试或开始新的测试。'}<textarea value={draft.flow} onChange={(event) => setDraft({ ...draft, flow: event.target.value })} placeholder="如需修改目标，请用普通中文告诉 AI……" /></label>
+                <div className="toolbar">{run.checkpoint && run.checkpoint.currentUrl && run.checkpoint.pageFingerprint && run.checkpoint.resumeVerification?.verified !== false && <button onClick={launchResumeRun} disabled={busy || !draft.flow.trim()}><RefreshCw size={17} />从上次安全步骤继续</button>}<button className="primary" onClick={launchBeginnerRun} disabled={busy || !draft.flow.trim()}><Play size={17} />从头重试</button><button onClick={returnToRunScope} disabled={busy}>返回检查范围</button><button onClick={() => { setRun(null); setPage('start'); }} disabled={busy}>更换网站</button></div>
               </div>}
               <div className="toolbar">
                 {run && activeRunStatuses.has(run.status) && <button onClick={cancelRun} disabled={busy}><StopCircle size={18} />终止执行</button>}
@@ -1798,7 +1833,7 @@ function Metric({ label, value, tone }: { label: string; value: string | number;
 
 const actionLabels: Record<ActionType, string> = {
   navigate: '打开地址', click: '点击', fill: '输入', select: '选择', wait_for: '等待元素', screenshot: '截图检查点',
-  clear: '清空', check: '勾选', uncheck: '取消勾选', hover: '悬停', scroll: '滚动', back: '后退', reload: '刷新', press: '按键', visual_click: '视觉点击', visual_hover: '视觉悬停', visual_scroll: '视觉滚动', visual_drag: '视觉拖拽', bridge_click: 'Bridge 点击', human_takeover: '人工接管', upload_file: '上传固定文件', download: '下载并校验'
+  clear: '清空', check: '勾选', uncheck: '取消勾选', hover: '悬停', scroll: '滚动', back: '后退', reload: '刷新', press: '按键', visual_click: '视觉点击', visual_hover: '视觉悬停', visual_scroll: '视觉滚动', visual_drag: '视觉拖拽', visual_zoom: 'Canvas 缩放', visual_clear: '清除 Canvas 图形', visual_draw_polygon: '绘制多边形', visual_draw_rectangle: '绘制矩形', bridge_click: 'Bridge 点击', human_takeover: '人工接管', upload_file: '上传固定文件', download: '下载并校验'
 };
 
 const editableActionLabels: Partial<Record<ActionType, string>> = {

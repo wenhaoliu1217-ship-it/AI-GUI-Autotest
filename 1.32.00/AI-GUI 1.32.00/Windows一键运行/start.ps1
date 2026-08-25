@@ -1,5 +1,12 @@
 $ErrorActionPreference = 'Stop'
 
+# Some desktop launchers inherit both `Path` and `PATH`. PowerShell's
+# Start-Process rejects that case-insensitive duplicate environment map before
+# it can launch the visible browser, so normalize it once at startup.
+$canonicalProcessPath = [Environment]::GetEnvironmentVariable('Path', 'Process')
+Remove-Item Env:PATH -ErrorAction SilentlyContinue
+if ($canonicalProcessPath) { $env:Path = $canonicalProcessPath }
+
 $packageRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $runtimeRoot = Join-Path $packageRoot 'runtime'
 $pythonRoot = Join-Path $runtimeRoot 'python'
@@ -7,6 +14,7 @@ $python = Join-Path $pythonRoot 'python.exe'
 $browserRoot = Join-Path $runtimeRoot 'ms-playwright'
 $dockerArchiveRoot = Join-Path $runtimeRoot 'images'
 $backendRoot = Join-Path $packageRoot 'backend'
+$sourceBackendRoot = $null
 $distRoot = Join-Path $packageRoot 'dist'
 $stdoutLog = Join-Path $packageRoot 'server-stdout.log'
 $stderrLog = Join-Path $packageRoot 'server-stderr.log'
@@ -34,6 +42,18 @@ function Test-LocalPortAvailable {
   }
 }
 
+function Test-ControlPortAvailable {
+  param([int]$Port)
+  if (-not (Test-LocalPortAvailable -Port $Port)) { return $false }
+  try {
+    Invoke-WebRequest -Uri ("http://127.0.0.1:{0}/json/version" -f $Port) -UseBasicParsing -TimeoutSec 1 | Out-Null
+    return $false
+  }
+  catch {
+    return $true
+  }
+}
+
 function Test-SamePath {
   param([string]$Left, [string]$Right)
   if (-not $Left -or -not $Right) { return $false }
@@ -44,6 +64,39 @@ function Test-SamePath {
   }
   catch {
     return $false
+  }
+}
+
+function Test-BackendMirror {
+  # The Windows package runs backendRoot. If an editable sibling backend exists,
+  # never launch a mixed revision silently.
+  $sourceRoot = Get-ChildItem -LiteralPath (Split-Path -Parent $packageRoot) -Directory |
+    Where-Object {
+      -not (Test-SamePath -Left $_.FullName -Right $packageRoot) -and
+      (Test-Path -LiteralPath (Join-Path $_.FullName 'backend\src') -PathType Container)
+    } |
+    Select-Object -First 1
+  if ($sourceRoot) {
+    $sourceBackendRoot = Join-Path $sourceRoot.FullName 'backend\src'
+  }
+  if (-not (Test-Path -LiteralPath $sourceBackendRoot -PathType Container)) { return }
+  $mismatches = @()
+  Get-ChildItem -LiteralPath $sourceBackendRoot -Recurse -File -Filter '*.py' | ForEach-Object {
+    $relative = $_.FullName.Substring($sourceBackendRoot.Length).TrimStart('\')
+    $runtimeFile = Join-Path $backendRoot ('src\' + $relative)
+    if (-not (Test-Path -LiteralPath $runtimeFile -PathType Leaf)) {
+      $mismatches += $relative + ' (missing in runtime)'
+      return
+    }
+    $sourceHash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash
+    $runtimeHash = (Get-FileHash -LiteralPath $runtimeFile -Algorithm SHA256).Hash
+    if ($sourceHash -ne $runtimeHash) {
+      $mismatches += $relative + ' (content mismatch)'
+    }
+  }
+  if ($mismatches.Count -gt 0) {
+    $details = ($mismatches | Select-Object -First 8) -join '; '
+    throw "Source and runtime backend differ; startup stopped: $details. Sync source and runtime first."
   }
 }
 
@@ -76,7 +129,10 @@ function Test-RecordedServerIdentity {
   if (-not (Test-SamePath -Left ([string]$Record.pythonPath) -Right $python)) { return $false }
   if (-not (Test-SamePath -Left $Identity.ExecutablePath -Right $python)) { return $false }
   if ([string]$Record.startedAtUtc -ne [string]$Identity.StartedAtUtc) { return $false }
-  if (-not $Identity.CommandLine) { return $false }
+  # Some Windows security contexts do not expose CommandLine through WMI.
+  # The package path and exact start timestamp are already bound to this PID;
+  # only apply the command-line check when Windows provides it.
+  if (-not $Identity.CommandLine) { return $true }
   return $Identity.CommandLine -match '(?i)-m\s+uvicorn' -and
     $Identity.CommandLine -match 'gui_agent\.api\.server:app'
 }
@@ -296,6 +352,7 @@ if (-not (Test-Path -LiteralPath $python -PathType Leaf)) {
 }
 $runtimeManifest = Test-RuntimeManifest -Root $runtimeRoot
 Stop-RecordedServer
+Test-BackendMirror
 
 $env:PYTHONHOME = $pythonRoot
 $env:PYTHONPATH = Join-Path $backendRoot 'src'
@@ -346,6 +403,58 @@ if (-not $managedBrowserPath) {
   $managedBrowserPath = $headedChromium
   $managedBrowserName = 'Bundled Chromium'
 }
+$browserPidFile = Join-Path $packageRoot 'browser.pid.json'
+$managedBrowserProcessName = [System.IO.Path]::GetFileNameWithoutExtension($managedBrowserPath)
+
+function Get-ManagedBrowserProcessRecords {
+  param([datetime]$StartedAfter)
+  $records = @()
+  foreach ($process in (Get-Process -Name $managedBrowserProcessName -ErrorAction SilentlyContinue)) {
+    $processPath = $null
+    $processStartedAt = $null
+    try { $processPath = [string]$process.Path } catch { }
+    try { $processStartedAt = $process.StartTime } catch { }
+    if (-not $processPath -or -not $processStartedAt) { continue }
+    if (-not (Test-SamePath -Left $processPath -Right $managedBrowserPath)) { continue }
+    if ($processStartedAt -lt $StartedAfter.AddSeconds(-2)) { continue }
+    $records += [pscustomobject]@{
+      pid = [int]$process.Id
+      path = $processPath
+      startedAtUtc = $processStartedAt.ToUniversalTime().ToString('o')
+    }
+  }
+  return $records
+}
+
+function Stop-RecordedManagedBrowser {
+  if (-not (Test-Path -LiteralPath $browserPidFile -PathType Leaf)) { return }
+  try {
+    $decodedRecords = Get-Content -Raw -LiteralPath $browserPidFile | ConvertFrom-Json
+    $records = if ($decodedRecords -is [System.Array]) { $decodedRecords } else { @($decodedRecords) }
+  }
+  catch {
+    Write-Warning 'The recorded AI-GUI browser PID file is invalid; it was not used to stop any process.'
+    return
+  }
+  foreach ($record in $records) {
+    $process = Get-Process -Id ([int]$record.pid) -ErrorAction SilentlyContinue
+    if (-not $process) { continue }
+    $processPath = $null
+    $processStartedAt = $null
+    try { $processPath = [string]$process.Path } catch { }
+    try { $processStartedAt = $process.StartTime } catch { }
+    if (-not $processPath -or -not $processStartedAt) { continue }
+    if (-not (Test-SamePath -Left $processPath -Right ([string]$record.path))) { continue }
+    $recordStartedAt = [datetime]::Parse([string]$record.startedAtUtc).ToUniversalTime()
+    if (($processStartedAt.ToUniversalTime() - $recordStartedAt).Duration() -gt [timespan]::FromSeconds(5)) { continue }
+    try { Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue } catch { }
+  }
+  Remove-Item -LiteralPath $browserPidFile -Force -ErrorAction SilentlyContinue
+}
+
+# A previous launcher can leave Edge alive after its single-instance proxy exits.
+# Reclaim only processes recorded by this package, never the user's normal Edge.
+Stop-RecordedManagedBrowser
 $browserProfile = Join-Path $packageRoot 'data\gui-browser-profile'
 New-Item -ItemType Directory -Force -Path $browserProfile | Out-Null
 $browserSessions = Join-Path $browserProfile 'Default\Sessions'
@@ -367,7 +476,7 @@ if (Test-Path -LiteralPath $browserSessions -PathType Container) {
   }
 }
 $cdpPort = 9222
-while ($cdpPort -le 9232 -and -not (Test-LocalPortAvailable -Port $cdpPort)) {
+while ($cdpPort -le 9232 -and -not (Test-ControlPortAvailable -Port $cdpPort)) {
   $cdpPort++
 }
 if ($cdpPort -gt 9232) {
@@ -465,13 +574,36 @@ $managedBrowser = $null
 $jobHandle = [IntPtr]::Zero
 try {
   $jobHandle = [AiGuiPortableJob13000]::CreateKillOnClose()
-  $server = Start-Process -FilePath $python `
-    -ArgumentList @('-m', 'uvicorn', 'gui_agent.api.server:app', '--host', '127.0.0.1', '--port', [string]$port) `
-    -WorkingDirectory $packageRoot `
-    -WindowStyle Hidden `
-    -RedirectStandardOutput $stdoutLog `
-    -RedirectStandardError $stderrLog `
-    -PassThru
+  $serverStartInfo = New-Object System.Diagnostics.ProcessStartInfo
+  $serverStartInfo.FileName = $python
+  $serverStartInfo.Arguments = "-m uvicorn gui_agent.api.server:app --host 127.0.0.1 --port $([string]$port)"
+  $serverStartInfo.WorkingDirectory = $packageRoot
+  $serverStartInfo.UseShellExecute = $false
+  $serverStartInfo.CreateNoWindow = $true
+  $serverStartInfo.RedirectStandardOutput = $true
+  $serverStartInfo.RedirectStandardError = $true
+  $serverEnvironment = [Environment]::GetEnvironmentVariables()
+  if ($null -ne $serverStartInfo.Environment) {
+    $serverEnvironmentMap = $serverStartInfo.Environment
+  }
+  else {
+    $serverEnvironmentMap = $serverStartInfo.EnvironmentVariables
+  }
+  $serverEnvironmentMap.Clear()
+  foreach ($environmentName in $serverEnvironment.Keys) {
+    if ([string]$environmentName -ieq 'Path') { continue }
+    $serverEnvironmentMap[[string]$environmentName] = [string]$serverEnvironment[$environmentName]
+  }
+  $serverEnvironmentMap['Path'] = [string]$env:PATH
+  $server = [System.Diagnostics.Process]::Start($serverStartInfo)
+  $server.BeginOutputReadLine()
+  $server.BeginErrorReadLine()
+  Register-ObjectEvent -InputObject $server -EventName OutputDataReceived -Action {
+    if ($EventArgs.Data) { Add-Content -LiteralPath $using:stdoutLog -Value $EventArgs.Data -Encoding UTF8 }
+  } | Out-Null
+  Register-ObjectEvent -InputObject $server -EventName ErrorDataReceived -Action {
+    if ($EventArgs.Data) { Add-Content -LiteralPath $using:stderrLog -Value $EventArgs.Data -Encoding UTF8 }
+  } | Out-Null
   [AiGuiPortableJob13000]::Assign($jobHandle, $server.Handle)
   $pidRecord = [ordered]@{
     pid = $server.Id
@@ -506,16 +638,31 @@ try {
   }
 
   if ($env:GUI_SKIP_BROWSER -ne '1') {
+    # Both runner modes use one visible browser profile. Process mode remains
+    # a local host process; it simply avoids the split between the GUI tab,
+    # the login window, and a fresh Playwright browser context.
     $browserArguments = @(
       "--remote-debugging-port=$cdpPort",
       "--user-data-dir=`"$browserProfile`"",
+      '--no-sandbox',
+      '--disable-gpu',
+      '--disable-blink-features=AutomationControlled',
       '--no-first-run',
       '--no-default-browser-check',
       '--new-window',
       $url
     )
+    $browserLaunchStarted = Get-Date
     $managedBrowser = Start-Process -FilePath $managedBrowserPath -ArgumentList $browserArguments -PassThru
     [AiGuiPortableJob13000]::Assign($jobHandle, $managedBrowser.Handle)
+    $managedBrowserRecords = @()
+    for ($browserRecordAttempt = 0; $browserRecordAttempt -lt 12 -and $managedBrowserRecords.Count -eq 0; $browserRecordAttempt++) {
+      Start-Sleep -Milliseconds 250
+      $managedBrowserRecords = @(Get-ManagedBrowserProcessRecords -StartedAfter $browserLaunchStarted)
+    }
+    if ($managedBrowserRecords.Count -gt 0) {
+      $managedBrowserRecords | ConvertTo-Json | Set-Content -LiteralPath $browserPidFile -Encoding UTF8
+    }
     $browserReady = $false
     $browserDeadline = (Get-Date).AddSeconds(30)
     do {
@@ -574,6 +721,7 @@ try {
   }
 }
 finally {
+  Stop-RecordedManagedBrowser
   if ($server) {
     Remove-PidRecordForProcess -ProcessId $server.Id
   }

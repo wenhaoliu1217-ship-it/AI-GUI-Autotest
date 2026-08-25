@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1",
+  "id": "S28",
+  "name": "下载仿真数据和评估数据",
+  "category": "下载",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "普通测试",
+  "prerequisites": [
+    {
+      "id": "S28-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "可下载固定运行"
+    },
+    {
+      "id": "S28-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "仿真与评估文件格式"
+    },
+    {
+      "id": "S28-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "内容结构与预期哈希"
+    }
+  ],
+  "goal": "下载仿真数据和评估数据",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "下载固定运行仿真数据",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "下载评估数据",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "两个文件哈希与结构均通过",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": false,
+    "order": "reverse_dependency",
+    "verification": "not_applicable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "file_transfer"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "可下载固定运行",
+    "仿真与评估文件格式",
+    "内容结构与预期哈希"
+  ],
+  "executablePlan": null,
+  "l4Stage": "download"
+}

@@ -310,6 +310,8 @@ class SessionMetadata(ApiModel):
     imported_at: str = Field(alias="importedAt")
     cookie_count: int = Field(alias="cookieCount")
     origin_count: int = Field(alias="originCount")
+    session_storage_origin_count: int = Field(default=0, alias="sessionStorageOriginCount")
+    session_storage_item_count: int = Field(default=0, alias="sessionStorageItemCount")
     domains: list[str]
     expires_at: str | None = Field(default=None, alias="expiresAt")
     expiry_status: Literal["active", "warning", "expired", "unknown"] = Field(alias="expiryStatus")

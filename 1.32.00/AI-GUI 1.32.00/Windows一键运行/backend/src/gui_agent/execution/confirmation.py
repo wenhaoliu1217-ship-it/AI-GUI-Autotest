@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 
-from ..domain.models import Step
+from ..domain.models import ActionType, Step
 from ..benchmarks.cesium_ion.policy import cesium_confirmation_rule
 
 
@@ -13,11 +13,41 @@ DEFAULT_CONFIRMATION_ACTIONS = (
     "delete", "refund", "pay", "purchase", "checkout", "submit", "publish", "invite",
 )
 
+_WRITE_ACTIONS_REQUIRING_APPROVAL = {
+    ActionType.FILL, ActionType.CLEAR, ActionType.SELECT, ActionType.CHECK, ActionType.UNCHECK,
+    ActionType.PRESS, ActionType.UPLOAD, ActionType.UPLOAD_FILE, ActionType.COMPONENT,
+    ActionType.BRIDGE_CLICK, ActionType.VISUAL_CLEAR, ActionType.VISUAL_DRAW_POLYGON,
+    ActionType.VISUAL_DRAW_RECTANGLE, ActionType.HUMAN_TAKEOVER,
+}
+
+
+def approval_rule(step: Step, configured_mode: str, safety_rule: str | None) -> str | None:
+    """Apply the same beginner approval semantics to fixed and Agent runs."""
+    if safety_rule:
+        return safety_rule
+    if configured_mode == "ask" and step.effect_level is not None and step.effect_level.value not in {
+        "read_only", "session_only", "isolated_local_write",
+    }:
+        return f"approval-mode:site-write:{step.effect_kind or step.effect_level.value}"
+    if (
+        configured_mode == "ask"
+        and step.action in _WRITE_ACTIONS_REQUIRING_APPROVAL
+        and (step.effect_level is None or step.action == ActionType.HUMAN_TAKEOVER)
+    ):
+        return "approval-mode:write-action"
+    return None
+
 
 def confirmation_match(step: Step) -> str | None:
     cesium_rule = cesium_confirmation_rule(step)
     if cesium_rule:
         return cesium_rule
+    share_rule = _share_confirmation_rule(step)
+    if share_rule:
+        return share_rule
+    story_rule = _story_creation_confirmation_rule(step)
+    if story_rule:
+        return story_rule
     if step.action.value == "human_takeover":
         return f"human_takeover:{step.takeover_reason or 'other'}"
     if step.commerce is not None and step.commerce.action.value not in {
@@ -37,6 +67,39 @@ def confirmation_match(step: Step) -> str | None:
         ensure_ascii=False,
     ).lower()
     return next((term for term in DEFAULT_CONFIRMATION_ACTIONS if term in serialized), None)
+
+
+def _share_confirmation_rule(step: Step) -> str | None:
+    """Fail closed for controls that can immediately make content public."""
+    if step.action.value not in {"click", "check"} or step.locator is None:
+        return None
+    locator = step.locator
+    hint = " ".join(filter(None, (
+        locator.name,
+        locator.label,
+        locator.text,
+        locator.test_id,
+        locator.attribute_name,
+    ))).lower()
+    share_target = any(marker in hint for marker in (
+        "share", "sharing", "public", "分享", "公开",
+    ))
+    direct_control = locator.role in {"button", "switch", "checkbox"} or (
+        locator.test_id is not None and "sharing-toggle" in locator.test_id.lower()
+    )
+    return "share_public_content" if share_target and direct_control else None
+
+
+def _story_creation_confirmation_rule(step: Step) -> str | None:
+    """Do not trust a read-only label on controls that immediately create a Story."""
+    if step.action.value != "click" or step.locator is None:
+        return None
+    locator = step.locator
+    hint = " ".join(filter(None, (locator.name, locator.label, locator.text))).lower()
+    story_creation = any(marker in hint for marker in (
+        "new story", "create story", "新建 story", "创建 story", "新建故事", "创建故事",
+    ))
+    return "create_story" if story_creation and locator.role == "button" else None
 
 
 def request_confirmation(

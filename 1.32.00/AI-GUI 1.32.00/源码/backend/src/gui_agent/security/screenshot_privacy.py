@@ -10,6 +10,15 @@ DEFAULT_SCREENSHOT_MASK_SELECTORS = (
     'input[type="password"]',
     'input[autocomplete="current-password"]',
     'input[autocomplete="new-password"]',
+    'input[aria-label*="token" i]',
+    'input[aria-label*="api key" i]',
+    'input[aria-label*="secret" i]',
+    'input[name*="token" i]',
+    'input[name*="secret" i]',
+    'input[id*="token" i]',
+    'input[id*="secret" i]',
+    'textarea[aria-label*="token" i]',
+    'textarea[name*="token" i]',
     '[data-sensitive="true"]',
     '[data-private="true"]',
 )
@@ -18,6 +27,35 @@ _INSTALL_MASKS = """
 ({ selectors, token }) => {
   let maskedCount = 0;
   const invalidSelectors = [];
+  const maskedElements = new Set();
+  const maskElement = (element) => {
+    if (maskedElements.has(element)) return;
+    maskedElements.add(element);
+    const rect = element.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+    const mask = document.createElement('div');
+    mask.setAttribute('data-gui-agent-privacy-mask', token);
+    mask.setAttribute('aria-hidden', 'true');
+    mask.style.cssText = [
+      'position:fixed',
+      `left:${rect.left}px`,
+      `top:${rect.top}px`,
+      `width:${rect.width}px`,
+      `height:${rect.height}px`,
+      'margin:0',
+      'padding:0',
+      'border:0',
+      'border-radius:0',
+      'background:#111',
+      'box-shadow:none',
+      'filter:none',
+      'opacity:1',
+      'pointer-events:none',
+      'z-index:2147483647'
+    ].join(';');
+    (document.documentElement || document.body).appendChild(mask);
+    maskedCount += 1;
+  };
   for (const selector of selectors) {
     let elements;
     try {
@@ -27,30 +65,23 @@ _INSTALL_MASKS = """
       continue;
     }
     for (const element of elements) {
-      const rect = element.getBoundingClientRect();
-      if (rect.width <= 0 || rect.height <= 0) continue;
-      const mask = document.createElement('div');
-      mask.setAttribute('data-gui-agent-privacy-mask', token);
-      mask.setAttribute('aria-hidden', 'true');
-      mask.style.cssText = [
-        'position:fixed',
-        `left:${rect.left}px`,
-        `top:${rect.top}px`,
-        `width:${rect.width}px`,
-        `height:${rect.height}px`,
-        'margin:0',
-        'padding:0',
-        'border:0',
-        'border-radius:0',
-        'background:#111',
-        'box-shadow:none',
-        'filter:none',
-        'opacity:1',
-        'pointer-events:none',
-        'z-index:2147483647'
-      ].join(';');
-      (document.documentElement || document.body).appendChild(mask);
-      maskedCount += 1;
+      maskElement(element);
+    }
+  }
+  // Some token pages render the value in a plain text input with a generated
+  // id and no sensitive aria/name attributes. Detect the value itself while
+  // it is still inside the browser, then cover only that control. The value
+  // is never returned to the runner or the model.
+  for (const element of document.querySelectorAll('input, textarea, [contenteditable="true"]')) {
+    const value = String('value' in element ? element.value : element.textContent || '').trim();
+    const label = [
+      element.getAttribute('aria-label') || '',
+      element.getAttribute('name') || '',
+      element.id || '',
+      element.getAttribute('placeholder') || '',
+    ].join(' ').toLowerCase();
+    if (/^eyJ[A-Za-z0-9_-]{8,}(?:[.][A-Za-z0-9_-]{8,}){1,2}/.test(value) || /(token|api[ -]?key|secret|令牌|密钥)/i.test(label)) {
+      maskElement(element);
     }
   }
   return { maskedCount, invalidSelectors };

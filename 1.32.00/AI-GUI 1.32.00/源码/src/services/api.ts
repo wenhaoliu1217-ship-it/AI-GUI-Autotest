@@ -154,6 +154,8 @@ interface BackendRun {
   clarification_history?: Array<{
     id?: string; round: number; question: string; answer: string; actor?: string; answered_at?: string;
   }>;
+  checkpoint?: TestRun['checkpoint'];
+  resume_from_run_id?: string;
   confirmation_history?: Array<{
     id: string; step_index: number; action: string; target: string; rule: string;
     requested_at: string; decision: 'approved' | 'rejected'; actor: string; decided_at: string;
@@ -239,9 +241,10 @@ function toEvidence(run: BackendRun, evidence?: BackendObservation) {
 
 function toRun(payload: BackendRun): TestRun {
   const reviewSummary = payload.review_summary || { disposition: 'no_findings' as const, pending: 0, confirmed: 0, rejected: 0, total: 0 };
+  const executionFailed = ['incomplete', 'system_error', 'cancelled', 'failed', 'error'].includes(payload.status);
   const displayStatus: RunStatus = payload.status === 'pending_confirmation'
     ? 'pending_confirmation'
-    : reviewSummary.disposition === 'pending_confirmation'
+    : !executionFailed && reviewSummary.disposition === 'pending_confirmation'
     ? 'pending_review'
     : reviewSummary.disposition === 'issues_found' ? 'issues_found' : payload.status;
   const steps = payload.steps.map((step) => ({
@@ -383,6 +386,8 @@ function toRun(payload: BackendRun): TestRun {
       actor: item.actor,
       answeredAt: item.answered_at
     })),
+    checkpoint: payload.checkpoint,
+    resumeFromRunId: payload.resume_from_run_id,
     confirmationHistory: (payload.confirmation_history || []).map((item) => ({
       id: item.id, stepIndex: item.step_index, action: item.action, target: item.target,
       rule: item.rule, requestedAt: item.requested_at, decision: item.decision,
@@ -481,7 +486,7 @@ export const api = {
       body: JSON.stringify({ plan, headless: true, timeoutMs: 30_000, projectId, scenarioId, environmentId, asyncExecution: true })
     }));
   },
-  async startAgentRun(draft: TestCaseDraft, settings: AISettings, modelDataAuthorization: { siteHost: string; allowDom: boolean; allowScreenshots: boolean }, projectId?: string, scenarioId?: string, environmentId?: string, enableVisualFallback = false, approvalMode: 'ask' | 'delegate' | 'full' = 'ask'): Promise<TestRun> {
+  async startAgentRun(draft: TestCaseDraft, settings: AISettings, modelDataAuthorization: { siteHost: string; allowDom: boolean; allowScreenshots: boolean }, projectId?: string, scenarioId?: string, environmentId?: string, enableVisualFallback = false, approvalMode: 'ask' | 'delegate' | 'full' = 'ask', resumeFromRunId?: string): Promise<TestRun> {
     return toRun(await request<BackendRun>('/api/agent-runs', {
       method: 'POST',
       body: JSON.stringify({
@@ -502,7 +507,8 @@ export const api = {
         scenarioId,
         environmentId,
         enableVisualFallback,
-        approvalMode
+        approvalMode,
+        resumeFromRunId
       })
     }));
   },

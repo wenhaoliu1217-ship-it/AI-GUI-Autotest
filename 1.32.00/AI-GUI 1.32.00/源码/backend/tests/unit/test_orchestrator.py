@@ -295,7 +295,7 @@ def test_isolated_orchestrator_enforces_parent_wall_clock_limit(tmp_path: Path) 
     )
 
     assert final["status"] == "system_error"
-    assert final["completion_reason"] == "runner_resource_limit_exceeded"
+    assert final["completion_reason"] == "runner_time_limit_exceeded"
     assert final["runner_isolation"]["forced_termination"] is True
 
 

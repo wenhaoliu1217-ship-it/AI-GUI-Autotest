@@ -1,0 +1,5 @@
+{
+  "model_type": "qwen2vl",
+  "response": "Thought: 找到客户列表按钮\nAction: click(point='<point>200 300</point>')\n\ntype(content='仅用于 fixture，不执行')",
+  "coordinate_scale": 1000
+}

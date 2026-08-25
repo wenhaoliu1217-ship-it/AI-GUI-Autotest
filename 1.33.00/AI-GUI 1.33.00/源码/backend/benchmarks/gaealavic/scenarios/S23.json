@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1",
+  "id": "S23",
+  "name": "导入合法想定 ZIP",
+  "category": "ZIP 上传",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "管理员",
+  "prerequisites": [
+    {
+      "id": "S23-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "合法想定 ZIP 与 schema"
+    },
+    {
+      "id": "S23-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "导入状态协议"
+    },
+    {
+      "id": "S23-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "对象查询与清理接口"
+    }
+  ],
+  "goal": "导入合法想定 ZIP",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "上传登记的合法想定 ZIP",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "等待导入终态",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "生成 E2E_ 想定与业务 ID",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "ZIP 哈希可追溯",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": true,
+    "order": "reverse_dependency",
+    "verification": "business_object_not_queryable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "file_transfer",
+    "cleanup"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "合法想定 ZIP 与 schema",
+    "导入状态协议",
+    "对象查询与清理接口"
+  ],
+  "executablePlan": null,
+  "l4Stage": "scenario"
+}

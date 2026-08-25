@@ -8,7 +8,7 @@ from typing import Any
 from playwright.sync_api import Error as PlaywrightError
 
 from ..domain.models import ActionType, ExecutionMode, Step
-from ..locating.strategies import LocatorError, resolve_step_locator
+from ..locating.strategies import LocatorError, resolve_locator, resolve_step_locator
 from .bridge_adapter import CanvasAppBridgeAdapter, PreparedBridgeAction
 
 
@@ -29,6 +29,16 @@ VISUAL_ACTIONS = {
     ActionType.VISUAL_HOVER,
     ActionType.VISUAL_SCROLL,
     ActionType.VISUAL_DRAG,
+    ActionType.VISUAL_ZOOM,
+    ActionType.VISUAL_CLEAR,
+    ActionType.VISUAL_DRAW_POLYGON,
+    ActionType.VISUAL_DRAW_RECTANGLE,
+}
+CANVAS_REGION_ACTIONS = {
+    ActionType.VISUAL_ZOOM,
+    ActionType.VISUAL_CLEAR,
+    ActionType.VISUAL_DRAW_POLYGON,
+    ActionType.VISUAL_DRAW_RECTANGLE,
 }
 
 
@@ -64,9 +74,16 @@ def prepare_action(
             bridge_action=prepared,
         )
 
-    if step.action in LOCATOR_ACTIONS or (step.action in VISUAL_ACTIONS and step.locator is not None):
-        assert step.locator is not None
-        locator = resolve_step_locator(locator_root or page, step, scroll_page=page)
+    visual_region_locator = (
+        step.canvas_region_locator if step.action in CANVAS_REGION_ACTIONS else step.locator
+    )
+    if step.action in LOCATOR_ACTIONS or (step.action in VISUAL_ACTIONS and visual_region_locator is not None):
+        if step.action in CANVAS_REGION_ACTIONS:
+            assert visual_region_locator is not None
+            locator = resolve_locator(locator_root or page, visual_region_locator)
+        else:
+            assert step.locator is not None
+            locator = resolve_step_locator(locator_root or page, step, scroll_page=page)
         count = locator.count()
         if step.action == ActionType.WAIT_FOR and count == 0:
             locator.wait_for(
@@ -75,7 +92,7 @@ def prepare_action(
             )
             count = locator.count()
         if count != 1:
-            raise LocatorError(f"动作目标必须唯一，实际匹配 {count} 个：{step.locator.describe()}")
+            raise LocatorError(f"动作目标必须唯一，实际匹配 {count} 个：{visual_region_locator.describe()}")
         if step.action == ActionType.WAIT_FOR:
             return PreparedAction(evidence={
                 "checked": True,

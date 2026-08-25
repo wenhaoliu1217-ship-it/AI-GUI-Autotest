@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+import os
 from time import monotonic, sleep
 from urllib.parse import urlparse
 from uuid import uuid4
@@ -24,15 +25,17 @@ from ..domain.results import (
     StepResult,
 )
 from ..planning.ai_provider import AIProviderError
+from ..onboarding.session import playwright_storage_state, session_storage_init_script
 from ..security.policy import DomainPolicy, SecurityError, guard_playwright_route, guard_playwright_websocket, resolve_env_placeholder
 from ..security.redaction import Redactor
 from .compiler import compile_test
-from .confirmation import confirmation_match, request_confirmation
+from .confirmation import approval_rule, confirmation_match, request_confirmation
 from .findings import build_findings
 from .bridge_adapter import create_bridge_adapter
 from .stability import finalize_canvas_evidence, prepare_action
 from .observation import ObservationCollector
 from .browser_context import resolve_browser_surface
+from .checkpoint import build_checkpoint, verify_checkpoint_page
 from .runner import (
     _capture_screenshot,
     _commerce_preflight,
@@ -55,22 +58,39 @@ from .async_state import WebSocketEvidenceCollector
 from .side_effects import confirmation_rule, evaluate_side_effect
 
 
-_WRITE_ACTIONS_REQUIRING_APPROVAL = {
-    ActionType.FILL, ActionType.CLEAR, ActionType.SELECT, ActionType.CHECK, ActionType.UNCHECK,
-    ActionType.PRESS, ActionType.UPLOAD, ActionType.UPLOAD_FILE, ActionType.COMPONENT,
-    ActionType.BRIDGE_CLICK, ActionType.VISUAL_DRAW_POLYGON, ActionType.VISUAL_DRAW_RECTANGLE,
-    ActionType.HUMAN_TAKEOVER,
-}
-
 _SESSION_END_COMMANDS = {
     "结束本次测试", "停止整个测试", "结束测试", "停止测试", "不再继续", "完成并结束",
 }
 
 _MODEL_RECOVERY_DELAYS = (2.0, 5.0)
 
+# These actions use an explicit, uniquely located Canvas region plus bounded
+# 0..1 coordinates. They do not need a screenshot-to-model visual adapter when
+# the Agent already supplied the complete geometry contract.
+_BOUNDED_CANVAS_ACTIONS = {
+    ActionType.VISUAL_ZOOM,
+    ActionType.VISUAL_CLEAR,
+    ActionType.VISUAL_DRAW_POLYGON,
+    ActionType.VISUAL_DRAW_RECTANGLE,
+}
+
+
+def _agent_step_visual_authorized(step: Step, decision_kind: str) -> bool:
+    return decision_kind == "visual" or (
+        decision_kind == "action" and step.action in _BOUNDED_CANVAS_ACTIONS
+    )
+
 
 class _ModelRecoveryStopped(RuntimeError):
     """The user ended or cancelled a recoverable model outage wait."""
+
+
+def _model_recovery_stop_outcome(action: str | None) -> tuple[Status, str]:
+    if action == "ended":
+        return Status.INCOMPLETE, "model_recovery_ended_incomplete"
+    if action == "cancelled":
+        return Status.CANCELLED, "cancelled_by_user"
+    return Status.SYSTEM_ERROR, "model_error"
 
 
 def _exclude_wait_from_timers(
@@ -113,20 +133,7 @@ def _decide_with_model_recovery(
 
 
 def _approval_rule(step: Step, configured_mode: str, safety_rule: str | None) -> str | None:
-    """Add beginner approval semantics without weakening existing absolute safety gates."""
-    if safety_rule:
-        return safety_rule
-    if configured_mode == "ask" and step.effect_level is not None and step.effect_level.value not in {
-        "read_only", "session_only", "isolated_local_write",
-    }:
-        return f"approval-mode:site-write:{step.effect_kind or step.effect_level.value}"
-    if (
-        configured_mode == "ask"
-        and step.action in _WRITE_ACTIONS_REQUIRING_APPROVAL
-        and (step.effect_level is None or step.action == ActionType.HUMAN_TAKEOVER)
-    ):
-        return "approval-mode:write-action"
-    return None
+    return approval_rule(step, configured_mode, safety_rule)
 
 
 def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
@@ -172,15 +179,31 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
     commerce_ledger: dict[str, ResourceLedgerEntry] = {}
     commerce_decisions: list[dict] = []
     cleanup_report: dict | None = None
+    observation = None
+    resume_verification: dict | None = None
+    resume_checkpoint = cfg.resume_checkpoint
 
     def emit(
         status: Status, *, ended_at: datetime | None = None,
         active_step: dict | None = None,
     ) -> None:
-        if cfg.progress_callback is None:
-            return
         current = ended_at or _now()
         costs = [item.estimated_cost for item in model_records]
+        checkpoint = build_checkpoint(
+            run_id=run_id,
+            status=status,
+            observation=observation,
+            steps=steps,
+            executed_steps=executed_steps,
+            current_goal=current_goal,
+            resume_from_run_id=cfg.resume_from_run_id,
+            cleanup_status=(cleanup_report or {}).get("status", "not_started"),
+        )
+        if resume_verification is not None:
+            checkpoint["resumeVerification"] = resume_verification
+        artifacts.write_json("checkpoint.json", checkpoint)
+        if cfg.progress_callback is None:
+            return
         cfg.progress_callback({
             "run_id": run_id,
             "plan_name": plan.name,
@@ -218,6 +241,8 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
             "result_classification": "agent_running",
             "model_data_authorization": cfg.model_data_authorization,
             "active_step": active_step,
+            "checkpoint": checkpoint,
+            "resume_from_run_id": cfg.resume_from_run_id,
         })
 
     artifacts.event("run_started", run_id=run_id, plan_name=plan.name, role=plan.role, mode="agent")
@@ -236,22 +261,65 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
     emit(Status.RUNNING)
 
     with sync_playwright() as playwright:
-        if cfg.headless:
-            browser = playwright.chromium.launch(headless=True, slow_mo=cfg.slow_mo_ms)
-        else:
+        shared_browser = False
+        if (
+            not cfg.headless
+            and os.environ.get("GUI_RUNNER_MODE", "").strip().lower() == "process"
+            and os.environ.get("GUI_BROWSER_CDP_URL", "").strip()
+        ):
+            # Process mode is the customer-facing runner. Reuse the already
+            # opened Edge context so its authenticated site session is the
+            # same session the user just verified. A fresh context here would
+            # silently lose login cookies and send protected pages to /signin.
             try:
-                browser = playwright.chromium.launch(
-                    channel="msedge", headless=False, slow_mo=cfg.slow_mo_ms,
+                browser = playwright.chromium.connect_over_cdp(
+                    os.environ["GUI_BROWSER_CDP_URL"].strip()
                 )
-            except PlaywrightError:
-                browser = playwright.chromium.launch(headless=False, slow_mo=cfg.slow_mo_ms)
-        context = browser.new_context(
-            viewport={"width": cfg.viewport[0], "height": cfg.viewport[1]},
-            device_scale_factor=cfg.device_scale_factor,
-            storage_state=cfg.storage_state,
-            accept_downloads=True,
-            service_workers="block",
-        )
+                shared_browser = True
+            except Exception as exc:
+                artifacts.event(
+                    "process_browser_connection_failed",
+                    cdp_url=os.environ["GUI_BROWSER_CDP_URL"].strip(),
+                    error=redactor.scrub(str(exc))[:500],
+                )
+                browser = None
+        else:
+            browser = None
+        if browser is None:
+            if cfg.headless:
+                browser = playwright.chromium.launch(headless=True, slow_mo=cfg.slow_mo_ms)
+            else:
+                try:
+                    browser = playwright.chromium.launch(
+                        channel="msedge", headless=False, slow_mo=cfg.slow_mo_ms,
+                    )
+                except PlaywrightError:
+                    browser = playwright.chromium.launch(headless=False, slow_mo=cfg.slow_mo_ms)
+        if shared_browser:
+            contexts = browser.contexts
+            if not contexts:
+                raise RuntimeError("共享 Edge 没有可用的浏览器窗口，请重新双击启动 GUI")
+            context = contexts[0]
+            target_host = (urlparse(base_url).hostname or "").lower()
+            matching_pages = [
+                candidate
+                for candidate in context.pages
+                if (urlparse(candidate.url).hostname or "").lower() == target_host
+            ]
+            page = matching_pages[-1] if matching_pages else context.new_page()
+        else:
+            context = browser.new_context(
+                viewport={"width": cfg.viewport[0], "height": cfg.viewport[1]},
+                device_scale_factor=cfg.device_scale_factor,
+                locale="en-US",
+                storage_state=playwright_storage_state(cfg.storage_state),
+                accept_downloads=True,
+                service_workers="block",
+            )
+            page = context.new_page()
+        session_storage_script = session_storage_init_script(cfg.storage_state)
+        if session_storage_script:
+            context.add_init_script(script=session_storage_script)
         def guarded_route_handler(route) -> None:
             guard_playwright_route(
                 route,
@@ -280,15 +348,23 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
         )
         context.tracing.start(screenshots=False, snapshots=True, sources=False)
         artifacts.event("trace_pixel_privacy_enabled", screenshots_embedded=False)
-        page = context.new_page()
         websocket_collector = WebSocketEvidenceCollector(redactor)
         websocket_collector.attach(page)
         collector = ObservationCollector(page, artifacts, redactor, cfg.ignore_rules)
         page.set_default_timeout(cfg.timeout_ms)
         page.set_default_navigation_timeout(cfg.timeout_ms)
+        navigation_url = base_url
+        if resume_checkpoint and resume_checkpoint.get("currentUrl"):
+            navigation_url = str(resume_checkpoint["currentUrl"])
+            policy.check_url(navigation_url)
+            artifacts.event(
+                "agent_resume_navigation_requested",
+                resume_from_run_id=cfg.resume_from_run_id,
+                url=redactor.scrub(navigation_url),
+            )
         try:
             page.goto(
-                base_url,
+                navigation_url,
                 wait_until="domcontentloaded",
                 timeout=min(cfg.timeout_ms, 30_000),
             )
@@ -296,13 +372,22 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
         except PlaywrightError as exc:
             artifacts.event(
                 "agent_bootstrap_navigation",
-                url=redactor.scrub(base_url),
+                url=redactor.scrub(navigation_url),
                 succeeded=False,
                 error=redactor.scrub(str(exc)),
             )
         observation = collector.capture(_capture_screenshot(page, artifacts, "agent-observation-0"))
+        resume_blocked = False
+        if resume_checkpoint:
+            resume_verification = verify_checkpoint_page(resume_checkpoint, observation)
+            artifacts.event("agent_resume_page_verified", **resume_verification)
+            if not resume_verification["verified"]:
+                overall = Status.INCOMPLETE
+                completion_reason = "resume_page_state_unconfirmed"
+                resume_blocked = True
+                emit(Status.INCOMPLETE)
         try:
-            while len(executed_steps) - goal_step_start < max_steps:
+            while not resume_blocked and len(executed_steps) - goal_step_start < max_steps:
                 if cfg.cancel_event is not None and cfg.cancel_event.is_set():
                     overall = Status.CANCELLED
                     completion_reason = "cancelled_by_user"
@@ -324,7 +409,7 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
                         return False
                     question = (
                         "AI 服务暂时无法连接，当前网页、登录状态和已完成结果都已保留。"
-                        "请发送“重试”继续当前任务，或发送“结束本次测试”。"
+                        "请发送“重试”继续当前任务，或发送“结束本次测试”（本项将记为未完成）。"
                     )
                     completion_reason = "agent_waiting_for_model_recovery"
                     artifacts.event("agent_waiting_for_model_recovery", error=redactor.scrub(str(exc)))
@@ -372,16 +457,10 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
                     )
                 except _ModelRecoveryStopped as exc:
                     action = model_recovery_state["action"]
+                    overall, completion_reason = _model_recovery_stop_outcome(action)
                     if action == "ended":
-                        overall = Status.PASSED
-                        completion_reason = "agent_session_completed"
-                        artifacts.event("agent_session_completed", final_goal=redactor.scrub(current_goal))
-                    elif action == "cancelled":
-                        overall = Status.CANCELLED
-                        completion_reason = "cancelled_by_user"
-                    else:
-                        overall = Status.SYSTEM_ERROR
-                        completion_reason = "model_error"
+                        artifacts.event("agent_session_ended_incomplete", final_goal=redactor.scrub(current_goal))
+                    elif action not in {"cancelled"}:
                         hints.append(_cause_hint(FailureCategory.MODEL, len(model_records) + 1, redactor.scrub(str(exc))))
                         artifacts.event("model_call_failed", error=redactor.scrub(str(exc)))
                     break
@@ -452,6 +531,10 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
                         if scenario is not None:
                             scenario.goal = normalized_answer
                             scenario.clarification_history = list(cfg.clarification_history)
+                            scenario.resume_context = {
+                                **(scenario.resume_context or {}),
+                                "goal_step_start": len(executed_steps),
+                            }
                         artifacts.event("agent_follow_up_received", **entry)
                         goal_model_call_start = len(model_records)
                         goal_step_start = len(executed_steps)
@@ -554,23 +637,71 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
                         "hover": ActionType.VISUAL_HOVER,
                         "scroll": ActionType.VISUAL_SCROLL,
                         "drag": ActionType.VISUAL_DRAG,
+                        "draw_polygon": ActionType.VISUAL_DRAW_POLYGON,
                     }
-                    step = Step(
-                        action=visual_actions[suggestion.action],
-                        locator=request.canvas_locator,
-                        description=f"视觉定位并执行 {suggestion.action}：{request.target}",
-                        execution_mode=ExecutionMode.VISUAL,
-                        stability_level=StabilityLevel.C,
-                        stability_reason="运行时视觉模型重新定位语义目标",
-                        visual_target=request.target,
-                        relative_position=RelativePosition(xRatio=suggestion.x_ratio, yRatio=suggestion.y_ratio),
-                        relative_end_position=(RelativePosition(xRatio=suggestion.end_x_ratio, yRatio=suggestion.end_y_ratio)
-                                               if suggestion.end_x_ratio is not None and suggestion.end_y_ratio is not None else None),
-                        visual_expected_change=suggestion.expected_change,
-                        scroll_delta_y=suggestion.scroll_delta_y,
-                        computer_use_triggered=True,
-                        computer_use_reason=request.trigger_reason,
-                    )
+                    if suggestion.action == "inspect":
+                        step = Step(
+                            action=ActionType.SCREENSHOT,
+                            description=f"视觉只读识别结果：{suggestion.observed_text}",
+                            execution_mode=ExecutionMode.LOCATOR,
+                            stability_level=StabilityLevel.B,
+                            stability_reason="已授权的脱敏截图仅用于读取 Canvas 内可见结果，不执行页面操作",
+                            effect_kind=request.effect_kind,
+                            effect_level=request.effect_level,
+                            cleanup_action=request.cleanup_action,
+                        )
+                    elif suggestion.action == "draw_polygon":
+                        if request.canvas_locator is None:
+                            overall = Status.INCOMPLETE
+                            completion_reason = "visual_region_missing"
+                            artifacts.event(
+                                "visual_fallback_failed",
+                                trigger_reason=redactor.scrub(request.trigger_reason),
+                                screenshot=observation.screenshot,
+                                error="视觉多边形必须绑定唯一 Canvas 区域，不能使用整个视口",
+                            )
+                            break
+                        step = Step(
+                            action=ActionType.VISUAL_DRAW_POLYGON,
+                            canvas_region_locator=request.canvas_locator,
+                            description=f"视觉识别边界并绘制多边形：{request.target}",
+                            execution_mode=ExecutionMode.VISUAL,
+                            stability_level=StabilityLevel.C,
+                            stability_reason="运行时视觉模型在受约束 Canvas 区域内识别多边形边界",
+                            visual_target=request.target,
+                            visual_points=[
+                                RelativePosition(xRatio=point.x_ratio, yRatio=point.y_ratio)
+                                for point in suggestion.points
+                            ],
+                            gesture_finish="double_click",
+                            visual_expected_change=suggestion.expected_change,
+                            computer_use_triggered=True,
+                            computer_use_reason=request.trigger_reason,
+                            effect_kind=request.effect_kind,
+                            effect_level=request.effect_level,
+                            cleanup_action=request.cleanup_action,
+                        )
+                    else:
+                        assert suggestion.x_ratio is not None and suggestion.y_ratio is not None
+                        step = Step(
+                            action=visual_actions[suggestion.action],
+                            locator=request.canvas_locator,
+                            description=f"视觉定位并执行 {suggestion.action}：{request.target}",
+                            execution_mode=ExecutionMode.VISUAL,
+                            stability_level=StabilityLevel.C,
+                            stability_reason="运行时视觉模型重新定位语义目标",
+                            visual_target=request.target,
+                            relative_position=RelativePosition(xRatio=suggestion.x_ratio, yRatio=suggestion.y_ratio),
+                            relative_end_position=(RelativePosition(xRatio=suggestion.end_x_ratio, yRatio=suggestion.end_y_ratio)
+                                                   if suggestion.end_x_ratio is not None and suggestion.end_y_ratio is not None else None),
+                            visual_expected_change=suggestion.expected_change,
+                            scroll_delta_y=suggestion.scroll_delta_y,
+                            computer_use_triggered=True,
+                            computer_use_reason=request.trigger_reason,
+                            effect_kind=request.effect_kind,
+                            effect_level=request.effect_level,
+                            cleanup_action=request.cleanup_action,
+                        )
                     artifacts.event(
                         "visual_fallback_suggested",
                         trigger_reason=redactor.scrub(request.trigger_reason),
@@ -581,7 +712,9 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
                         y_ratio=suggestion.y_ratio,
                         confidence=suggestion.confidence,
                         action=suggestion.action,
+                        points=[point.model_dump() for point in suggestion.points],
                         expected_change=redactor.scrub(suggestion.expected_change),
+                        observed_text=redactor.scrub(suggestion.observed_text or ""),
                     )
                     emit(Status.RUNNING)
                 else:
@@ -597,6 +730,9 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
                         ActionType.HUMAN_TAKEOVER,
                         ActionType.NAVIGATE,
                     },
+                    # A navigation action is the recovery path from browser-owned
+                    # error pages. The destination is still checked by _execute_step.
+                    validate_current_url=step.action != ActionType.NAVIGATE,
                 )
                 collector = ObservationCollector(page, artifacts, redactor, cfg.ignore_rules)
                 artifacts.event("browser_context_selected", index=index, **browser_context_evidence)
@@ -610,7 +746,7 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
                 try:
                     _check_agent_step(
                         step, cfg.forbidden_actions,
-                        visual_authorized=decision.kind == "visual",
+                        visual_authorized=_agent_step_visual_authorized(step, decision.kind),
                         bridge_authorized=bridge_adapter is not None,
                     )
                     summary = _step_summary(step, redactor)
@@ -656,15 +792,20 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
                         )
                         if not approved:
                             was_cancelled = cfg.cancel_event is not None and cfg.cancel_event.is_set()
+                            safe_validation_probe = step.description.startswith("安全校验探针：")
                             steps.append(StepResult(
                                 index=index,
                                 action=step.action.value,
                                 description=step.description,
                                 target_summary=summary,
-                                status=Status.SKIPPED,
+                                status=Status.PASSED if safe_validation_probe else Status.SKIPPED,
                                 started_at=step_started,
                                 ended_at=_now(),
-                                error_message="运行已由用户取消，动作未执行" if was_cancelled else "危险动作未获批准，动作未执行",
+                                error_message=(
+                                    "安全校验探针未获批准，动作未执行；符合不创建资产的要求"
+                                    if safe_validation_probe
+                                    else ("运行已由用户取消，动作未执行" if was_cancelled else "危险动作未获批准，动作未执行")
+                                ),
                                 failure_category=FailureCategory.SECURITY,
                                 screenshot=before.screenshot,
                                 execution_mode=step.execution_mode.value,
@@ -672,12 +813,18 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
                                 stability_reason=step.stability_reason,
                                 before=before,
                                 planner_reason=redactor.scrub(decision.reason),
-                                progress_assessment="no_progress",
+                                progress_assessment="progress" if safe_validation_probe else "no_progress",
                             ))
-                            overall = Status.CANCELLED
-                            completion_reason = "cancelled_by_user" if was_cancelled else "dangerous_action_rejected"
-                            artifacts.event("dangerous_action_rejected", index=index, rule=confirmation_term)
-                            emit(Status.CANCELLED)
+                            if safe_validation_probe:
+                                overall = Status.PASSED
+                                completion_reason = "safe_validation_probe_completed"
+                                artifacts.event("safe_validation_probe_completed", index=index, rule=confirmation_term)
+                                emit(Status.PASSED)
+                            else:
+                                overall = Status.CANCELLED
+                                completion_reason = "cancelled_by_user" if was_cancelled else "dangerous_action_rejected"
+                                artifacts.event("dangerous_action_rejected", index=index, rule=confirmation_term)
+                                emit(Status.CANCELLED)
                             break
                         artifacts.event("dangerous_action_approved", index=index, rule=confirmation_term)
                         confirmed_by_human = True
@@ -715,6 +862,11 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
                             component_adapters=cfg.component_adapters,
                             test_files=cfg.test_files,
                             timeout_ms=cfg.timeout_ms,
+                            native_dialog_approved=(
+                                confirmed_by_human
+                                and step.action == ActionType.CLICK
+                                and step.effect_kind in {"delete_resource", "share_story"}
+                            ),
                         ),
                         wait=lambda milliseconds: sleep(milliseconds / 1000),
                         probe=_commerce_recovery_probe(
@@ -944,8 +1096,9 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
                 context.tracing.stop(path=str(artifacts.trace_path))
                 artifacts.redact_trace()
             finally:
-                context.close()
-                browser.close()
+                if not shared_browser:
+                    context.close()
+                    browser.close()
 
     commerce_summary = _commerce_run_summary(cfg, commerce_decisions, commerce_ledger)
     if commerce_summary and not commerce_summary["zeroResidual"]:
@@ -993,6 +1146,19 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
         generated_test.source_path = artifacts.write_text(generated_test.source_path, source)
     costs = [item.estimated_cost for item in model_records]
     goal_status, goal_summary = _goal_outcome(overall, assertions, completion_reason)
+    final_checkpoint = build_checkpoint(
+        run_id=run_id,
+        status=overall,
+        observation=observation,
+        steps=steps,
+        executed_steps=executed_steps,
+        current_goal=current_goal,
+        resume_from_run_id=cfg.resume_from_run_id,
+        cleanup_status=(cleanup_report or {}).get("status", "not_started"),
+    )
+    if resume_verification is not None:
+        final_checkpoint["resumeVerification"] = resume_verification
+    artifacts.write_json("checkpoint.json", final_checkpoint)
     result = RunResult(
         run_id=run_id,
         plan_name=plan.name,
@@ -1039,6 +1205,8 @@ def run_agent_plan(plan: TestPlan, cfg) -> tuple[RunResult, object]:
         app_map_snapshot=cfg.app_map_snapshot,
         websocket_timeline=websocket_collector.timeline,
         cleanup_report=cleanup_report,
+        checkpoint=final_checkpoint,
+        resume_from_run_id=cfg.resume_from_run_id,
     )
     artifacts.event("run_finished", status=overall.value, completion_reason=completion_reason, duration_ms=result.duration_ms)
     artifacts.finalize(result)
@@ -1075,6 +1243,18 @@ def _check_agent_step(
 def _made_progress(step: Step, before, after, run_dir=None) -> bool:
     if step.action in {ActionType.FILL, ActionType.SELECT, ActionType.CLEAR, ActionType.CHECK, ActionType.UNCHECK, ActionType.PRESS}:
         return True
+    if step.action in {
+        ActionType.NAVIGATE,
+        ActionType.WAIT_FOR,
+        ActionType.SCREENSHOT,
+        ActionType.HOVER,
+        ActionType.SCROLL,
+        ActionType.BACK,
+        ActionType.RELOAD,
+    } and _read_only_observation_is_successful(after):
+        # A read-only audit makes progress by producing verified page facts;
+        # it does not need to click or mutate a control to count as progress.
+        return True
     before_facts = (before.url, before.title, tuple(before.dom_summary), before.accessibility_summary)
     after_facts = (after.url, after.title, tuple(after.dom_summary), after.accessibility_summary)
     if before_facts != after_facts:
@@ -1085,6 +1265,27 @@ def _made_progress(step: Step, before, after, run_dir=None) -> bool:
         if before_path.is_file() and after_path.is_file():
             return before_path.read_bytes() != after_path.read_bytes()
     return False
+
+
+def _read_only_observation_is_successful(observation) -> bool:
+    if observation is None or not observation.url or observation.url in {"about:blank", "chrome-error://chromewebdata/"}:
+        return False
+    health = observation.page_health
+    return bool(
+        observation.title.strip()
+        or observation.dom_summary
+        or observation.accessibility_summary.strip()
+        or observation.console_errors
+        or observation.page_errors
+        or observation.failed_requests
+        or health and (
+            health.ready_state
+            or health.visible_text_length
+            or health.visible_element_count
+            or health.interactive_count
+            or health.visual_surface_count
+        )
+    )
 
 
 def _is_recognized_cesium_loading_wait(step: Step) -> bool:

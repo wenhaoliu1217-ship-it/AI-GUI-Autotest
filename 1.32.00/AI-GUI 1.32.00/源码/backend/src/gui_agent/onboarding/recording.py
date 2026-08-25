@@ -19,9 +19,14 @@ from uuid import uuid4
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
-from ..security.policy import DomainPolicy
+from ..security.policy import DomainPolicy, SecurityError
 from .models import ProjectConfig
-from .session import validate_storage_state
+from .session import (
+    SESSION_STORAGE_STATE_KEY,
+    capture_session_storage_for_project,
+    filter_storage_state_for_project,
+    validate_storage_state,
+)
 from .store import ProjectStore
 
 
@@ -37,6 +42,11 @@ class RecordingSession:
     result: dict[str, Any] | None = None
     error: str | None = None
     browser_name: str | None = None
+
+
+LOGIN_NAVIGATION_COMMIT_TIMEOUT_MS = 15_000
+LOGIN_EVENT_PUMP_MS = 200
+_GOOGLE_OAUTH_COMPAT_ARGS = ["--disable-blink-features=AutomationControlled"]
 
 
 class LoginRecordingManager:
@@ -91,6 +101,12 @@ class LoginRecordingManager:
         shared_browser = False
         browser_cleanup: Callable[[], None] = lambda: None
         try:
+            policy = DomainPolicy(
+                project.base_url,
+                project.allowed_hosts,
+                allow_private_network=project.allow_private_network,
+            )
+            policy.check_url(project.base_url)
             with sync_playwright() as playwright:
                 browser, session.browser_name, shared_browser, browser_cleanup = launch_visible_login_browser(playwright)
                 if shared_browser:
@@ -101,16 +117,34 @@ class LoginRecordingManager:
                 else:
                     context = browser.new_context(viewport={"width": 1440, "height": 960})
 
-                page = _open_user_controlled_login_page(context, project)
+                existing_page = None
+                if shared_browser:
+                    target_host = (urlparse(project.base_url).hostname or "").lower()
+                    existing_pages = [
+                        candidate
+                        for candidate in context.pages
+                        if (urlparse(candidate.url).hostname or "").lower() == target_host
+                    ]
+                    existing_page = existing_pages[-1] if existing_pages else None
+                page = _open_user_controlled_login_page(
+                    context, project, policy, existing_page=existing_page
+                )
                 session.status = "recording"
                 session.ready.set()
-                winner = _wait_for_signal(session, timeout_seconds)
+                winner = _wait_for_signal(session, timeout_seconds, page, context)
                 if winner == "cancel":
                     session.status = "cancelled"
                     return
                 if winner == "timeout":
                     raise RuntimeError("登录录制超过项目运行时限，未保存任何会话")
-                state = _project_storage_state(project, context.storage_state())
+                rejection = policy.consume_rejection()
+                if rejection:
+                    raise SecurityError(rejection)
+                page = _latest_open_page(page, context)
+                _validate_recording_completion(page)
+                state = context.storage_state()
+                state[SESSION_STORAGE_STATE_KEY] = capture_session_storage_for_project(project, context.pages)
+                state = filter_storage_state_for_project(project, state)
                 metadata = validate_storage_state(project, state)
                 store.save_session(project, state, metadata)
                 session.result = metadata.model_dump(mode="json", by_alias=True)
@@ -139,27 +173,161 @@ class LoginRecordingManager:
             session.done.set()
 
 
-def _open_user_controlled_login_page(context, project: ProjectConfig):
+def _open_user_controlled_login_page(
+    context, project: ProjectConfig, policy=None, existing_page=None
+):
     """Validate the initial target, then leave login networking under user control."""
-    policy = DomainPolicy(
-        project.base_url,
-        project.allowed_hosts,
-        allow_private_network=project.allow_private_network,
-    )
-    policy.check_url(project.base_url)
+    if policy is None:
+        policy = DomainPolicy(
+            project.base_url,
+            project.allowed_hosts,
+            allow_private_network=project.allow_private_network,
+        )
+        policy.check_url(project.base_url)
+        page = context.new_page()
+        page.goto(project.base_url, wait_until="domcontentloaded")
+        return page
+    if existing_page is not None and not existing_page.is_closed():
+        # Process mode already has the user's authenticated same-site page.
+        # Reuse it instead of opening a fresh page that may start an unrelated
+        # third-party SSO flow and make the user log in twice.
+        _show_login_window(context, existing_page)
+        return existing_page
     page = context.new_page()
-    page.goto(project.base_url, wait_until="domcontentloaded")
+    navigation_failure: dict[str, str | None] = {"reason": None}
+
+    def remember_navigation_failure(request) -> None:
+        try:
+            if request.is_navigation_request():
+                navigation_failure["reason"] = request.failure
+        except Exception:
+            navigation_failure["reason"] = None
+
+    page.on("requestfailed", remember_navigation_failure)
+    policy.clear_rejection()
+    _show_login_window(context, page)
+    try:
+        page.goto(
+            project.base_url,
+            wait_until="commit",
+            timeout=LOGIN_NAVIGATION_COMMIT_TIMEOUT_MS,
+        )
+    except Exception as exc:
+        rejection = policy.consume_rejection()
+        if rejection:
+            raise SecurityError(rejection) from exc
+        target = _safe_request_target(project.base_url)
+        reason = _safe_network_reason(navigation_failure["reason"] or str(exc))
+        raise RuntimeError(f"无法打开登录页面 {target}：{reason}") from exc
+    _show_login_window(context, page)
     return page
 
 
-def _wait_for_signal(session: RecordingSession, timeout_seconds: int) -> str:
-    import time
+def _show_login_window(context, page) -> None:
+    session = None
+    try:
+        page.bring_to_front()
+        session = context.new_cdp_session(page)
+        window = session.send("Browser.getWindowForTarget")
+        window_id = window.get("windowId")
+        if window_id is None:
+            return
+        session.send("Browser.setWindowBounds", {"windowId": window_id, "bounds": {"windowState": "normal"}})
+        session.send(
+            "Browser.setWindowBounds",
+            {"windowId": window_id, "bounds": {"left": 80, "top": 60, "width": 1440, "height": 960}},
+        )
+    except Exception:
+        return
+    finally:
+        if session is not None:
+            try:
+                session.detach()
+            except Exception:
+                pass
+
+
+def _latest_open_page(page, context=None):
+    if context is not None:
+        try:
+            for candidate in reversed(context.pages):
+                if not candidate.is_closed():
+                    return candidate
+        except PlaywrightError:
+            pass
+    return page
+
+
+def _safe_request_target(url: str) -> str:
+    parsed = urlparse(url)
+    host = parsed.hostname or "未知主机"
+    return f"{host}:{parsed.port}" if parsed.port is not None else host
+
+
+def _safe_network_reason(failure: str | None) -> str:
+    value = (failure or "").lower()
+    if "timed_out" in value or "timeout" in value:
+        return "网络请求超时"
+    if "name_not_resolved" in value:
+        return "域名解析失败"
+    if "cert_" in value or "certificate" in value:
+        return "网站证书校验失败"
+    if any(marker in value for marker in ("connection_refused", "connection_reset", "connection_closed")):
+        return "无法连接网站"
+    return "网络请求失败"
+
+
+def _validate_recording_completion(page) -> None:
+    state = page.evaluate(
+        """() => {
+            const visible = (element) => {
+                const style = getComputedStyle(element);
+                const rect = element.getBoundingClientRect();
+                return style.visibility !== 'hidden' && style.display !== 'none' &&
+                    rect.width > 0 && rect.height > 0;
+            };
+            const loginSelectors = [
+                'input[type="password"]',
+                'form[action*="login" i]',
+                'form[action*="signin" i]',
+                '[data-testid*="login" i]',
+                '[data-testid*="signin" i]'
+            ];
+            const loginFormVisible = loginSelectors.some((selector) =>
+                Array.from(document.querySelectorAll(selector)).some(visible)
+            );
+            const bodyText = document.body?.innerText?.trim() || '';
+            const startupLoading = document.readyState === 'loading' || !document.body ||
+                (bodyText.length < 20 && Boolean(document.querySelector(
+                    '[aria-busy="true"], [role="progressbar"], .loading, .spinner'
+                )));
+            return { startupLoading, loginFormVisible };
+        }"""
+    )
+    if state.get("startupLoading"):
+        raise RuntimeError("登录页面仍在加载，请等待页面稳定后再点击“我已登录”")
+    if state.get("loginFormVisible"):
+        raise RuntimeError("登录尚未完成，请在弹出的窗口中完成登录后再点击“我已登录”")
+
+
+def _wait_for_signal(session: RecordingSession, timeout_seconds: int, page, context=None) -> str:
     deadline = time.monotonic() + timeout_seconds
     while time.monotonic() < deadline:
-        if session.cancel.wait(0.2):
+        if session.cancel.is_set():
             return "cancel"
         if session.finalize.is_set():
             return "finalize"
+        page = _latest_open_page(page, context)
+        remaining_ms = max(1, int((deadline - time.monotonic()) * 1000))
+        try:
+            page.wait_for_timeout(min(LOGIN_EVENT_PUMP_MS, remaining_ms))
+        except PlaywrightError:
+            if session.cancel.is_set():
+                return "cancel"
+            replacement = _latest_open_page(page, context)
+            if replacement is page:
+                time.sleep(min(LOGIN_EVENT_PUMP_MS / 1000, remaining_ms / 1000))
+            page = replacement
     return "timeout"
 
 
@@ -181,9 +349,15 @@ def _project_storage_state(project: ProjectConfig, state: dict[str, Any]) -> dic
 
 def launch_visible_login_browser(playwright):
     """Use a normal Edge process for user authentication whenever possible."""
+    # Reuse the visible GUI browser whenever its CDP endpoint is available.
+    # This keeps the user's authenticated profile and makes login recording
+    # happen in the same window the user can see.
     if os.environ.get("GUI_BROWSER_CDP_URL", "").strip():
-        browser, name, shared = _launch_playwright_login_browser(playwright)
-        return browser, name, shared, lambda: None
+        try:
+            browser, name, shared = _launch_playwright_login_browser(playwright)
+            return browser, name, shared, lambda: None
+        except (OSError, PlaywrightError, RuntimeError):
+            pass
     try:
         return _launch_standard_edge_browser(playwright)
     except (OSError, PlaywrightError, RuntimeError):
@@ -202,6 +376,9 @@ def _launch_standard_edge_browser(playwright):
             str(executable),
             f"--remote-debugging-port={port}",
             f"--user-data-dir={profile_dir}",
+            "--no-sandbox",
+            "--disable-gpu",
+            *_GOOGLE_OAUTH_COMPAT_ARGS,
             "--no-first-run",
             "--no-default-browser-check",
             "--new-window",
@@ -289,6 +466,23 @@ def _launch_playwright_login_browser(playwright):
         name = os.environ.get("GUI_BROWSER_NAME", "Microsoft Edge").strip() or "Microsoft Edge"
         return browser, f"{name}（与 GUI 同一窗口）", True
     try:
-        return playwright.chromium.launch(channel="msedge", headless=False), "Microsoft Edge", False
+        return (
+            playwright.chromium.launch(
+                channel="msedge",
+                headless=False,
+                args=_GOOGLE_OAUTH_COMPAT_ARGS,
+                ignore_default_args=["--enable-automation"],
+            ),
+            "Microsoft Edge",
+            False,
+        )
     except PlaywrightError:
-        return playwright.chromium.launch(headless=False), "内置测试浏览器", False
+        return (
+            playwright.chromium.launch(
+                headless=False,
+                args=_GOOGLE_OAUTH_COMPAT_ARGS,
+                ignore_default_args=["--enable-automation"],
+            ),
+            "内置测试浏览器",
+            False,
+        )

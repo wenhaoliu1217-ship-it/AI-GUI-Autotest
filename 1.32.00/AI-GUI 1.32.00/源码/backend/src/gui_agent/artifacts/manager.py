@@ -31,6 +31,9 @@ class ArtifactManager:
         self.events_path = self.run_dir / "events.jsonl"
         self.redactor = redactor
         self.screenshot_mask_selectors = screenshot_mask_selectors
+        # Keep the most recent usable frame so a later screenshot timeout does
+        # not erase the only visual context shown in the GUI.
+        self.last_valid_screenshot: str | None = None
 
     def event(self, event_type: str, **payload: Any) -> None:
         record = {

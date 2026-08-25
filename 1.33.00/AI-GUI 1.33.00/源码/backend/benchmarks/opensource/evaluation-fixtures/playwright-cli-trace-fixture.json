@@ -1,0 +1,28 @@
+{
+  "commands": [
+    {
+      "kind": "navigate",
+      "command": "browser_navigate https://example.test/customers?session=hidden",
+      "url": "https://example.test/customers?session=hidden"
+    },
+    {
+      "kind": "snapshot",
+      "command": "browser_snapshot"
+    },
+    {
+      "kind": "click",
+      "command": "locator('[data-testid=customers]').click()",
+      "selector": "[data-testid=customers]"
+    },
+    {
+      "kind": "fill",
+      "command": "locator('#search').fill('secret-password')",
+      "selector": "#search",
+      "value": "secret-password"
+    },
+    {
+      "kind": "unsafe",
+      "command": "browser_run_code_unsafe(() => page.evaluate('document.title'))"
+    }
+  ]
+}

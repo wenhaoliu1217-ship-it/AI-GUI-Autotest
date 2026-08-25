@@ -1,0 +1,53 @@
+{
+  "taskId": "fixture.crm.search",
+  "instruction": "在本地隔离夹具中查找客户",
+  "environment": {
+    "name": "jingcai-opc-evaluation-fixture",
+    "taskName": "fixture.crm.search",
+    "headless": true,
+    "maxSteps": 4
+  },
+  "steps": [
+    {
+      "step": 0,
+      "obs": {
+        "url": "http://fixture.local/",
+        "open_pages_urls": ["http://fixture.local/"],
+        "open_pages_titles": ["隔离评测夹具"],
+        "axtree_object": {"role": "main"},
+        "screenshot": "fixture-placeholder-not-a-real-image"
+      },
+      "reward": 0,
+      "raw_reward": 0,
+      "terminated": false,
+      "truncated": false
+    },
+    {
+      "step": 1,
+      "action": "click('[data-testid=search]')",
+      "obs": {
+        "url": "http://fixture.local/search",
+        "open_pages_urls": ["http://fixture.local/search"],
+        "open_pages_titles": ["隔离评测夹具 - 搜索"],
+        "last_action": "click"
+      },
+      "reward": 1,
+      "raw_reward": 1,
+      "terminated": true,
+      "truncated": false
+    }
+  ],
+  "summary": {
+    "cum_reward": 1,
+    "cum_raw_reward": 1,
+    "success": true,
+    "terminated": true,
+    "truncated": false
+  },
+  "evaluation": {
+    "success": true,
+    "passed": true,
+    "score": 1,
+    "message": "产品侧契约夹具评测通过"
+  }
+}

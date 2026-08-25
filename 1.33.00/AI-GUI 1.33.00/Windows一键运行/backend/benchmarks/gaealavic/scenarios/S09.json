@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1",
+  "id": "S09",
+  "name": "装备智能体手动新增",
+  "category": "创建",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "管理员",
+  "prerequisites": [
+    {
+      "id": "S09-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "新增字段与必填规则"
+    },
+    {
+      "id": "S09-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "创建权限"
+    },
+    {
+      "id": "S09-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "对象查询与删除接口"
+    }
+  ],
+  "goal": "装备智能体手动新增",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "填写固定最小字段",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "保存 E2E_ 智能体",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "对象可按业务 ID 查询",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": true,
+    "order": "reverse_dependency",
+    "verification": "business_object_not_queryable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "cleanup"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "新增字段与必填规则",
+    "创建权限",
+    "对象查询与删除接口"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

@@ -396,6 +396,7 @@ describe('App', () => {
     expect(websiteRequiresLogin({ ...compatibilityReport, authenticationSignals: ['未发现明确登录表单；本次按公开页面状态扫描'] })).toBe(false);
     expect(websiteRequiresLogin({ ...compatibilityReport, authenticationSignals: ['已确认登录成功，并识别到登录后的账号功能'] })).toBe(false);
     expect(websiteRequiresLogin({ ...compatibilityReport, authenticationSignals: ['检测到仍在显示的登录表单或登录拦截页面'], blockedAreas: ['保存的登录状态未生效或已被网站拒绝'] })).toBe(true);
+    expect(websiteRequiresLogin({ ...compatibilityReport, authenticationSignals: ['页面处于验证/挑战页，当前登录状态无法确认'] })).toBe(true);
     expect(websiteRequiresLogin({ ...compatibilityReport, blockedAreas: ['该页面必须登录后访问'] })).toBe(true);
   });
 
@@ -405,6 +406,14 @@ describe('App', () => {
     } as any;
     expect(displayedRunStatus(failedRun)).toBe('system_error');
     expect(runCanRecover(failedRun)).toBe(true);
+  });
+
+  it('does not present an incomplete execution as pending review', () => {
+    const incompleteRun = {
+      status: 'pending_review', executionStatus: 'incomplete', completionReason: 'agent_blocked'
+    } as any;
+    expect(displayedRunStatus(incompleteRun)).toBe('incomplete');
+    expect(runCanRecover(incompleteRun)).toBe(true);
   });
 
   it('distinguishes a recoverable model outage from a completed goal', () => {
@@ -425,6 +434,7 @@ describe('App', () => {
 
   it('asks for login only when the requested task actually needs account state', () => {
     expect(goalRequiresLogin('把无线鼠标加入购物车并停在提交订单前')).toBe(true);
+    expect(goalRequiresLogin('在已有的 Stories 中找到成都并框选后读取面积')).toBe(true);
     expect(goalRequiresLogin('检查首页是否能正常打开')).toBe(false);
   });
 
@@ -676,7 +686,18 @@ describe('App', () => {
   it('replaces the useless stop button with an editable retry path after a system error', async () => {
     const failedRun = {
       ...backendRun, status: 'system_error', steps: [], assertions: [],
-      completion_reason: 'container_runner_exception', system_error: 'browser launch failed'
+      completion_reason: 'container_runner_exception', system_error: 'browser launch failed',
+      checkpoint: {
+        version: 1, runId: 'run-checkpoint-1', status: 'system_error',
+        currentGoal: '确认订单列表可查询', currentUrl: 'https://example.test/orders',
+        currentHost: 'example.test', pageFingerprint: 'fingerprint-1',
+        lastSafeStepIndex: 1, safeReadOnlySteps: [{ index: 1, action: 'navigate', safeToSkip: true }],
+        pendingWriteRevalidations: [],
+        recoveryPolicy: {
+          reobserveBeforeResume: true, skipOnlyVerifiedReadOnly: true,
+          revalidateWritesBeforeContinue: true, failClosedOnPageMismatch: true
+        }
+      }
     } as any;
     historyRuns = [failedRun];
     detailRunResponse = failedRun;
@@ -686,8 +707,9 @@ describe('App', () => {
     await user.click(await screen.findByRole('button', { name: /管理员登录验收/ }));
 
     expect(await screen.findByText('测试没有成功启动')).toBeVisible();
-    expect(screen.getByPlaceholderText('告诉 AI 新的测试要求……')).toBeVisible();
-    expect(screen.getByRole('button', { name: /开始新的测试/ })).toBeVisible();
+    expect(screen.getByPlaceholderText('如需修改目标，请用普通中文告诉 AI……')).toBeVisible();
+    expect(screen.getByRole('button', { name: /从上次安全步骤继续/ })).toBeVisible();
+    expect(screen.getByRole('button', { name: /从头重试/ })).toBeVisible();
     expect(screen.queryByRole('button', { name: /终止执行/ })).not.toBeInTheDocument();
   });
 

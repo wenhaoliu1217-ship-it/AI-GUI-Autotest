@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1",
+  "id": "GAEALAVIC-L4-01",
+  "name": "GAEALaViC 跨模块创建、运行、下载与清理闭环",
+  "bindingStatus": "blocked",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRoleSequence": ["管理员", "运维/开发者", "普通测试"],
+  "objectPrefix": "E2E_",
+  "stages": [
+    {"id": "login", "goal": "登录授权租户", "requiredOutputs": ["accountId", "role", "sessionId"]},
+    {"id": "model", "goal": "上传或创建装备智能体", "dependsOn": ["login"], "requiredOutputs": ["businessId", "uploadSha256"]},
+    {"id": "terrain", "goal": "创建环境资产或高程数据", "dependsOn": ["login"], "requiredOutputs": ["businessId", "uploadSha256", "geometryEvidence"]},
+    {"id": "scenario", "goal": "创建或导入想定", "dependsOn": ["model", "terrain"], "requiredOutputs": ["businessId", "uploadSha256"]},
+    {"id": "instance", "goal": "关联实例", "dependsOn": ["scenario", "model"], "requiredOutputs": ["relationId"]},
+    {"id": "start", "goal": "启动仿真", "dependsOn": ["instance"], "requiredOutputs": ["simulationRunId", "confirmationId"]},
+    {"id": "wait", "goal": "等待运行中及停止或完成", "dependsOn": ["start"], "requiredOutputs": ["stateTimeline", "websocketOrPollingEvidence"]},
+    {"id": "records", "goal": "查询运行记录", "dependsOn": ["wait"], "requiredOutputs": ["simulationRunId"]},
+    {"id": "download", "goal": "下载仿真数据和评估数据", "dependsOn": ["records"], "requiredOutputs": ["simulationDataSha256", "evaluationDataSha256"]},
+    {"id": "cleanup", "goal": "按依赖逆序清理全部 E2E_ 对象", "dependsOn": ["download"], "requiredOutputs": ["cleanupReport", "manualActions"]},
+    {"id": "evidence", "goal": "生成标准证据包和验收报告", "dependsOn": ["cleanup"], "requiredOutputs": ["evidenceManifest", "acceptanceSummary"]}
+  ],
+  "successRule": "所有 stage 均成功，必需输出存在，cleanupSuccess=true，evidenceCompleteness>=0.95",
+  "blockedDependencies": [
+    "目标地址 http://192.168.31.218:7991 的连通网络与验收窗口（2026-07-22 当前连接超时）",
+    "管理员、普通测试、只读、运维/开发者账号及权限矩阵",
+    "合法智能体 JSON、想定 ZIP、HGT、GIS 与缩略图固定样例",
+    "对象创建、关系查询、运行状态、下载和逆序清理接口",
+    "WebSocket 或轮询协议及准确状态机",
+    "启动、停止、删除和批量删除的书面授权边界",
+    "Cesium Viewer hooks 或真实可观察语义结构"
+  ]
+}

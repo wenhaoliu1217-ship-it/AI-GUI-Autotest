@@ -1,0 +1,45 @@
+{
+  "exp_args": {
+    "env_args": {
+      "task_name": "fixture.crm.search",
+      "task_seed": 17,
+      "max_steps": 4,
+      "headless": true
+    },
+    "agent_args": {
+      "agent_name": "FixtureReadOnlyAgent"
+    }
+  },
+  "summary_info": {
+    "n_steps": 1,
+    "cum_reward": 1,
+    "cum_raw_reward": 1,
+    "terminated": true,
+    "truncated": false,
+    "stats.cum_tokens": 0
+  },
+  "steps_info": [
+    {
+      "step": 0,
+      "obs": {"url": "http://fixture.local/"},
+      "reward": 0,
+      "terminated": false,
+      "truncated": false
+    },
+    {
+      "step": 1,
+      "action": "click('[data-testid=search]')",
+      "obs": {"url": "http://fixture.local/search"},
+      "reward": 1,
+      "raw_reward": 1,
+      "terminated": true,
+      "truncated": false
+    }
+  ],
+  "metrics": {
+    "success_rate": 1,
+    "action_count": 1
+  },
+  "artifacts": ["summary_info.json", "step_1.pkl.gz"],
+  "status": "done"
+}

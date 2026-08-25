@@ -16,6 +16,8 @@ ROLE_MATRIX = {
 SIDE_EFFECTS = {
     "browse_search_filter_sort": {"level": "read_only", "confirmation": False, "cleanup": "none"},
     "viewer_camera_clock": {"level": "session_only", "confirmation": False, "cleanup": "restore home and clock"},
+    "temporary_story_canvas_annotation": {"level": "session_only", "confirmation": False, "cleanup": "clear temporary drawing before completion"},
+    "temporary_story_measurement": {"level": "session_only", "confirmation": False, "cleanup": "clear temporary measurement before completion"},
     "upload_or_cloud_import": {"level": "reversible_write", "confirmation": False, "cleanup": "delete ledger-owned asset/task"},
     "archive": {"level": "reversible_quota_write", "confirmation": False, "cleanup": "delete archive and disable download"},
     "download": {"level": "isolated_local_write", "confirmation": False, "cleanup": "delete isolated local copy"},
@@ -98,4 +100,3 @@ def policy_payload() -> dict:
         "roles": ROLE_MATRIX,
         "sideEffects": SIDE_EFFECTS,
     }
-

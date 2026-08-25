@@ -10,6 +10,59 @@ class _Policy:
         return None
 
 
+class _FakePage:
+    url = "chrome-error://chromewebdata/"
+
+    def is_closed(self) -> bool:
+        return False
+
+    def set_default_timeout(self, _timeout: int) -> None:
+        return None
+
+    def set_default_navigation_timeout(self, _timeout: int) -> None:
+        return None
+
+
+class _FakeContext:
+    def __init__(self, page: _FakePage) -> None:
+        self.pages = [page]
+
+
+class _RecordingPolicy:
+    def __init__(self) -> None:
+        self.checked: list[str] = []
+
+    def check_url(self, url: str) -> None:
+        self.checked.append(url)
+
+
+def test_navigation_can_select_internal_error_page_before_recovery() -> None:
+    page = _FakePage()
+    policy = _RecordingPolicy()
+
+    selected, _, evidence = resolve_browser_surface(
+        _FakeContext(page),
+        page,
+        BrowserTarget(),
+        policy,
+        enforce_url_condition=False,
+        validate_current_url=False,
+    )
+
+    assert selected is page
+    assert evidence["url"] == "chrome-error://chromewebdata/"
+    assert policy.checked == []
+
+
+def test_non_navigation_still_validates_selected_page_url() -> None:
+    page = _FakePage()
+    policy = _RecordingPolicy()
+
+    resolve_browser_surface(_FakeContext(page), page, BrowserTarget(), policy)
+
+    assert policy.checked == ["chrome-error://chromewebdata/"]
+
+
 @pytest.mark.e2e
 def test_selects_newest_popup_and_unique_iframe_surface() -> None:
     with sync_playwright() as playwright:

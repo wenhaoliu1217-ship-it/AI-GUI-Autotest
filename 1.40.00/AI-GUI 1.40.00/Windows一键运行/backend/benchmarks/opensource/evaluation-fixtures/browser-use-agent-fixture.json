@@ -1,0 +1,34 @@
+{
+  "goal": "检查客户列表是否存在",
+  "current_url": "https://example.test/customers",
+  "status": "done",
+  "steps": [
+    {
+      "step": 0,
+      "action": {
+        "type": "observe"
+      },
+      "url": "https://example.test/customers",
+      "result": {
+        "visible": true
+      },
+      "done": false
+    },
+    {
+      "step": 1,
+      "action": {
+        "type": "click",
+        "target": "客户列表"
+      },
+      "url": "https://example.test/customers",
+      "result": {
+        "rows": 3
+      },
+      "done": true
+    }
+  ],
+  "final_result": {
+    "success": true,
+    "summary": "发现 3 条记录"
+  }
+}

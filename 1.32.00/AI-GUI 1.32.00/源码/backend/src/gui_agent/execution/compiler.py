@@ -260,6 +260,54 @@ def _compile_step_core(step: Step, base_url: str, *, locator_root: str = "page")
         assert end is not None
         end_point = f"visualBox.x + visualBox.width * {end.x_ratio}, visualBox.y + visualBox.height * {end.y_ratio}"
         return box_lines + [f"await page.mouse.move({point});", "await page.mouse.down();", f"await page.mouse.move({end_point}, {{ steps: 10 }});", "await page.mouse.up();"]
+    if step.action in {
+        ActionType.VISUAL_ZOOM,
+        ActionType.VISUAL_CLEAR,
+        ActionType.VISUAL_DRAW_POLYGON,
+        ActionType.VISUAL_DRAW_RECTANGLE,
+    }:
+        assert step.canvas_region_locator is not None
+        canvas_target = _locator(step.canvas_region_locator, locator_root)
+        lines = [
+            f"const canvasRegion = {canvas_target};",
+            "await expect(canvasRegion).toHaveCount(1);",
+            "const canvasBox = await canvasRegion.boundingBox();",
+            "if (!canvasBox || canvasBox.width <= 0 || canvasBox.height <= 0) throw new Error('Canvas region is not visible');",
+        ]
+        if step.action == ActionType.VISUAL_CLEAR:
+            assert step.locator is not None
+            clear_target = _locator(step.locator, locator_root)
+            return lines + [
+                f"const canvasClearControl = {clear_target};",
+                "await expect(canvasClearControl).toHaveCount(1);",
+                "await canvasClearControl.click();",
+            ]
+        if step.action == ActionType.VISUAL_ZOOM:
+            position = step.relative_position
+            assert position is not None
+            point = f"canvasBox.x + canvasBox.width * {position.x_ratio}, canvasBox.y + canvasBox.height * {position.y_ratio}"
+            return lines + [f"await page.mouse.move({point});", f"await page.mouse.wheel(0, {step.zoom_delta});"]
+
+        points = [
+            f"canvasBox.x + canvasBox.width * {point.x_ratio}, canvasBox.y + canvasBox.height * {point.y_ratio}"
+            for point in step.visual_points
+        ]
+        if step.action == ActionType.VISUAL_DRAW_RECTANGLE:
+            return lines + [
+                f"await page.mouse.move({points[0]});",
+                "await page.mouse.down();",
+                f"await page.mouse.move({points[1]}, {{ steps: 10 }});",
+                "await page.mouse.up();",
+            ]
+        if step.gesture_finish == "double_click":
+            return lines + [
+                *[f"await page.mouse.click({point});" for point in points[:-1]],
+                f"await page.mouse.dblclick({points[-1]});",
+            ]
+        finish = [f"await page.mouse.click({point});" for point in points]
+        if step.gesture_finish == "enter":
+            finish.append("await page.keyboard.press('Enter');")
+        return lines + finish
     methods = {
         ActionType.CLICK: "click()", ActionType.CLEAR: "clear()", ActionType.CHECK: "check()",
         ActionType.UNCHECK: "uncheck()", ActionType.HOVER: "hover()",

@@ -228,6 +228,7 @@ class AgentRunRequest(BaseModel):
     enableVisualFallback: bool = False
     approvalMode: Literal["ask", "delegate", "full"] = "ask"
     modelDataAuthorization: ModelDataAuthorizationRequest
+    resumeFromRunId: str | None = Field(default=None, min_length=1, max_length=100)
 
 
 class ReplayRequest(BaseModel):
@@ -1468,6 +1469,11 @@ async def execute_run(payload: RunRequest) -> dict:
 
 @app.post("/api/agent-runs")
 def execute_agent_run(payload: AgentRunRequest) -> dict:
+    resume_checkpoint = None
+    if payload.resumeFromRunId:
+        resume_checkpoint = _load_resume_checkpoint(payload.resumeFromRunId)
+        if resume_checkpoint.get("status") in {"passed", "issues_found"}:
+            raise HTTPException(status_code=409, detail="只有未完成或异常运行才能从检查点继续")
     try:
         plan_payload = payload.plan or {
             "name": payload.scenario.name or payload.scenario.goal[:80],
@@ -1494,6 +1500,10 @@ def execute_agent_run(payload: AgentRunRequest) -> dict:
     except AIProviderError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     target_host = (urlparse(plan.base_url).hostname or "").lower()
+    if resume_checkpoint:
+        checkpoint_host = str(resume_checkpoint.get("currentHost") or "").lower()
+        if checkpoint_host and checkpoint_host != target_host:
+            raise HTTPException(status_code=422, detail="恢复检查点与当前目标网站不是同一站点")
     authorized_host = payload.modelDataAuthorization.siteHost.strip().lower()
     if not payload.modelDataAuthorization.allowDom or authorized_host != target_host:
         raise HTTPException(status_code=422, detail="必须为当前目标网站单独授权模型接收脱敏 DOM")
@@ -1528,7 +1538,10 @@ def execute_agent_run(payload: AgentRunRequest) -> dict:
     _validate_scenario_commerce(plan, saved_scenario)
     scenario = AgentScenario(
         name=saved_scenario.name if saved_scenario else payload.scenario.name,
-        goal=saved_scenario.goal if saved_scenario else payload.scenario.goal,
+        goal=(
+            str(resume_checkpoint.get("currentGoal") or payload.scenario.goal)
+            if resume_checkpoint else (saved_scenario.goal if saved_scenario else payload.scenario.goal)
+        ),
         preconditions="\n".join(saved_scenario.preconditions) if saved_scenario else payload.scenario.preconditions,
         test_data=saved_scenario.test_data if saved_scenario else payload.scenario.testData,
         expected_results=saved_scenario.expected_results if saved_scenario else payload.scenario.expectedResults,
@@ -1544,6 +1557,7 @@ def execute_agent_run(payload: AgentRunRequest) -> dict:
             environment.app_bridge.model_dump(mode="json", by_alias=True)
             if environment else {"enabled": False}
         ),
+        resume_context=resume_checkpoint,
     )
     forbidden = tuple(dict.fromkeys([
         *(project.forbidden_actions if project else []),
@@ -1558,6 +1572,18 @@ def execute_agent_run(payload: AgentRunRequest) -> dict:
     _enforce_cesium_policy(plan, planner_base_url)
     cesium_policy_enabled, cesium_owned_resources = _cesium_runner_policy(planner_base_url)
     planner = AIAgentPlanner(settings, scenario, planner_base_url, visual_enabled=payload.enableVisualFallback)
+    # Slow, visual Cesium Story flows need several bounded observations before
+    # the editor is ready, then still need search, temporary polygon drawing,
+    # area observation, and cleanup.  The normal GUI-created project limit is
+    # 20 calls, which is not enough for this bounded visual flow.  Reserve a
+    # larger task-local budget; duration, step, write-safety, and login limits
+    # remain unchanged.
+    agent_model_call_budget = limits.max_model_calls
+    if (
+        is_cesium_target(planner_base_url)
+        and any(marker in scenario.goal.lower() for marker in ("面积", "框选", "框定", "四边形", "多边形", "polygon", "area"))
+    ):
+        agent_model_call_budget = max(agent_model_call_budget, 40)
     config = RunnerConfig(
         artifacts_root=ARTIFACTS_ROOT,
         headless=payload.headless,
@@ -1568,7 +1594,7 @@ def execute_agent_run(payload: AgentRunRequest) -> dict:
         onboarding_level=project.onboarding_level if project else None,
         max_duration_seconds=limits.timeout_seconds,
         agent_planner=planner,
-        max_model_calls=limits.max_model_calls,
+        max_model_calls=agent_model_call_budget,
         max_steps=limits.max_steps,
         no_progress_limit=5,
         forbidden_actions=forbidden,
@@ -1601,6 +1627,8 @@ def execute_agent_run(payload: AgentRunRequest) -> dict:
             "authorizedBy": payload.modelDataAuthorization.authorizedBy,
             "authorizedAt": datetime.now(timezone.utc).isoformat(),
         },
+        resume_checkpoint=resume_checkpoint,
+        resume_from_run_id=payload.resumeFromRunId,
         **_universal_runner_options(project, environment, saved_scenario),
         **_commerce_runner_options(project),
     )
@@ -2236,6 +2264,27 @@ def _safe_run_dir(run_id: str) -> Path:
     if ARTIFACTS_ROOT not in run_dir.parents:
         raise HTTPException(status_code=400, detail="运行编号非法")
     return run_dir
+
+
+def _load_resume_checkpoint(run_id: str) -> dict:
+    """读取普通 Agent 的最后检查点；不接受缺少检查点的旧运行。"""
+
+    run_dir = _safe_run_dir(run_id)
+    checkpoint_path = run_dir / "checkpoint.json"
+    if not checkpoint_path.is_file():
+        raise HTTPException(status_code=409, detail="这次运行没有可验证检查点，只能从头重试")
+    try:
+        checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise HTTPException(status_code=409, detail="检查点无法读取，只能从头重试") from exc
+    if not isinstance(checkpoint, dict) or checkpoint.get("version") != 1:
+        raise HTTPException(status_code=409, detail="检查点版本不受支持，只能从头重试")
+    if not all(checkpoint.get(field) for field in ("currentUrl", "currentHost", "pageFingerprint")):
+        raise HTTPException(status_code=409, detail="这次运行没有可验证的页面检查点，只能从头重试")
+    status = str(checkpoint.get("status") or "")
+    if status in {"queued", "running", "waiting_for_clarification", "pending_confirmation"}:
+        raise HTTPException(status_code=409, detail="运行仍在执行中，请等待结束后再恢复")
+    return checkpoint
 
 
 def _run_payload(payload: dict) -> dict:

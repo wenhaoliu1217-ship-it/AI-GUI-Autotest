@@ -57,7 +57,8 @@ class ObservationCollector:
                     confidence=str(item.get("confidence", "medium")),
                     message=self.redactor.scrub(str(item.get("message", "页面异常信号"))),
                     target=self.redactor.scrub(str(item.get("target", ""))),
-                    details=item.get("details", {}) if isinstance(item.get("details"), dict) else {},
+                    details=self.redactor.scrub_mapping(item.get("details", {}))
+                    if isinstance(item.get("details"), dict) else {},
                 )
                 for item in diagnostics.get("issues", [])[:30]
                 if isinstance(item, dict)
@@ -87,11 +88,22 @@ class ObservationCollector:
                     return [tag, role && `role=${role}`, label && `label=${label}`,
                       testId && `testid=${testId}`, text && `text=${text}`].filter(Boolean).join(' | ');
                   };
-                  const all = Array.from(document.body?.querySelectorAll('*') || []);
+                  const deepElements = (root) => {
+                    const result = [];
+                    const visit = (current) => {
+                      for (const el of Array.from(current.querySelectorAll('*'))) {
+                        result.push(el);
+                        if (el.shadowRoot) visit(el.shadowRoot);
+                      }
+                    };
+                    visit(root);
+                    return result;
+                  };
+                  const all = deepElements(document.body || document);
                   const visibleElements = all.filter(visible);
-                  const interactives = Array.from(document.querySelectorAll(
-                    'a[href],button,input:not([type="hidden"]),select,textarea,[role="button"],[role="link"],[tabindex]'
-                  )).slice(0, 120);
+                  const interactiveSelector =
+                    'a[href],button,input:not([type="hidden"]),select,textarea,[role="button"],[role="link"],[tabindex]';
+                  const interactives = all.filter((el) => el.matches(interactiveSelector)).slice(0, 120);
 
                   for (const el of interactives) {
                     if (!visible(el)) continue;
@@ -116,9 +128,8 @@ class ObservationCollector:
                     }
                   }
 
-                  const textNodes = Array.from(document.querySelectorAll(
-                    'button,a,label,p,li,td,th,h1,h2,h3,h4,[role="button"],[data-testid]'
-                  )).slice(0, 180);
+                  const textSelector = 'button,a,label,p,li,td,th,h1,h2,h3,h4,[role="button"],[data-testid]';
+                  const textNodes = all.filter((el) => el.matches(textSelector)).slice(0, 180);
                   for (const el of textNodes) {
                     if (!visible(el)) continue;
                     const text = (el.innerText || el.textContent || '').replace(/\\s+/g, ' ').trim();
@@ -137,8 +148,11 @@ class ObservationCollector:
                     }
                   }
 
-                  const visibleTextLength = (document.body?.innerText || '').replace(/\\s+/g, '').length;
-                  const visualSurfaces = Array.from(document.querySelectorAll('canvas,svg,img,video')).filter((el) => {
+                  const shadowText = all.filter((el) => el.shadowRoot)
+                    .map((el) => el.shadowRoot.textContent || '').join(' ');
+                  const visibleTextLength = `${document.body?.innerText || ''} ${shadowText}`
+                    .replace(/\\s+/g, '').length;
+                  const visualSurfaces = all.filter((el) => el.matches('canvas,svg,img,video')).filter((el) => {
                     const rect = el.getBoundingClientRect();
                     return visible(el) && rect.width * rect.height >= 400;
                   });
@@ -167,18 +181,34 @@ class ObservationCollector:
         try:
             result = self.page.evaluate(
                 """() => {
-                  const selectors = 'a,button,input,select,textarea,[role],[aria-label],[data-testid],h1,h2,h3';
-                  return Array.from(document.querySelectorAll(selectors)).slice(0, 80).map((node) => {
-                    const el = node;
+                  const selectors = 'a,button,input,select,textarea,[role],[aria-label],[data-testid],h1,h2,h3,.cesium-measure-button';
+                  const entries = [];
+                  const visit = (root, hosts) => {
+                    for (const el of Array.from(root.querySelectorAll('*'))) {
+                      if (el.matches(selectors)) entries.push({el, hosts});
+                      if (el.shadowRoot) visit(el.shadowRoot, [...hosts, el.tagName.toLowerCase()]);
+                    }
+                  };
+                  visit(document, []);
+                  const measurementEntries = entries.filter(({el}) => el.matches('.cesium-measure-button'));
+                  const otherEntries = entries.filter(({el}) => !el.matches('.cesium-measure-button'));
+                  return [...measurementEntries, ...otherEntries].slice(0, 120).map(({el, hosts}) => {
                     const tag = el.tagName.toLowerCase();
                     const role = el.getAttribute('role');
                     const label = el.getAttribute('aria-label');
                     const testId = el.getAttribute('data-testid');
                     const type = el.getAttribute('type');
+                    const title = el.getAttribute('title');
                     const href = el.getAttribute('href');
                     const text = ['input', 'textarea', 'select'].includes(tag)
                       ? '' : (el.innerText || el.textContent || '').replace(/\\s+/g, ' ').trim().slice(0, 160);
                     const state = [];
+                    const style = getComputedStyle(el);
+                    const rect = el.getBoundingClientRect();
+                    if (style.display === 'none' || style.visibility === 'hidden' ||
+                        Number(style.opacity || 1) <= 0 || rect.width <= 1 || rect.height <= 1) {
+                      state.push('hidden');
+                    }
                     if (el.disabled) state.push('disabled');
                     if (el.checked) state.push('checked');
                     if (el.selected) state.push('selected');
@@ -205,8 +235,10 @@ class ObservationCollector:
                         break;
                       }
                     }
-                    return [tag, role && `role=${role}`, label && `label=${label}`,
+                    return [hosts.length && `shadow=${hosts.join(' > ')}`,
+                      tag, role && `role=${role}`, label && `label=${label}`,
                       testId && `testid=${testId}`, type && `type=${type}`,
+                      title && `title=${title}`,
                       href && `href=${href.slice(0, 240)}`, text && `text=${text}`,
                       ...state].filter(Boolean).join(' | ');
                   }).filter(Boolean);

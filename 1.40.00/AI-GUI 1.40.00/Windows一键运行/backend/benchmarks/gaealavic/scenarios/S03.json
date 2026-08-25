@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "1",
+  "id": "S03",
+  "name": "主导航五模块跳转",
+  "category": "导航",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "普通测试",
+  "prerequisites": [
+    {
+      "id": "S03-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "授权页面地图"
+    },
+    {
+      "id": "S03-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "五个主模块稳定定位"
+    }
+  ],
+  "goal": "主导航五模块跳转",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "进入建模 /#/mineModelList",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "进入想定 /#/scenarioTable",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "进入运行 /#/DoEDetails",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-4",
+      "businessAction": "进入强化学习 /#/learnTable",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-5",
+      "businessAction": "进入帮助 /#/helpPage",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "每个模块路由和主区域匹配 app-map",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": false,
+    "order": "reverse_dependency",
+    "verification": "not_applicable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "授权页面地图",
+    "五个主模块稳定定位"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

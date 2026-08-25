@@ -42,6 +42,7 @@ from ..domain.results import (
     StepResult,
 )
 from ..locating.strategies import LocatorError, resolve_locator, resolve_step_locator
+from ..onboarding.session import playwright_storage_state, session_storage_init_script
 from ..security.policy import DomainPolicy, SecurityError, guard_playwright_route, guard_playwright_websocket, resolve_env_placeholder, resolve_secret
 from ..security.redaction import Redactor
 from ..security.screenshot_privacy import screenshot_privacy_masks
@@ -133,6 +134,8 @@ class RunnerConfig:
     app_map_snapshot: dict | None = None
     test_files: tuple[dict, ...] = ()
     business_context: dict | None = None
+    resume_checkpoint: dict | None = None
+    resume_from_run_id: str | None = None
 
 
 def run_plan(plan: TestPlan, config: RunnerConfig | None = None) -> tuple[RunResult, Path]:
@@ -227,10 +230,14 @@ def run_plan(plan: TestPlan, config: RunnerConfig | None = None) -> tuple[RunRes
         context = browser.new_context(
             viewport={"width": cfg.viewport[0], "height": cfg.viewport[1]},
             device_scale_factor=cfg.device_scale_factor,
-            storage_state=cfg.storage_state,
+            locale="en-US",
+            storage_state=playwright_storage_state(cfg.storage_state),
             accept_downloads=True,
             service_workers="block",
         )
+        session_storage_script = session_storage_init_script(cfg.storage_state)
+        if session_storage_script:
+            context.add_init_script(script=session_storage_script)
         def guarded_route_handler(route) -> None:
             guard_playwright_route(
                 route,
@@ -383,6 +390,11 @@ def run_plan(plan: TestPlan, config: RunnerConfig | None = None) -> tuple[RunRes
                             component_adapters=cfg.component_adapters,
                             test_files=cfg.test_files,
                             timeout_ms=cfg.timeout_ms,
+                            native_dialog_approved=(
+                                confirmed_by_human
+                                and step.action == ActionType.CLICK
+                                and step.effect_kind in {"delete_resource", "share_story"}
+                            ),
                         ),
                         wait=lambda milliseconds: sleep(milliseconds / 1000),
                         probe=_commerce_recovery_probe(
@@ -723,10 +735,20 @@ def _execute_step(
     component_adapters: tuple[dict, ...] = (),
     test_files: tuple[dict, ...] = (),
     timeout_ms: int = 30_000,
+    native_dialog_approved: bool = False,
 ) -> dict:
     if step.action == ActionType.NAVIGATE:
         target = step.target or "/"
-        url = target if urlparse(target).scheme else urljoin(base_url + "/", target.lstrip("/"))
+        if urlparse(target).scheme:
+            url = target
+        elif target.startswith("/"):
+            # A leading slash is an origin-root route. This matters when the
+            # authorized entry URL is a deep Story URL such as
+            # /stories/<id>; resolving /stories against that path would
+            # incorrectly produce /stories/<id>/stories.
+            url = urljoin(base_url, target)
+        else:
+            url = urljoin(base_url.rstrip("/") + "/", target)
         policy.check_url(url)
         policy.clear_rejection()
         try:
@@ -783,6 +805,23 @@ def _execute_step(
         policy.check_url(page.url)
         return {}
     if step.action == ActionType.RELOAD:
+        if urlparse(page.url).scheme not in {"http", "https"}:
+            # Browser-owned error pages cannot be reloaded into the target
+            # site and must never be passed to DomainPolicy as destinations.
+            # Recover only to the immutable, already-authorized run entry URL.
+            policy.check_url(base_url)
+            policy.clear_rejection()
+            try:
+                response = page.goto(base_url, wait_until="commit")
+            except PlaywrightError as exc:
+                rejection = policy.consume_rejection()
+                if rejection:
+                    raise SecurityError(rejection) from exc
+                raise
+            policy.check_url(page.url)
+            if response is not None and response.status >= 400:
+                raise HttpExecutionError(response.status, base_url)
+            return {"browserContext": {"recoveredFromInternalErrorPage": True}}
         policy.clear_rejection()
         try:
             page.reload(wait_until="commit")
@@ -791,6 +830,24 @@ def _execute_step(
             if rejection:
                 raise SecurityError(rejection) from exc
             raise
+        if urlparse(page.url).scheme not in {"http", "https"}:
+            # Chromium can keep the requested https URL before reload, then
+            # expose chrome-error:// only after the reload commits. Recover
+            # to the immutable run entry URL instead of passing that internal
+            # browser URL to DomainPolicy.
+            policy.check_url(base_url)
+            policy.clear_rejection()
+            try:
+                response = page.goto(base_url, wait_until="commit")
+            except PlaywrightError as exc:
+                rejection = policy.consume_rejection()
+                if rejection:
+                    raise SecurityError(rejection) from exc
+                raise
+            policy.check_url(page.url)
+            if response is not None and response.status >= 400:
+                raise HttpExecutionError(response.status, base_url)
+            return {"browserContext": {"recoveredFromInternalErrorPage": True}}
         policy.check_url(page.url)
         return {}
     if step.action == ActionType.SCROLL and step.locator is None:
@@ -825,6 +882,78 @@ def _execute_step(
             raise SecurityError("复杂组件动作缺少单次运行工件目录")
         evidence = execute_component(page, step, test_files, artifacts, timeout_ms)
         return {"componentEvidence": evidence}
+
+    if step.action in {
+        ActionType.VISUAL_ZOOM,
+        ActionType.VISUAL_CLEAR,
+        ActionType.VISUAL_DRAW_POLYGON,
+        ActionType.VISUAL_DRAW_RECTANGLE,
+    }:
+        assert step.canvas_region_locator is not None
+        canvas = resolve_locator(locator_root or page, step.canvas_region_locator)
+        box = canvas.first.bounding_box()
+        if box is None or box["width"] <= 0 or box["height"] <= 0:
+            raise PlaywrightError("Canvas 授权区域不可见或尺寸无效")
+
+        def canvas_point(position) -> tuple[float, float]:
+            x = box["x"] + box["width"] * position.x_ratio
+            y = box["y"] + box["height"] * position.y_ratio
+            if not (
+                box["x"] <= x <= box["x"] + box["width"]
+                and box["y"] <= y <= box["y"] + box["height"]
+            ):
+                raise SecurityError("Canvas 手势坐标超出授权区域边界")
+            return x, y
+
+        if step.action == ActionType.VISUAL_ZOOM:
+            assert step.relative_position is not None
+            x, y = canvas_point(step.relative_position)
+            page.mouse.move(x, y)
+            page.mouse.wheel(0, step.zoom_delta)
+            return {
+                "coordinateSource": (
+                    f"canvas-region-relative:zoom:{step.relative_position.x_ratio:.4f},"
+                    f"{step.relative_position.y_ratio:.4f};delta={step.zoom_delta}"
+                )
+            }
+
+        if step.action == ActionType.VISUAL_CLEAR:
+            assert step.locator is not None
+            clear_control = resolve_locator(locator_root or page, step.locator)
+            if clear_control.count() != 1:
+                raise LocatorError("Canvas 清除控件必须唯一")
+            clear_control.click()
+            return {"coordinateSource": "canvas-control:clear"}
+
+        points = [canvas_point(position) for position in step.visual_points]
+        encoded_points = ";".join(
+            f"{position.x_ratio:.4f},{position.y_ratio:.4f}"
+            for position in step.visual_points
+        )
+        if step.action == ActionType.VISUAL_DRAW_RECTANGLE:
+            (start_x, start_y), (end_x, end_y) = points
+            page.mouse.move(start_x, start_y)
+            page.mouse.down()
+            try:
+                page.mouse.move(end_x, end_y, steps=10)
+            finally:
+                page.mouse.up()
+            return {"coordinateSource": f"canvas-region-relative:rectangle:{encoded_points}"}
+
+        if step.gesture_finish == "double_click":
+            for x, y in points[:-1]:
+                page.mouse.click(x, y)
+            page.mouse.dblclick(*points[-1])
+        else:
+            for x, y in points:
+                page.mouse.click(x, y)
+            if step.gesture_finish == "enter":
+                page.keyboard.press("Enter")
+        return {
+            "coordinateSource": (
+                f"canvas-region-relative:polygon:{encoded_points};finish={step.gesture_finish}"
+            )
+        }
 
     if step.action in {ActionType.VISUAL_CLICK, ActionType.VISUAL_HOVER, ActionType.VISUAL_SCROLL, ActionType.VISUAL_DRAG}:
         if step.locator:
@@ -895,7 +1024,9 @@ def _execute_step(
             raise SecurityError("下载文件 SHA-256 与期望不一致")
         return {"fileEvidence": {"direction": "download", "filename": filename, "sha256": digest, "bytes": destination.stat().st_size, "artifact": f"downloads/{filename}"}}
     if step.action == ActionType.CLICK:
-        target.click()
+        return _click_with_native_dialog_policy(
+            page, target, accept_native_dialog=native_dialog_approved
+        )
     elif step.action == ActionType.FILL:
         value = resolve_secret(step.value_from_secret, redactor, secret_refs) if step.value_from_secret else resolve_env_placeholder(step.value or "", environment_variables)
         target.fill(value)
@@ -920,6 +1051,25 @@ def _execute_step(
     else:
         raise ValueError(f"未实现的动作：{step.action.value}")
     return {}
+
+
+def _click_with_native_dialog_policy(page, target, *, accept_native_dialog: bool) -> dict:
+    if not accept_native_dialog:
+        target.click()
+        return {}
+    evidence = {"seen": False, "type": None}
+
+    def accept(dialog) -> None:
+        evidence["seen"] = True
+        evidence["type"] = getattr(dialog, "type", None)
+        dialog.accept()
+
+    page.on("dialog", accept)
+    try:
+        target.click()
+    finally:
+        page.remove_listener("dialog", accept)
+    return {"nativeDialog": evidence}
 
 
 def _run_business_cleanup(
@@ -983,11 +1133,26 @@ def _capture_screenshot(
                 timeout=5_000,
             )
         artifacts.event("screenshot_privacy_applied", screenshot=relative, **privacy)
-        return relative if image_path.stat().st_size > 0 else None
+        if image_path.stat().st_size > 0:
+            artifacts.last_valid_screenshot = relative
+            return relative
+        return artifacts.last_valid_screenshot
     except Exception:
         image_path.unlink(missing_ok=True)
-        artifacts.event("screenshot_capture_skipped", screenshot=relative, timeout_ms=5_000)
-        return None
+        fallback = getattr(artifacts, "last_valid_screenshot", None)
+        artifacts.event(
+            "screenshot_capture_skipped",
+            screenshot=relative,
+            timeout_ms=5_000,
+            fallback_screenshot=fallback,
+            fallback_available=bool(fallback),
+            message=(
+                "截图超时，保留最近一张有效画面；DOM、页面状态和网络证据继续采集。"
+                if fallback else
+                "截图超时，未有可复用画面；DOM、页面状态和网络证据继续采集。"
+            ),
+        )
+        return fallback
 
 
 def _commerce_preflight(

@@ -2,7 +2,8 @@ from playwright.sync_api import sync_playwright
 
 from gui_agent.execution.observation import ObservationCollector
 from gui_agent.execution.stability import prepare_action
-from gui_agent.domain.models import BrowserTarget, Locator, Step
+from gui_agent.domain.models import BrowserTarget, Locator, LocatorScope, Step
+from gui_agent.locating.strategies import resolve_step_locator
 from gui_agent.security.redaction import Redactor
 
 
@@ -42,6 +43,76 @@ def test_browser_diagnostics_detect_reviewable_layout_and_blank_page_signals() -
             "href=/assets" in item and "aria-current=false" in item
             for item in navigation.dom_summary
         )
+
+        page.set_content("""
+          <story-app></story-app>
+          <script>
+            const root = document.querySelector('story-app').attachShadow({mode: 'open'});
+            root.innerHTML = '<button aria-label="Preview story">Preview</button><canvas width="80" height="80"></canvas>';
+          </script>
+        """)
+        shadow = collector.capture(None)
+        assert any(
+            "shadow=story-app" in item and "label=Preview story" in item
+            for item in shadow.dom_summary
+        )
+        assert shadow.page_health is not None
+        assert shadow.page_health.interactive_count == 1
+        assert shadow.page_health.visual_surface_count == 1
+
+        page.set_content("""
+          <ion-app></ion-app>
+          <script>
+            const app = document.querySelector('ion-app').attachShadow({mode: 'open'});
+            app.innerHTML = '<ion-nav></ion-nav>';
+            const nav = app.querySelector('ion-nav').attachShadow({mode: 'open'});
+            nav.innerHTML = '<a id="share">Share</a>';
+            nav.querySelector('#share').addEventListener('click', () => {
+              document.body.dataset.shareOpened = 'true';
+            });
+          </script>
+        """)
+        shadow_step = Step(
+            action="click",
+            locator=Locator(
+                role="link",
+                name="Share",
+                text="Share",
+                shadow_hosts=["ion-app", "ion-nav"],
+            ),
+        )
+        shadow_target = resolve_step_locator(page, shadow_step)
+        assert shadow_target.count() == 1
+        shadow_target.click()
+        assert page.locator("body").get_attribute("data-share-opened") == "true"
+
+        page.set_content("""
+          <ion-app></ion-app>
+          <script>
+            const sharingApp = document.querySelector('ion-app').attachShadow({mode: 'open'});
+            sharingApp.innerHTML = '<ion-sharing-options></ion-sharing-options>';
+            const sharing = sharingApp.querySelector('ion-sharing-options').attachShadow({mode: 'open'});
+            sharing.innerHTML = '<h1>Sharing settings</h1><button>Okay</button>';
+          </script>
+        """)
+        scoped_shadow_step = Step(
+            action="click",
+            locator=Locator(
+                role="button",
+                name="Okay",
+                shadow_hosts=["ion-app", "ion-sharing-options"],
+                scope=LocatorScope(
+                    kind="dialog",
+                    identity="Sharing settings",
+                    locator=Locator(
+                        role="heading",
+                        name="Sharing settings",
+                        shadow_hosts=["ion-app", "ion-sharing-options"],
+                    ),
+                ),
+            ),
+        )
+        assert resolve_step_locator(page, scoped_shadow_step).count() == 1
 
         page.set_content("""
           <main id="app"></main>

@@ -28,7 +28,7 @@ def resolve_locator(page: "Page", locator: Locator) -> "PWLocator":
     Locator 模型已保证至少有一种策略，这里按序返回第一个命中的。
     """
     context = page
-    if locator.scope:
+    if locator.scope and not locator.shadow_hosts:
         context = resolve_locator(page, locator.scope.locator)
         if locator.scope.identity:
             context = context.filter(has_text=locator.scope.identity)
@@ -63,7 +63,12 @@ def resolve_step_locator(page: "Page", step: Step, *, scroll_page=None) -> "PWLo
         raise LocatorError("步骤缺少 locator")
     scope = step.commerce_scope
     if scope is None:
-        return resolve_locator(page, step.locator)
+        resolved = resolve_locator(page, step.locator)
+        if step.locator.shadow_hosts and resolved.count() == 0:
+            fallback = _resolve_shadow_fallback(page, step.locator)
+            if fallback is not None:
+                return fallback
+        return resolved
 
     for attempt in range(scope.max_scroll_attempts + 1):
         containers = resolve_locator(page, scope.container).filter(
@@ -92,6 +97,22 @@ def resolve_step_locator(page: "Page", step: Step, *, scroll_page=None) -> "PWLo
     raise LocatorError(
         f"滚动 {scope.max_scroll_attempts} 次后仍未找到唯一 {scope.kind} 目标"
     )
+
+
+def _resolve_shadow_fallback(page: "Page", locator: Locator) -> "PWLocator | None":
+    """Use observed text when a custom element has no inferred ARIA role."""
+    context = page
+    if locator.scope and not locator.shadow_hosts:
+        context = resolve_locator(page, locator.scope.locator)
+        if locator.scope.identity:
+            context = context.filter(has_text=locator.scope.identity)
+    for host_selector in locator.shadow_hosts:
+        context = context.locator(host_selector)
+    if locator.text:
+        return context.get_by_text(locator.text, exact=locator.exact)
+    if locator.label and locator.role:
+        return context.get_by_label(locator.label, exact=locator.exact)
+    return None
 
 
 def resolve_action_locator(page: "Page", locator: Locator) -> "PWLocator":

@@ -10,6 +10,7 @@ from playwright.sync_api import BrowserContext, Page, sync_playwright
 from ..security.redaction import REDACTION_MASK, Redactor
 from ..security.policy import DomainPolicy, SecurityError, guard_playwright_route
 from .models import CompatibilityReport, ProjectConfig
+from .session import playwright_storage_state, session_storage_init_script
 
 
 _DANGEROUS_NAVIGATION = (
@@ -213,6 +214,9 @@ def _inspect_page(page: Page, url: str, timeout_ms: int) -> tuple[dict, list[str
           const loggedInEvidence = logoutDetected || (accountAreaDetected && !loginEntryDetected);
           const captcha = elements.some(el => el.matches('iframe[src*="recaptcha" i],iframe[src*="hcaptcha" i],[class*="captcha" i],[id*="captcha" i]')) || /验证码|captcha|人机验证/i.test(pageText);
           const mfa = oneTimeInputs > 0 || /双重验证|两步验证|多因素|动态口令|验证器|one[- ]time code|two[- ]factor|multi[- ]factor/i.test(pageText);
+          const challengeDetected = /enable javascript and cookies to continue|checking your browser|verify you are human|security verification|access denied|challenge-error|cloudflare|验证挑战|安全验证|人机验证/i.test(
+            `${document.title || ''} ${location.href} ${pageText}`
+          );
           const unlabeledControls = controls.filter(record => {
             const el = record.el;
             if (el.matches('a[href]')) return !nameOf(el);
@@ -288,7 +292,7 @@ def _inspect_page(page: Page, url: str, timeout_ms: int) -> tuple[dict, list[str
             auth: {
               passwordInputs, visiblePasswordInputs, loginEntryDetected, loginFormDetected,
               loginDetected: loginFormDetected, loggedInEvidence, logoutDetected,
-              accountAreaDetected, captcha, mfa, oneTimeInputs
+              accountAreaDetected, captcha, mfa, oneTimeInputs, challengeDetected
             },
             iframeHosts, framework,
             asyncPatterns: {
@@ -339,7 +343,14 @@ def scan_project(
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=headless)
-        context = browser.new_context(viewport={"width": 1440, "height": 960}, storage_state=storage_state)
+        context = browser.new_context(
+            viewport={"width": 1440, "height": 960},
+            locale="en-US",
+            storage_state=playwright_storage_state(storage_state),
+        )
+        session_storage_script = session_storage_init_script(storage_state)
+        if session_storage_script:
+            context.add_init_script(script=session_storage_script)
         context.route(
             "**/*",
             lambda route: guard_playwright_route(
@@ -458,7 +469,13 @@ def scan_project(
     blocking_login = root_auth["loginFormDetected"]
     account_evidence = root_auth["loggedInEvidence"]
     public_login_entry = any(item["loginEntryDetected"] for item in auth)
-    if storage_state and account_evidence and not blocking_login:
+    challenge_blocked = any(item.get("challengeDetected") for item in auth)
+    if challenge_blocked:
+        auth_signals.append("页面处于验证/挑战页，当前登录状态无法确认")
+        blocked.append("页面受到验证或挑战拦截，必须由用户本人完成验证或登录")
+        manual.append("验证、验证码或登录步骤需要人工完成，系统不得绕过")
+        recommendations.append("请在弹出的测试浏览器中完成网站验证或登录，再重新扫描")
+    elif storage_state and account_evidence and not blocking_login:
         auth_signals.append("已确认登录成功，并识别到登录后的账号功能")
     elif blocking_login:
         auth_signals.append("检测到仍在显示的登录表单或登录拦截页面")
@@ -498,7 +515,7 @@ def scan_project(
         adaptive.append("主要导航使用无 href 的脚本按钮；只读扫描已记录入口名称但未点击，避免触发写操作")
 
     recommended_level = "L0"
-    if any(item["loginDetected"] for item in auth) or storage_state:
+    if any(item["loginDetected"] for item in auth) or storage_state or challenge_blocked:
         recommended_level = "L1"
     if total_summary["unlabeledControls"] or total_summary["shadowRoots"] or total_summary["contentEditors"]:
         recommended_level = "L2"
@@ -511,7 +528,7 @@ def scan_project(
     suggested = [f"确认看到“{visible_target}”"]
     suggested.extend(f"验证主要导航入口“{label}”可见且可访问" for label in navigation_entries[:4])
     suggested.extend(f"验证业务区域“{heading}”可见" for heading in root["headings"][:3])
-    if any(item["loginDetected"] for item in auth):
+    if any(item["loginDetected"] for item in auth) or challenge_blocked:
         suggested.insert(0, "使用授权测试账号完成登录并确认进入首个业务页面")
 
     recommendations.extend(f"评估第三方域名 {host} 是否需要加入网络忽略规则，而不是自动加入访问白名单" for host in analytics_hosts)

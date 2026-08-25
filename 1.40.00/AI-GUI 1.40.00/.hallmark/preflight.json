@@ -1,0 +1,21 @@
+{
+  "date": "2026-08-06",
+  "designSystem": "design.md",
+  "fontStack": "Microsoft YaHei UI, Microsoft YaHei, Arial, sans-serif",
+  "palette": "existing blue-gray CSS tokens",
+  "motion": "motion-cut; CSS state transitions only",
+  "spacing": "existing compact 4/8px-derived scale",
+  "framework": "React 19 + Vite 6 + TypeScript",
+  "preserve": [
+    "blue-gray palette",
+    "dark sidebar",
+    "novice-first Chinese copy",
+    "existing safety and approval hierarchy"
+  ],
+  "introduce": [
+    "persistent conversational workbench",
+    "model center",
+    "complete interaction states",
+    "responsive chat-to-browser ordering"
+  ]
+}

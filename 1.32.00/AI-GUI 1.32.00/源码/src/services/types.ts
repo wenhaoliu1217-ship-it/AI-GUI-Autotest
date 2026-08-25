@@ -11,7 +11,7 @@ export interface TestCaseDraft {
   forbiddenActions: string[];
 }
 
-export type ActionType = 'navigate' | 'click' | 'fill' | 'select' | 'wait_for' | 'screenshot' | 'clear' | 'check' | 'uncheck' | 'hover' | 'scroll' | 'back' | 'reload' | 'press' | 'visual_click' | 'visual_hover' | 'visual_scroll' | 'visual_drag' | 'bridge_click' | 'human_takeover' | 'upload_file' | 'download';
+export type ActionType = 'navigate' | 'click' | 'fill' | 'select' | 'wait_for' | 'screenshot' | 'clear' | 'check' | 'uncheck' | 'hover' | 'scroll' | 'back' | 'reload' | 'press' | 'visual_click' | 'visual_hover' | 'visual_scroll' | 'visual_drag' | 'visual_zoom' | 'visual_clear' | 'visual_draw_polygon' | 'visual_draw_rectangle' | 'bridge_click' | 'human_takeover' | 'upload_file' | 'download';
 export type AssertionType = 'page_reached' | 'visible' | 'not_visible' | 'text_contains' | 'url_contains' | 'value_equals' | 'count_equals';
 
 export interface Locator {
@@ -209,6 +209,21 @@ export interface TestRun {
   onboardingLevel?: 'L0' | 'L1' | 'L2' | 'L3';
   stabilityLevel: 'A' | 'B' | 'C' | 'D';
   completionReason: string;
+  checkpoint?: {
+    version: number;
+    runId: string;
+    status: string;
+    currentGoal: string;
+    currentUrl?: string | null;
+    currentHost?: string | null;
+    pageFingerprint?: string | null;
+    lastSafeStepIndex?: number | null;
+    safeReadOnlySteps: Array<{ index: number; action: string; target?: string; safeToSkip: boolean }>;
+    pendingWriteRevalidations: Array<{ index: number; action: string; target?: string; requiresRevalidation: boolean }>;
+    resumeVerification?: { verified: boolean; reason: string; sameUrl: boolean; sameHost: boolean; fingerprintMatch: boolean };
+    recoveryPolicy: { reobserveBeforeResume: boolean; skipOnlyVerifiedReadOnly: boolean; revalidateWritesBeforeContinue: boolean; failClosedOnPageMismatch: boolean };
+  };
+  resumeFromRunId?: string;
   systemError?: string;
   projectId?: string;
   environmentId?: string;

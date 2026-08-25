@@ -108,6 +108,8 @@ class RunOrchestrator:
             "confirmation_history": [],
             "pending_clarification": None,
             "clarification_history": [],
+            "checkpoint": None,
+            "resume_from_run_id": config.resume_from_run_id,
             "runner_isolation": {
                 "mode": {
                     "container": "docker_container",
@@ -489,8 +491,9 @@ class RunOrchestrator:
                         )
                     elif kind == "clarification_resolved":
                         if paused_at is not None:
-                            deadline += monotonic() - paused_at
                             paused_at = None
+                        if message["payload"].get("answer"):
+                            deadline = monotonic() + (config.max_duration_seconds or 600)
                         self._resolve_isolated_clarification(
                             run_id, config.artifacts_root, message["payload"]
                         )
@@ -521,7 +524,7 @@ class RunOrchestrator:
                     except Exception:
                         pass
                 if paused_at is None and now >= deadline and forced_reason is None:
-                    forced_reason = "runner_resource_limit_exceeded"
+                    forced_reason = "runner_time_limit_exceeded"
                     forced_at = now
                     try:
                         handle.send({"type": "cancel"})
@@ -544,8 +547,8 @@ class RunOrchestrator:
                     run_id, config, handle, forced_reason,
                     f"单个网页动作超过硬性时限，已结束当前场景：{(active_step or {}).get('target', '当前动作')}"
                     if forced_reason == "action_timeout_exceeded"
-                    else "容器 Runner 超出资源时限，已强制终止容器"
-                    if forced_reason == "runner_resource_limit_exceeded"
+                    else "容器 Runner 超出运行时限，已强制终止容器"
+                    if forced_reason == "runner_time_limit_exceeded"
                     else "容器 Runner 未在取消宽限期内退出，已强制终止容器",
                     True,
                     cancelled=forced_reason == "cancelled_forcibly",
@@ -678,8 +681,9 @@ class RunOrchestrator:
                         )
                     elif kind == "clarification_resolved":
                         if paused_at is not None:
-                            deadline += monotonic() - paused_at
                             paused_at = None
+                        if message["payload"].get("answer"):
+                            deadline = monotonic() + (config.max_duration_seconds or 600)
                         self._resolve_isolated_clarification(
                             run_id, config.artifacts_root, message["payload"]
                         )
@@ -709,7 +713,7 @@ class RunOrchestrator:
                     forced_at = now
                     cancel_event.set()
                 if paused_at is None and now >= deadline and forced_reason is None:
-                    forced_reason = "runner_resource_limit_exceeded"
+                    forced_reason = "runner_time_limit_exceeded"
                     forced_at = now
                     cancel_event.set()
                 with self._lock:
@@ -731,8 +735,8 @@ class RunOrchestrator:
                     run_id, config, forced_reason,
                     f"单个网页动作超过硬性时限，已结束当前场景：{(active_step or {}).get('target', '当前动作')}"
                     if forced_reason == "action_timeout_exceeded"
-                    else "隔离 Runner 超出资源时限，已强制终止进程树"
-                    if forced_reason == "runner_resource_limit_exceeded"
+                    else "隔离 Runner 超出运行时限，已强制终止进程树"
+                    if forced_reason == "runner_time_limit_exceeded"
                     else "隔离 Runner 未在取消宽限期内退出，已强制终止进程树",
                     process.pid, windows_job.assigned, True,
                     cancelled=forced_reason == "cancelled_forcibly",
@@ -1024,3 +1028,36 @@ class RunOrchestrator:
             temporary = target.with_suffix(".json.tmp")
             temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
             temporary.replace(target)
+            # A runner can fail before agent_runner reaches its normal final
+            # checkpoint write (for example, a policy validation exception in
+            # an isolated child).  Keep the last safe checkpoint resumable
+            # instead of leaving it permanently marked as running.
+            terminal_statuses = {
+                Status.PASSED.value,
+                Status.ISSUES_FOUND.value,
+                Status.INCOMPLETE.value,
+                Status.ERROR.value,
+                Status.SYSTEM_ERROR.value,
+                Status.CANCELLED.value,
+            }
+            status = str(payload.get("status") or "")
+            checkpoint_path = run_dir / "checkpoint.json"
+            if status in terminal_statuses and checkpoint_path.is_file():
+                try:
+                    checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+                    if str(checkpoint.get("status") or "") in ACTIVE_STATUSES:
+                        checkpoint["status"] = status
+                        if payload.get("completion_reason"):
+                            checkpoint["completionReason"] = payload["completion_reason"]
+                        if payload.get("ended_at"):
+                            checkpoint["endedAt"] = payload["ended_at"]
+                        checkpoint_tmp = checkpoint_path.with_suffix(".json.tmp")
+                        checkpoint_tmp.write_text(
+                            json.dumps(checkpoint, ensure_ascii=False, indent=2, default=str),
+                            encoding="utf-8",
+                        )
+                        checkpoint_tmp.replace(checkpoint_path)
+                except (OSError, json.JSONDecodeError):
+                    # The run state remains authoritative if an old or
+                    # partially written checkpoint cannot be updated.
+                    pass

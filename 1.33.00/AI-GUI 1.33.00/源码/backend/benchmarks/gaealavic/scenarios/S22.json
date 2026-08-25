@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1",
+  "id": "S22",
+  "name": "想定列表筛选搜索分页",
+  "category": "列表",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "普通测试",
+  "prerequisites": [
+    {
+      "id": "S22-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "想定列表字段"
+    },
+    {
+      "id": "S22-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "筛选分页组件映射"
+    },
+    {
+      "id": "S22-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "固定查询数据"
+    }
+  ],
+  "goal": "想定列表筛选搜索分页",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "设置想定筛选",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "搜索固定想定",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "切换分页",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "结果、分页和总数一致",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": false,
+    "order": "reverse_dependency",
+    "verification": "not_applicable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "想定列表字段",
+    "筛选分页组件映射",
+    "固定查询数据"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}

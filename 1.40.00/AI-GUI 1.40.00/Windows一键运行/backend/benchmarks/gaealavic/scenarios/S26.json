@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "1",
+  "id": "S26",
+  "name": "启动、停止仿真运行",
+  "category": "异步闭环",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "运维/开发者",
+  "prerequisites": [
+    {
+      "id": "S26-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "运行授权"
+    },
+    {
+      "id": "S26-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "准确状态机"
+    },
+    {
+      "id": "S26-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "轮询接口或 WebSocket 协议"
+    },
+    {
+      "id": "S26-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "停止与清理规则"
+    }
+  ],
+  "goal": "启动、停止仿真运行",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "启动 E2E_ 想定仿真",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "等待运行中",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "停止或等待完成",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "运行 ID 与状态时间线完整",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "停止失败有人工处置",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "confirm",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": true,
+    "order": "reverse_dependency",
+    "verification": "business_object_not_queryable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "websocket",
+    "cleanup"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "运行授权",
+    "准确状态机",
+    "轮询接口或 WebSocket 协议",
+    "停止与清理规则"
+  ],
+  "executablePlan": null,
+  "l4Stage": "run"
+}

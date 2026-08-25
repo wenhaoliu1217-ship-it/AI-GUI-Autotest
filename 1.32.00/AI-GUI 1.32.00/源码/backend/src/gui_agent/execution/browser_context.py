@@ -10,7 +10,13 @@ from ..domain.models import BrowserTarget
 
 
 def resolve_browser_surface(
-    context, current_page, target: BrowserTarget, policy, *, enforce_url_condition: bool = True
+    context,
+    current_page,
+    target: BrowserTarget,
+    policy,
+    *,
+    enforce_url_condition: bool = True,
+    validate_current_url: bool = True,
 ):
     deadline = monotonic() + target.wait_timeout_ms / 1000
     page = None
@@ -30,7 +36,7 @@ def resolve_browser_surface(
         )
         raise PlaywrightError(f"等待浏览器页面 {target.page}{suffix} 超时")
 
-    if page.url != "about:blank":
+    if validate_current_url and page.url != "about:blank":
         policy.check_url(page.url)
     page.set_default_timeout(target.wait_timeout_ms)
     page.set_default_navigation_timeout(target.wait_timeout_ms)

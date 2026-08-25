@@ -2,18 +2,18 @@
 
 前提：
 1. 完整解压交付包，不要只复制“双击启动AI测试.bat”。
-2. 企业 IT 已安装并配置 Docker Desktop；启动器会在需要时自动启动并等待 Linux Engine。
-3. Windows 与 Docker Desktop 需满足 WSL2、虚拟化及管理员安装要求。
+2. Windows 客户端可直接使用包内 Python、Playwright 和 Chromium；一键 BAT 默认不要求 Docker Desktop。
 
 使用：
 1. 双击“双击启动AI测试.bat”。
-2. 首次运行会从包内离线归档加载 ai-gui-runner:1.32.00；已经存在时直接复用。
-3. 启动器会打开一个专用于本次测试的 Microsoft Edge 窗口，并在第一个标签页显示 http://127.0.0.1:8080/。
+   如果客户 Windows 无法正确显示中文文件名，也可以双击 `Start-AI-GUI.bat`，功能完全相同。
+2. 一键 BAT 默认使用已经验收过的包内本地 Runner，不联网安装依赖，也不要求 Docker。
+3. 启动器会打开 http://127.0.0.1:8080/。process 模式使用系统默认浏览器显示 GUI；登录录制会另外打开一个干净的 Microsoft Edge 窗口。
 4. 确认顶部显示“真实执行服务已连接”。
 5. 只对已获授权的测试网站执行计划。
-6. 需要登录时，目标网站会在这个 Edge 窗口的新标签页打开；不会再另启网络环境不同的登录浏览器。
+6. 需要登录时，目标网站会在干净的 Edge 窗口中打开；不会复用可能恢复旧标签页的 GUI 浏览器会话。
 
-注意：启动窗口需要保持打开。需要结束时双击“双击关闭AI测试.bat”；GUI、共享 Edge 和后台服务会一并关闭。
+注意：启动窗口需要保持打开。需要结束时双击“双击关闭AI测试.bat”停止后台服务；系统默认浏览器窗口可手动关闭。
 Uvicorn 服务绑定到 Windows Job Object；直接关闭启动窗口时，Windows 会回收本包服务进程树并释放端口。
 若窗口异常消失但仍需确认服务状态，可双击“双击关闭AI测试.bat”。停止器只读取 server.pid，且必须同时匹配
 本包路径、runtime/python/python.exe、进程启动时间和 Uvicorn 命令行才会停止进程；不会按端口或进程名
@@ -25,15 +25,14 @@ Uvicorn 服务绑定到 Windows Job Object；直接关闭启动窗口时，Windo
 便携目录契约：
 1. runtime/python/python.exe：随包 Python 3.12 运行时及全部应用依赖。
 2. runtime/ms-playwright：与 Playwright 1.49.1 匹配的 Chromium、headless shell、FFmpeg 和 winldd。
-3. runtime/images/ai-gui-runner-1.32.00.tar：本版本独立的离线 Runner 镜像归档；也接受 .tar.gz 或 .tgz。
+3. Docker 隔离版另行提供 runtime/images/ai-gui-runner-1.32.00.tar；本一键客户包不包含 Docker 镜像。
 4. backend、dist、artifacts 和 data：应用代码、页面资源、证据及持久数据。
 
-Docker Desktop 是系统级隔离运行时，不能作为普通便携文件夹随包启动。
-若 Docker Engine 未启动，启动器会先尝试拉起 Docker Desktop；失败时平台拒绝降级到宿主进程。
+Docker 隔离版需要单独的 Docker 发布包；本包固定使用已验收的 process Runner，避免客户双击后还要安装 Docker。
 
 本版本不会生成 Mock 结果。浏览器未实际完成的步骤不会显示成功。
 每一步截图位于 artifacts/<运行编号>/screenshots/，GUI 中的“截图”按钮可直接打开。
-测试执行与回放只在隔离容器内运行；Docker 不可用时启动器直接报错，不会降级到宿主进程。
+一键客户模式使用包内本地 Runner 执行真实浏览器测试；不会生成 Mock 结果。
 
 AI 接入：
 1. 点击左侧“高级设置”，再进入“更换 AI 服务”。

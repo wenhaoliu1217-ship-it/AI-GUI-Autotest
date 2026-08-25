@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "1",
+  "id": "S12",
+  "name": "智能体复制与清理",
+  "category": "行操作",
+  "environmentRef": "GAEALAVIC_ACCEPTANCE",
+  "accountRole": "管理员",
+  "prerequisites": [
+    {
+      "id": "S12-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "复制入口"
+    },
+    {
+      "id": "S12-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "复制命名规则"
+    },
+    {
+      "id": "S12-target",
+      "status": "blocked",
+      "source": "企业目标站待提供",
+      "description": "对象查询与清理接口"
+    }
+  ],
+  "goal": "智能体复制与清理",
+  "steps": [
+    {
+      "id": "step-1",
+      "businessAction": "复制固定智能体为 E2E_ 对象",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-2",
+      "businessAction": "记录业务 ID",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "step-3",
+      "businessAction": "逆序清理",
+      "stability": "B",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "assertion-1",
+      "businessFact": "复制对象事实正确",
+      "bindingStatus": "blocked"
+    },
+    {
+      "id": "assertion-2",
+      "businessFact": "清理后不可查询",
+      "bindingStatus": "blocked"
+    }
+  ],
+  "dangerousPolicy": {
+    "objectPrefix": "E2E_",
+    "nonE2EMutation": "forbid",
+    "deleteOrRun": "conditional",
+    "authorizationSource": "企业书面授权待提供"
+  },
+  "cleanup": {
+    "required": true,
+    "order": "reverse_dependency",
+    "verification": "business_object_not_queryable",
+    "manualActionOnFailure": true
+  },
+  "evidenceRequirements": [
+    "run_metadata",
+    "plan",
+    "project_environment",
+    "app_map",
+    "actions",
+    "observations",
+    "screenshots",
+    "trace",
+    "findings",
+    "cleanup"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "复制入口",
+    "复制命名规则",
+    "对象查询与清理接口"
+  ],
+  "executablePlan": null,
+  "l4Stage": null
+}
