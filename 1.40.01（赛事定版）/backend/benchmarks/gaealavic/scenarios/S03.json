@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1",
+  "id": "S03",
+  "name": "会话过期恢复",
+  "category": "auth_navigation",
+  "environmentRef": "gaealavic-e2e",
+  "accountRole": "tester",
+  "prerequisites": [
+    {
+      "kind": "contract_dependency",
+      "id": "gaealavic_expired_session_fixture",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "authenticated_session_probe",
+      "required": true
+    }
+  ],
+  "goal": "验证过期会话被识别并进入受控重新登录",
+  "steps": [
+    {
+      "id": "S03-contract",
+      "action": "bound_workflow",
+      "description": "验证过期会话被识别并进入受控重新登录"
+    }
+  ],
+  "assertions": [
+    {
+      "type": "business_oracle",
+      "expected": "验证过期会话被识别并进入受控重新登录",
+      "terminal": true
+    }
+  ],
+  "dangerousPolicy": {
+    "writeMode": "blocked_until_bound",
+    "resourcePrefix": "E2E_",
+    "forbidden": [
+      "non_e2e_resource_write",
+      "naked_coordinate_write",
+      "plaintext_secret_capture"
+    ]
+  },
+  "cleanup": {
+    "required": true,
+    "strategy": "reverse_resource_ledger",
+    "verification": "zero_residual"
+  },
+  "evidenceRequirements": [
+    "before_screenshot",
+    "after_screenshot",
+    "business_state_timeline",
+    "cleanup_report"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "gaealavic_expired_session_fixture",
+    "authenticated_session_probe"
+  ],
+  "l4Stage": "AUTH"
+}

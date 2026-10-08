@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1",
+  "id": "S07",
+  "name": "编辑模型元数据",
+  "category": "model_instance",
+  "environmentRef": "gaealavic-e2e",
+  "accountRole": "tester",
+  "prerequisites": [
+    {
+      "kind": "contract_dependency",
+      "id": "gaealavic_model_fixture",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "model_state_probe",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "model_cleanup_driver",
+      "required": true
+    }
+  ],
+  "goal": "编辑台账模型并验证版本化状态",
+  "steps": [
+    {
+      "id": "S07-contract",
+      "action": "bound_workflow",
+      "description": "编辑台账模型并验证版本化状态"
+    }
+  ],
+  "assertions": [
+    {
+      "type": "business_oracle",
+      "expected": "编辑台账模型并验证版本化状态",
+      "terminal": true
+    }
+  ],
+  "dangerousPolicy": {
+    "writeMode": "blocked_until_bound",
+    "resourcePrefix": "E2E_",
+    "forbidden": [
+      "non_e2e_resource_write",
+      "naked_coordinate_write",
+      "plaintext_secret_capture"
+    ]
+  },
+  "cleanup": {
+    "required": true,
+    "strategy": "reverse_resource_ledger",
+    "verification": "zero_residual"
+  },
+  "evidenceRequirements": [
+    "before_screenshot",
+    "after_screenshot",
+    "business_state_timeline",
+    "cleanup_report"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "gaealavic_model_fixture",
+    "model_state_probe",
+    "model_cleanup_driver"
+  ],
+  "l4Stage": "MODEL"
+}

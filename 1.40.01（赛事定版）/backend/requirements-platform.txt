@@ -1,0 +1,3 @@
+# Optional host-platform security adapters. Windows keeps using built-in DPAPI.
+cryptography==44.0.3
+keyring==25.6.0

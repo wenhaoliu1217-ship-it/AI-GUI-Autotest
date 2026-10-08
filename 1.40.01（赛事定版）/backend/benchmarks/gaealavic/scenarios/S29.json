@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1",
+  "id": "S29",
+  "name": "浏览器刷新闭环",
+  "category": "resilience_cleanup",
+  "environmentRef": "gaealavic-e2e",
+  "accountRole": "tester",
+  "prerequisites": [
+    {
+      "kind": "contract_dependency",
+      "id": "gaealavic_refresh_contract",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "authenticated_session_probe",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "backend_state_probe",
+      "required": true
+    }
+  ],
+  "goal": "验证刷新后的会话、对象和状态时间线",
+  "steps": [
+    {
+      "id": "S29-contract",
+      "action": "bound_workflow",
+      "description": "验证刷新后的会话、对象和状态时间线"
+    }
+  ],
+  "assertions": [
+    {
+      "type": "business_oracle",
+      "expected": "验证刷新后的会话、对象和状态时间线",
+      "terminal": true
+    }
+  ],
+  "dangerousPolicy": {
+    "writeMode": "blocked_until_bound",
+    "resourcePrefix": "E2E_",
+    "forbidden": [
+      "non_e2e_resource_write",
+      "naked_coordinate_write",
+      "plaintext_secret_capture"
+    ]
+  },
+  "cleanup": {
+    "required": true,
+    "strategy": "reverse_resource_ledger",
+    "verification": "zero_residual"
+  },
+  "evidenceRequirements": [
+    "before_screenshot",
+    "after_screenshot",
+    "business_state_timeline",
+    "cleanup_report"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "gaealavic_refresh_contract",
+    "authenticated_session_probe",
+    "backend_state_probe"
+  ],
+  "l4Stage": "CLOSE"
+}

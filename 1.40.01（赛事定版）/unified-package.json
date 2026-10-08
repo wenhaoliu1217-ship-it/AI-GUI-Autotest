@@ -1,0 +1,17 @@
+﻿{
+    "schemaVersion":  1,
+    "assembledAt":  "2026-08-19T03:58:06.8888816Z",
+    "sourcePackage":  "C:\\Users\\14054\\Desktop\\1.32.01",
+    "repositoryRoot":  "C:\\Users\\zzzzl\\Desktop\\京彩OPC\\AI-GUI-Autotest\\赛事截止最终版_20260902",
+    "appVersion":  "1.32.01",
+    "apiContractVersion":  "ai-gui-http-v1",
+    "frontendBundle":  "frontend-dist",
+    "backendSource":  "backend/src",
+    "runtimeRoot":  "runtime",
+    "projectData":  ".local/data",
+    "externalRuntimeFallback":  false,
+    "canonicalInPlace":  true,
+    "updatePolicy":  "in_place_only",
+    "baselineRunId":  "20260819-182235-4bfa522b",
+    "baselineDescription":  "Wednesday final L2 test package; all later fixes are applied in place"
+}

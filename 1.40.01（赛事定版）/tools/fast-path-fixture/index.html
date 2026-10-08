@@ -1,0 +1,11 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>表单快速通道验收夹具</title>
+<style>body{font:18px system-ui;max-width:680px;margin:48px auto;background:#f4f6f8;color:#152230}form{background:white;padding:28px}label{display:block;margin:20px 0}input{display:block;width:90%;padding:10px}button{padding:12px}output{display:block;margin:24px}</style>
+<h1>独立测试表单</h1><p>此本地测试表单不自动保存，填写只影响当前页面。全部填好后可提交检查，不访问公司数据。</p>
+<form aria-label="测试资料" id="sample">
+<label>测试名称<input id="name" name="name" required></label>
+<label>英文名称<input id="english" name="english" required></label>
+<label>城市<input id="city" name="city" required></label>
+<label>备注<input id="note" name="note" required></label>
+<button type="submit">提交检查</button></form><output id="result" aria-live="polite"></output>
+<script>document.querySelector('form').addEventListener('submit',e=>{e.preventDefault();document.querySelector('output').textContent='检查通过：'+[...new FormData(e.target).values()].join('；')})</script>
+</html>

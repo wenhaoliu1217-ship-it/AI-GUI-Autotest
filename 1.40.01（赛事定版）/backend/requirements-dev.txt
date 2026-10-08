@@ -1,0 +1,5 @@
+# Development and verification tools. These are intentionally separate from
+# requirements-runtime.txt so the shipped service stays small and deterministic.
+-r requirements-runtime.txt
+pytest==7.4.4
+pytest-asyncio==0.24.0

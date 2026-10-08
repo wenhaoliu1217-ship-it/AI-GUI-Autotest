@@ -1,0 +1,42 @@
+# Local execution state and generated evidence
+/.local/
+/artifacts/
+/data/
+server.pid
+server-stdout.log
+server-stderr.log
+
+# Python tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.egg-info/
+node_modules/
+frontend/.npm-cache/
+frontend/dist/
+frontend-recovered/*/dist/
+frontend-recovered/*/coverage/
+frontend-recovered/*/tsconfig.tsbuildinfo
+frontend-recovered/*/.npm-cache/
+frontend-recovered/*/vitest-results.json
+
+# Packaged runtime binaries are supplied separately to releases.
+/runtime/
+/releases/*/
+
+# Test and review output can be created at any directory depth.
+**/.pytest-*/
+**/.video-review/
+**/.local/
+
+# Never commit local credentials; keep checked-in examples visible.
+.env
+.env.*
+!.env.example
+!frontend/.env.example
+
+# Editor and OS metadata
+.vscode/settings.json
+.DS_Store
+Thumbs.db

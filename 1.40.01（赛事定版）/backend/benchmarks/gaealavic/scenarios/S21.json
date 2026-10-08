@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1",
+  "id": "S21",
+  "name": "运行错误归因",
+  "category": "run_training",
+  "environmentRef": "gaealavic-e2e",
+  "accountRole": "tester",
+  "prerequisites": [
+    {
+      "kind": "contract_dependency",
+      "id": "gaealavic_run_failure_fixture",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "run_state_probe",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "run_cleanup_driver",
+      "required": true
+    }
+  ],
+  "goal": "验证错误状态、网络和控制台证据一致",
+  "steps": [
+    {
+      "id": "S21-contract",
+      "action": "bound_workflow",
+      "description": "验证错误状态、网络和控制台证据一致"
+    }
+  ],
+  "assertions": [
+    {
+      "type": "business_oracle",
+      "expected": "验证错误状态、网络和控制台证据一致",
+      "terminal": true
+    }
+  ],
+  "dangerousPolicy": {
+    "writeMode": "blocked_until_bound",
+    "resourcePrefix": "E2E_",
+    "forbidden": [
+      "non_e2e_resource_write",
+      "naked_coordinate_write",
+      "plaintext_secret_capture"
+    ]
+  },
+  "cleanup": {
+    "required": true,
+    "strategy": "reverse_resource_ledger",
+    "verification": "zero_residual"
+  },
+  "evidenceRequirements": [
+    "before_screenshot",
+    "after_screenshot",
+    "business_state_timeline",
+    "cleanup_report"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "gaealavic_run_failure_fixture",
+    "run_state_probe",
+    "run_cleanup_driver"
+  ],
+  "l4Stage": "RUN_TRAINING"
+}

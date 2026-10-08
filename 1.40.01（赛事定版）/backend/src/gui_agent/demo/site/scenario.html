@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scenario workflow fixture</title>
+  <style>
+    body { margin: 0; font: 14px Arial, sans-serif; color: #1f2937; background: #f5f7fa; }
+    header { padding: 14px 20px; background: #fff; border-bottom: 1px solid #d7dde5; }
+    main { padding: 20px; }
+    button, input { min-height: 34px; margin: 4px; }
+    .panel { max-width: 760px; padding: 18px; background: #fff; border: 1px solid #d7dde5; }
+    .hidden { display: none; }
+    .field { display: grid; grid-template-columns: 150px 1fr; align-items: center; margin: 10px 0; }
+    #scene { width: 640px; height: 300px; background: #dbeafe; border: 1px solid #64748b; }
+    #portal { position: fixed; z-index: 10; left: 190px; top: 150px; width: 300px; background: #fff; border: 1px solid #64748b; }
+    [role="option"] { padding: 10px; cursor: pointer; }
+    [role="option"]:hover { background: #e2e8f0; }
+  </style>
+</head>
+<body>
+  <header><strong>Scenario</strong></header>
+  <main>
+    <section id="list" class="panel">
+      <h1>Scenario list</h1>
+      <button id="new-scenario">Create scenario</button>
+      <ul id="resources"></ul>
+    </section>
+    <section id="form" class="panel hidden" role="dialog" aria-label="Create scenario">
+      <h1>Create scenario</h1>
+      <div class="field"><label for="name">Scenario name</label><input id="name" required></div>
+      <div class="field">
+        <label for="model">Select model</label>
+        <button id="model" role="combobox" aria-expanded="false">Choose model</button>
+      </div>
+      <p id="selected-model"></p>
+      <button id="to-instance" disabled>Configure instance</button>
+    </section>
+    <section id="instance" class="panel hidden">
+      <h1>Instance configuration</h1>
+      <div class="field"><label for="instance-name">Instance name</label><input id="instance-name" required></div>
+      <button id="to-scene" disabled>Open 3D editor</button>
+    </section>
+    <section id="editor" class="panel hidden">
+      <h1>Scenario 3D editor</h1>
+      <canvas id="scene" width="640" height="300"></canvas>
+      <p id="path-state">Waypoint count: 0</p>
+      <button id="waypoint">Add waypoint</button>
+      <button id="review" disabled>Review and create</button>
+    </section>
+    <section id="confirm" class="panel hidden" role="dialog" aria-label="Confirm scenario">
+      <h1>Confirm scenario</h1>
+      <button id="create">Create scenario</button>
+    </section>
+  </main>
+  <div id="portal" role="listbox" class="hidden" aria-label="Model options">
+    <div role="option">Existing model Alpha</div>
+    <div role="option">Existing model Beta</div>
+  </div>
+  <script>
+    const show = id => {
+      for (const section of document.querySelectorAll('main > section')) section.classList.add('hidden');
+      document.getElementById(id).classList.remove('hidden');
+    };
+    const route = value => { location.hash = value; };
+    const newScenario = document.getElementById('new-scenario');
+    const modelTrigger = document.getElementById('model');
+    const modelPortal = document.getElementById('portal');
+    const scenarioName = document.getElementById('name');
+    const toInstance = document.getElementById('to-instance');
+    const instanceName = document.getElementById('instance-name');
+    const toScene = document.getElementById('to-scene');
+    const canvas = document.getElementById('scene');
+    const pathState = document.getElementById('path-state');
+    const waypointButton = document.getElementById('waypoint');
+    const reviewButton = document.getElementById('review');
+    const createButton = document.getElementById('create');
+    const resourcesList = document.getElementById('resources');
+    const selectedModel = document.getElementById('selected-model');
+    newScenario.onclick = () => { show('form'); route('/scenarioCreate'); };
+    modelTrigger.onclick = () => {
+      modelPortal.classList.remove('hidden');
+      modelTrigger.setAttribute('aria-expanded', 'true');
+    };
+    modelPortal.onclick = event => {
+      if (event.target.getAttribute('role') !== 'option') return;
+      selectedModel.textContent = `Selected model: ${event.target.textContent}`;
+      modelPortal.classList.add('hidden');
+      modelTrigger.setAttribute('aria-expanded', 'false');
+      modelTrigger.textContent = event.target.textContent;
+      toInstance.disabled = !scenarioName.value.trim();
+    };
+    scenarioName.oninput = () => {
+      toInstance.disabled = !scenarioName.value.trim() || !selectedModel.textContent;
+    };
+    toInstance.onclick = () => { show('instance'); route('/scenarioInstance'); };
+    instanceName.oninput = () => { toScene.disabled = !instanceName.value.trim(); };
+    toScene.onclick = () => { show('editor'); route('/scenarioEdit'); drawScene(); };
+    let waypointCount = 0;
+    const drawScene = () => {
+      const context = canvas.getContext('2d');
+      context.fillStyle = '#dbeafe'; context.fillRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = '#2563eb'; context.fillRect(40, 120, 28, 28);
+      context.strokeStyle = '#dc2626'; context.lineWidth = 4;
+      context.beginPath();
+      for (let index = 0; index < waypointCount; index += 1) {
+        const x = 100 + index * 90, y = 130 + (index % 2) * 50;
+        if (index === 0) context.moveTo(x, y); else context.lineTo(x, y);
+      }
+      context.stroke();
+    };
+    waypointButton.onclick = () => {
+      waypointCount += 1;
+      pathState.textContent = `Waypoint count: ${waypointCount}`;
+      reviewButton.disabled = waypointCount < 2;
+      drawScene();
+    };
+    reviewButton.onclick = () => { show('confirm'); route('/scenarioConfirm'); };
+    createButton.onclick = () => {
+      const item = document.createElement('li');
+      item.textContent = scenarioName.value;
+      resourcesList.appendChild(item);
+      show('list'); route('/mineScenarioList');
+    };
+    drawScene();
+  </script>
+</body>
+</html>

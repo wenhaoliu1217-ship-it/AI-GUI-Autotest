@@ -1,0 +1,70 @@
+name: Platform acceptance
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  acceptance:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows process mode
+            os: windows-2022
+            require_docker: false
+          - name: Ubuntu Docker Runner
+            os: ubuntu-22.04
+            require_docker: true
+          - name: macOS process mode
+            os: macos-13
+            require_docker: false
+    env:
+      GUI_BROWSER: chromium
+      PYTHONUNBUFFERED: "1"
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install backend dependencies
+        run: python -m pip install -r backend/requirements-dev.txt -r backend/requirements-platform.txt
+
+      - name: Install Playwright Chromium
+        run: python -m playwright install chromium
+
+      - name: Run platform preflight
+        run: python tools/platform_preflight.py --pretty
+
+      - name: Require Docker Runner prerequisites
+        if: matrix.require_docker
+        run: python tools/platform_preflight.py --require-docker --pretty
+
+      - name: Run backend acceptance tests
+        run: python -m pytest -q --basetemp .pytest-ci
+
+      - name: Install frontend dependencies
+        run: npm ci --prefix frontend
+
+      - name: Run frontend typecheck
+        run: npm run lint --prefix frontend
+
+      - name: Run frontend tests
+        run: npm test --prefix frontend -- --run

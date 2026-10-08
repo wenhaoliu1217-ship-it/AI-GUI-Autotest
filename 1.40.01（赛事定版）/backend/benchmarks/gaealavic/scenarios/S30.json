@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1",
+  "id": "S30",
+  "name": "全量逆序清理",
+  "category": "resilience_cleanup",
+  "environmentRef": "gaealavic-e2e",
+  "accountRole": "tester",
+  "prerequisites": [
+    {
+      "kind": "contract_dependency",
+      "id": "resource_ledger",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "all_cleanup_drivers",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "zero_residual_query",
+      "required": true
+    }
+  ],
+  "goal": "按 run/training、scenario、instance、model 逆序清理并证明零残留",
+  "steps": [
+    {
+      "id": "S30-contract",
+      "action": "bound_workflow",
+      "description": "按 run/training、scenario、instance、model 逆序清理并证明零残留"
+    }
+  ],
+  "assertions": [
+    {
+      "type": "business_oracle",
+      "expected": "按 run/training、scenario、instance、model 逆序清理并证明零残留",
+      "terminal": true
+    }
+  ],
+  "dangerousPolicy": {
+    "writeMode": "blocked_until_bound",
+    "resourcePrefix": "E2E_",
+    "forbidden": [
+      "non_e2e_resource_write",
+      "naked_coordinate_write",
+      "plaintext_secret_capture"
+    ]
+  },
+  "cleanup": {
+    "required": true,
+    "strategy": "reverse_resource_ledger",
+    "verification": "zero_residual"
+  },
+  "evidenceRequirements": [
+    "before_screenshot",
+    "after_screenshot",
+    "business_state_timeline",
+    "cleanup_report"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "resource_ledger",
+    "all_cleanup_drivers",
+    "zero_residual_query"
+  ],
+  "l4Stage": "CLOSE"
+}

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1",
+  "id": "S15",
+  "name": "Modal 保存与取消",
+  "category": "scenario_orchestration",
+  "environmentRef": "gaealavic-e2e",
+  "accountRole": "tester",
+  "prerequisites": [
+    {
+      "kind": "contract_dependency",
+      "id": "ant_modal_adapter",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "scenario_state_probe",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "scenario_cleanup_driver",
+      "required": true
+    }
+  ],
+  "goal": "验证 Modal 操作面、保存和取消状态",
+  "steps": [
+    {
+      "id": "S15-contract",
+      "action": "bound_workflow",
+      "description": "验证 Modal 操作面、保存和取消状态"
+    }
+  ],
+  "assertions": [
+    {
+      "type": "business_oracle",
+      "expected": "验证 Modal 操作面、保存和取消状态",
+      "terminal": true
+    }
+  ],
+  "dangerousPolicy": {
+    "writeMode": "blocked_until_bound",
+    "resourcePrefix": "E2E_",
+    "forbidden": [
+      "non_e2e_resource_write",
+      "naked_coordinate_write",
+      "plaintext_secret_capture"
+    ]
+  },
+  "cleanup": {
+    "required": true,
+    "strategy": "reverse_resource_ledger",
+    "verification": "zero_residual"
+  },
+  "evidenceRequirements": [
+    "before_screenshot",
+    "after_screenshot",
+    "business_state_timeline",
+    "cleanup_report"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "ant_modal_adapter",
+    "scenario_state_probe",
+    "scenario_cleanup_driver"
+  ],
+  "l4Stage": "SCENARIO"
+}
