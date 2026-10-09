@@ -406,6 +406,16 @@ if (-not $runnerReady) {
     throw 'The offline Runner image archive could not be loaded.'
   }
   if (-not (Test-DockerImageExists -DockerPath $docker -Image $runnerImage)) {
+    # Docker archives may preserve the source tag (this archive is tagged 1.32.00).
+    # Retag the loaded image so the delivery contract remains 1.40.01.
+    $loadedSourceTag = @('ai-gui-runner:1.32.00','ai-gui-runner:latest') |
+      Where-Object { Test-DockerImageExists -DockerPath $docker -Image $_ } |
+      Select-Object -First 1
+    if ($loadedSourceTag) {
+      & $docker tag $loadedSourceTag $runnerImage
+    }
+  }
+  if (-not (Test-DockerImageExists -DockerPath $docker -Image $runnerImage)) {
     throw "The offline archive did not provide the required image tag: $runnerImage"
   }
 }
