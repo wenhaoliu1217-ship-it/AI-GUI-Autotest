@@ -1,0 +1,45 @@
+﻿{
+    "schemaVersion":  1,
+    "productVersion":  "1.32.01",
+    "runnerImageVersion":  "1.32.00",
+    "pythonVersion":  "3.12.10",
+    "playwrightVersion":  "1.49.1",
+    "runnerImageId":  "sha256:9a8424dde66fc038a046778e65001e457955fe0a4fbb7d0f3c327ec857692293",
+    "files":  [
+                  {
+                      "path":  "python\\python.exe",
+                      "bytes":  104952,
+                      "sha256":  "4D6F5F81A4BCA11191C4C7C6B43632694D0A4CE74E068619D8FDC161D469859A"
+                  },
+                  {
+                      "path":  "python\\python312.dll",
+                      "bytes":  6945272,
+                      "sha256":  "9A0E3435AAA680D868150F87AB3E388AD2EEBC22F87E036155C7B4EDA8CD2120"
+                  },
+                  {
+                      "path":  "python\\Lib\\site-packages\\playwright\\driver\\package\\browsers.json",
+                      "bytes":  1476,
+                      "sha256":  "A3235AD1FE23380C3D01256A7A9CF3A8954233CB32EBCA87556890D8AA015406"
+                  },
+                  {
+                      "path":  "ms-playwright\\chromium-1148\\chrome-win\\chrome.exe",
+                      "bytes":  2803200,
+                      "sha256":  "08EC76203EEAA4A251614D86909CFD42A69D162137E8E4BD1627A60BF5E4B73D"
+                  },
+                  {
+                      "path":  "ms-playwright\\chromium_headless_shell-1148\\chrome-win\\headless_shell.exe",
+                      "bytes":  169584128,
+                      "sha256":  "6F8C0241C9E95F4F9ACF132E705BE448AD527F5EC0D00BC22117203C4A1E026F"
+                  },
+                  {
+                      "path":  "ms-playwright\\ffmpeg-1010\\ffmpeg-win64.exe",
+                      "bytes":  3490816,
+                      "sha256":  "EEE4D2AD8EF6ED7555E3C49F2D288BF7133C96227295A5C00B266F6E706BC2C3"
+                  },
+                  {
+                      "path":  "images\\ai-gui-runner-1.32.00.tar",
+                      "bytes":  794813952,
+                      "sha256":  "74149CC0035846818FDBFF130FCC7471625A73E289547396186BADA06DA4BB0E"
+                  }
+              ]
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "bundleVersion": "1.40.01",
+  "apiContractVersion": "ai-gui-http-v1",
+  "certifiedBackendVersion": "1.40.01",
+  "entry": "index.html",
+  "assets": {
+    "assets/index-DTq5V95R.js": {
+      "bytes": 325091,
+      "sha256": "26af7b7f4fe916ab6563a222cefd97d7b10863d9fa3d62e2ef29dc3c019ab0b0"
+    },
+    "assets/index-m5WJMa69.css": {
+      "bytes": 39173,
+      "sha256": "46c05e68b7399234e11193fef0ffaf1544f43eacdb4e87e9bd2ea645c97e6710"
+    }
+  },
+  "policy": {
+    "entryHtmlNoCache": true,
+    "hashedAssetsImmutable": true,
+    "unknownAssetsRejected": false
+  }
+}

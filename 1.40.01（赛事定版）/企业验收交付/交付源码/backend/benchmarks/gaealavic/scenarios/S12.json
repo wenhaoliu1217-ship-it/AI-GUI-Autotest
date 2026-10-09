@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1",
+  "id": "S12",
+  "name": "场景资源绑定",
+  "category": "scenario_orchestration",
+  "environmentRef": "gaealavic-e2e",
+  "accountRole": "tester",
+  "prerequisites": [
+    {
+      "kind": "contract_dependency",
+      "id": "gaealavic_scenario_fixture",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "ant_component_adapters",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "scenario_cleanup_driver",
+      "required": true
+    }
+  ],
+  "goal": "绑定台账资源并验证依赖 ID 一致",
+  "steps": [
+    {
+      "id": "S12-contract",
+      "action": "bound_workflow",
+      "description": "绑定台账资源并验证依赖 ID 一致"
+    }
+  ],
+  "assertions": [
+    {
+      "type": "business_oracle",
+      "expected": "绑定台账资源并验证依赖 ID 一致",
+      "terminal": true
+    }
+  ],
+  "dangerousPolicy": {
+    "writeMode": "blocked_until_bound",
+    "resourcePrefix": "E2E_",
+    "forbidden": [
+      "non_e2e_resource_write",
+      "naked_coordinate_write",
+      "plaintext_secret_capture"
+    ]
+  },
+  "cleanup": {
+    "required": true,
+    "strategy": "reverse_resource_ledger",
+    "verification": "zero_residual"
+  },
+  "evidenceRequirements": [
+    "before_screenshot",
+    "after_screenshot",
+    "business_state_timeline",
+    "cleanup_report"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "gaealavic_scenario_fixture",
+    "ant_component_adapters",
+    "scenario_cleanup_driver"
+  ],
+  "l4Stage": "SCENARIO"
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1",
+  "id": "gaealavic-l4-e2e",
+  "siteProfile": "gaealavic",
+  "resourcePrefix": "E2E_",
+  "cleanupOrder": ["trainingConfig", "run", "scenario", "instance", "model"],
+  "stages": [
+    {
+      "id": "MODEL",
+      "dependsOn": [],
+      "requiredOutputs": ["modelId", "modelStatus"],
+      "terminalAssertions": [{"field": "modelStatus", "equals": "ready"}],
+      "cleanupPlan": {"resourceType": "model", "action": "delete", "verify": "not_found"}
+    },
+    {
+      "id": "INSTANCE",
+      "dependsOn": ["MODEL"],
+      "requiredOutputs": ["instanceId", "instanceStatus"],
+      "terminalAssertions": [{"field": "instanceStatus", "equals": "ready"}],
+      "cleanupPlan": {"resourceType": "instance", "action": "delete", "verify": "not_found"}
+    },
+    {
+      "id": "SCENARIO",
+      "dependsOn": ["INSTANCE"],
+      "requiredOutputs": ["scenarioId", "scenarioStatus"],
+      "terminalAssertions": [{"field": "scenarioStatus", "equals": "ready"}],
+      "cleanupPlan": {"resourceType": "scenario", "action": "delete", "verify": "not_found"}
+    },
+    {
+      "id": "RUN_TRAINING",
+      "dependsOn": ["SCENARIO"],
+      "requiredOutputs": ["runId", "trainingConfigId", "terminalState"],
+      "terminalAssertions": [{"field": "terminalState", "in": ["completed", "stopped"]}],
+      "cleanupPlan": {"resourceTypes": ["trainingConfig", "run"], "actions": ["stop", "delete"], "verify": "not_found"}
+    },
+    {
+      "id": "CLOSE",
+      "dependsOn": ["MODEL", "INSTANCE", "SCENARIO", "RUN_TRAINING"],
+      "requiredOutputs": ["zeroResidual"],
+      "terminalAssertions": [{"field": "zeroResidual", "equals": true}],
+      "cleanupPlan": {"action": "verify_all_absent", "verify": "zero_residual"}
+    }
+  ]
+}

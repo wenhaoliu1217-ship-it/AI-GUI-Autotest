@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1",
+  "id": "S26",
+  "name": "图层与加载状态",
+  "category": "canvas_webgl",
+  "environmentRef": "gaealavic-e2e",
+  "accountRole": "tester",
+  "prerequisites": [
+    {
+      "kind": "contract_dependency",
+      "id": "gaealavic_app_bridge_installed",
+      "required": true
+    },
+    {
+      "kind": "contract_dependency",
+      "id": "canvas_layer_fixture",
+      "required": true
+    }
+  ],
+  "goal": "通过 AppBridge 验证 layers 和 tilesLoaded",
+  "steps": [
+    {
+      "id": "S26-contract",
+      "action": "bound_workflow",
+      "description": "通过 AppBridge 验证 layers 和 tilesLoaded"
+    }
+  ],
+  "assertions": [
+    {
+      "type": "business_oracle",
+      "expected": "通过 AppBridge 验证 layers 和 tilesLoaded",
+      "terminal": true
+    }
+  ],
+  "dangerousPolicy": {
+    "writeMode": "blocked_until_bound",
+    "resourcePrefix": "E2E_",
+    "forbidden": [
+      "non_e2e_resource_write",
+      "naked_coordinate_write",
+      "plaintext_secret_capture"
+    ]
+  },
+  "cleanup": {
+    "required": true,
+    "strategy": "reverse_resource_ledger",
+    "verification": "zero_residual"
+  },
+  "evidenceRequirements": [
+    "before_screenshot",
+    "after_screenshot",
+    "business_state_timeline",
+    "cleanup_report"
+  ],
+  "bindingStatus": "blocked",
+  "blockedDependencies": [
+    "gaealavic_app_bridge_installed",
+    "canvas_layer_fixture"
+  ],
+  "l4Stage": "SCENARIO"
+}

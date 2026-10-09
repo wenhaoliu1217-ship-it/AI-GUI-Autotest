@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "appVersion": "1.40.01",
+  "sourceVersion": "1.32.01",
+  "archiveVersion": "1.40.01",
+  "apiContractVersion": "ai-gui-http-v1",
+  "backendSource": "backend/src",
+  "frontendBundle": "dist",
+  "runtimeRoot": "runtime",
+  "projectData": "data",
+  "externalRuntimeFallback": false,
+  "portableDelivery": true,
+  "startEntry": "双击启动AI测试.bat"
+}

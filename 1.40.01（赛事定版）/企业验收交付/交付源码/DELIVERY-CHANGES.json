@@ -1,0 +1,73 @@
+{
+  "sourceCommit": "2af73c7b37b0e956ef063914215741231b0778fa",
+  "originalSourceUntouched": true,
+  "changes": [
+    {
+      "path": "双击启动AI测试.bat",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "backend/src/gui_agent/api/test_server.py",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "backend/src/gui_agent/execution/container_runtime.py",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "backend/src/gui_agent/execution/test_completion_gate.py",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "backend/src/gui_agent/version.py",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "frontend/package.json",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "frontend/scripts/publish-bundle.mjs",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "frontend/src/App.test.tsx",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "frontend/src/App.tsx",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "README.md",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "start.ps1",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "stop.ps1",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "unified-package.json",
+      "change": "delivery adaptation"
+    },
+    {
+      "path": "VERSION",
+      "change": "delivery adaptation"
+    }
+  ],
+  "adaptations": [
+    "version metadata 1.40.01",
+    "portable launcher and frontend bundle",
+    "unique offline image tag; original image ID unchanged",
+    "directory-owned container cleanup label",
+    "verification fixtures updated to existing product behavior; negative evidence case added"
+  ]
+}

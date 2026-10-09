@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>云衡 CRM · 演示环境</title>
+  <style>
+    :root{--nav:#202a2e;--nav-2:#2d383d;--paper:#fff;--bg:#f3f5f6;--ink:#20252a;--muted:#69737c;--line:#dce1e4;--accent:#d94d3f;--green:#237a57}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 "Segoe UI","Microsoft YaHei",sans-serif;letter-spacing:0}
+    button,input,select{font:inherit;letter-spacing:0}button{cursor:pointer}.shell{min-height:100vh;display:grid;grid-template-columns:224px 1fr;grid-template-rows:58px 1fr}
+    .topbar{grid-column:1/3;background:var(--nav);color:#fff;display:flex;align-items:center;padding:0 22px;justify-content:space-between}.brand{font-size:17px;font-weight:700}.env{font-size:12px;color:#bdc8cc;border:1px solid #536066;padding:4px 8px;border-radius:4px}
+    aside{background:var(--nav-2);color:#d7dee1;padding:16px 10px}.nav-label{font-size:11px;color:#91a0a6;padding:8px 12px}.nav-item{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:4px;color:#d7dee1}.nav-item.active{background:#3b484d;color:#fff}.nav-icon{width:18px;text-align:center;color:#aab6ba}
+    main{padding:26px;min-width:0}.page-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px}.page-head h1{font-size:23px;margin:0 0 4px}.page-head p{margin:0;color:var(--muted)}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--paper);border:1px solid var(--line);margin-bottom:18px}.stat{padding:16px 18px;border-right:1px solid var(--line)}.stat:last-child{border:0}.stat small{display:block;color:var(--muted);margin-bottom:3px}.stat strong{font-size:22px}.stat strong.green{color:var(--green)}
+    .toolbar{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;grid-template-columns:minmax(180px,1.6fr) minmax(150px,1fr) auto;gap:12px;align-items:end;margin-bottom:16px}
+    label{display:block;color:#41494f;font-size:12px;font-weight:600;margin-bottom:6px}input,select{width:100%;height:38px;border:1px solid #c9d0d4;border-radius:4px;background:#fff;padding:0 10px;color:var(--ink)}input:focus,select:focus{outline:2px solid #f1b4ae;border-color:var(--accent)}
+    .primary{height:38px;border:0;border-radius:4px;background:var(--accent);color:#fff;padding:0 18px;font-weight:700}.primary:hover{background:#c94135}.secondary{height:36px;border:1px solid #c8d0d4;border-radius:4px;background:#fff;padding:0 14px;color:#374047}
+    .panel{background:var(--paper);border:1px solid var(--line);border-radius:6px;overflow:hidden}.panel-head{padding:15px 17px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.panel-head h2{font-size:15px;margin:0}
+    table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:13px 17px;border-bottom:1px solid var(--line)}th{font-size:12px;color:var(--muted);font-weight:600;background:#fafbfb}.tag{font-size:12px;background:#e6f3ed;color:var(--green);padding:3px 7px;border-radius:4px}.owner{display:flex;align-items:center;gap:8px}.avatar{width:26px;height:26px;border-radius:50%;background:#dfe8eb;display:grid;place-items:center;font-size:11px;color:#46555b}
+    .login-layer{position:fixed;inset:0;background:#eef1f2;display:grid;place-items:center;padding:20px;z-index:5}.login{width:min(390px,100%);background:#fff;border:1px solid var(--line);border-radius:6px;padding:28px;box-shadow:0 14px 36px rgba(28,38,42,.12)}.login-mark{width:38px;height:38px;background:var(--nav);color:#fff;border-radius:6px;display:grid;place-items:center;font-weight:800;margin-bottom:20px}.login h1{font-size:22px;margin:0 0 5px}.login p{color:var(--muted);margin:0 0 22px}.field{margin-bottom:15px}.login .primary{width:100%;margin-top:4px}.error{min-height:21px;margin:10px 0 0;color:#b72e2e;font-size:12px}.hidden{display:none!important}.toast{position:fixed;right:24px;bottom:24px;background:var(--nav);color:#fff;padding:11px 15px;border-radius:5px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+    @media(max-width:760px){.shell{grid-template-columns:1fr;grid-template-rows:58px auto 1fr}.topbar{grid-column:1}.env{display:none}aside{display:flex;overflow:auto;padding:7px}.nav-label{display:none}.nav-item{white-space:nowrap}main{padding:16px}.page-head{align-items:flex-start}.stats{grid-template-columns:1fr}.stat{border-right:0;border-bottom:1px solid var(--line)}.toolbar{grid-template-columns:1fr}table{min-width:680px}.panel{overflow:auto}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar"><div class="brand">云衡 CRM</div><div class="env">DEMO · 脱敏环境</div></header>
+    <aside aria-label="主导航"><div class="nav-label">工作台</div><div class="nav-item"><span class="nav-icon">⌂</span>概览</div><div class="nav-item active"><span class="nav-icon">▦</span>客户管理</div><div class="nav-item"><span class="nav-icon">◎</span>员工与权限</div><div class="nav-item"><span class="nav-icon">≡</span>操作记录</div></aside>
+    <main>
+      <div class="page-head"><div><h1>客户管理</h1><p>维护客户归属和服务状态</p></div><button class="secondary" type="button" id="reset">重置演示数据</button></div>
+      <div class="stats"><div class="stat"><small>客户总数</small><strong id="customerCount">2</strong></div><div class="stat"><small>服务中</small><strong class="green" id="activeCount">2</strong></div><div class="stat"><small>本月新增</small><strong id="monthCount">2</strong></div></div>
+      <form class="toolbar" id="customerForm">
+        <div><label for="customerName">客户名称</label><input id="customerName" name="customerName" placeholder="输入企业名称" autocomplete="off" required></div>
+        <div><label for="owner">负责人</label><select id="owner" name="owner"><option value="emp1">员工一 · 陈曦</option><option value="emp2">员工二 · 林远</option></select></div>
+        <button class="primary" type="submit">新建客户</button>
+      </form>
+      <section class="panel"><div class="panel-head"><h2>客户列表</h2><span id="listSummary">2 条记录</span></div><table><thead><tr><th>客户名称</th><th>负责人</th><th>状态</th><th>创建日期</th></tr></thead><tbody id="customerRows"></tbody></table></section>
+    </main>
+  </div>
+  <div class="login-layer" id="loginLayer">
+    <form class="login" id="loginForm"><div class="login-mark">YH</div><h1>登录演示环境</h1><p>GUI Agent 企业流程验证</p>
+      <div class="field"><label for="username">用户名</label><input id="username" name="username" autocomplete="username" required></div>
+      <div class="field"><label for="password">密码</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
+      <button class="primary" type="submit">登录</button><div class="error" id="loginError" role="alert"></div>
+    </form>
+  </div>
+  <div class="toast hidden" id="toast" role="status">客户创建成功</div>
+  <script>
+    const defaults=[{name:'远川制造',owner:'陈曦',date:'2026-07-10'},{name:'北辰零售',owner:'林远',date:'2026-07-12'}];
+    let customers=defaults.map(x=>({...x}));
+    const rows=document.querySelector('#customerRows');
+    function render(){rows.innerHTML=customers.map(c=>`<tr class="customer-row"><td><strong>${escapeHtml(c.name)}</strong></td><td><div class="owner"><span class="avatar">${c.owner.slice(0,1)}</span>${c.owner}</div></td><td><span class="tag">服务中</span></td><td>${c.date}</td></tr>`).join('');document.querySelector('#customerCount').textContent=customers.length;document.querySelector('#activeCount').textContent=customers.length;document.querySelector('#monthCount').textContent=customers.length;document.querySelector('#listSummary').textContent=`${customers.length} 条记录`}
+    function escapeHtml(value){const div=document.createElement('div');div.textContent=value;return div.innerHTML}
+    document.querySelector('#loginForm').addEventListener('submit',e=>{e.preventDefault();const u=document.querySelector('#username').value,p=document.querySelector('#password').value;if(u==='admin'&&p==='admin123'){document.querySelector('#loginLayer').classList.add('hidden');history.replaceState({},'', '/customers');document.querySelector('#customerName').focus()}else{document.querySelector('#loginError').textContent='用户名或密码不正确'}});
+    document.querySelector('#customerForm').addEventListener('submit',e=>{e.preventDefault();const input=document.querySelector('#customerName'),select=document.querySelector('#owner');customers.push({name:input.value.trim(),owner:select.value==='emp1'?'陈曦':'林远',date:'2026-07-15'});input.value='';render();const toast=document.querySelector('#toast');toast.classList.remove('hidden');setTimeout(()=>toast.classList.add('hidden'),1800)});
+    document.querySelector('#reset').addEventListener('click',()=>{customers=defaults.map(x=>({...x}));render()});render();
+  </script>
+</body></html>
